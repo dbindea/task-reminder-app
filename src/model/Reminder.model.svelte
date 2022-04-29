@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
   export interface Reminder {
+    id?: string;
     tipology: Tipology;
     alias: string;
     provider: string;
