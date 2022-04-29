@@ -1,4 +1,6 @@
 <script lang="ts">
+  import NewReminder from '../components/NewReminder.svelte';
+  import ReminderList from '../components/ReminderList.svelte';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
 
   let reminder: Reminder = {
@@ -10,12 +12,13 @@
   };
 </script>
 
-<div>
-  <span> Reminder </span>
-  <pre>
-    {JSON.stringify(reminder)}
-</pre>
+<div class="main">
+  <NewReminder />
+  <ReminderList />
 </div>
 
 <style type="scss">
+  .main {
+    background-color: #ffffff;
+  }
 </style>
