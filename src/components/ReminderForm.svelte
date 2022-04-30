@@ -1,15 +1,16 @@
 <script lang="ts">
   import { db } from '../firebase';
-  import { onSnapshot, collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+  import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
-  import { onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
 
   let reminder: Reminder = getEmptyReminder();
-  let reminders: Reminder[] = [];
 
-  let inputReminder;
+  let inputAlias;
   let editStatus = false;
   let currentId = '';
+
+  onMount(() => inputAlias.focus());
 
   function getEmptyReminder(): Reminder {
     return {
@@ -19,7 +20,7 @@
       provider: '',
       locatorId: '',
       date: null,
-      amount: 0,
+      amount: null,
     };
   }
 
@@ -68,7 +69,6 @@
   };
 
   const submitAction = () => {
-    // if (!reminder.title) return;
     if (!editStatus) {
       addReminder();
     } else {
@@ -77,7 +77,7 @@
       currentId = '';
     }
     reminder = getEmptyReminder();
-    // inputElement.focus();
+    inputAlias.focus();
   };
 
   const cancelAction = () => {
@@ -85,21 +85,6 @@
     currentId = '';
     reminder = getEmptyReminder();
   };
-
-  const unsubscribe = onSnapshot(
-    collection(db, 'Reminders'),
-    (querySnapshot) => {
-      reminders = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Reminder[]; //not sure
-    },
-    (err) => {
-      console.error(err);
-    },
-  );
-
-  onDestroy(unsubscribe);
 </script>
 
 <div class="new-reminder">
@@ -113,6 +98,7 @@
       type="text"
       name="alias"
       bind:value={reminder.alias}
+      bind:this={inputAlias}
       id="alias"
       placeholder="Alias"
       spellcheck="false"
@@ -131,7 +117,12 @@
     />
     <input class="form-item" type="date" name="date" bind:value={reminder.date} id="date" placeholder="Fecha recordatorio" />
     <input class="form-item" type="number" name="amount" bind:value={reminder.amount} id="amount" placeholder="Importe" autocomplete="off" />
-    <button class="form-item" type="submit">Save</button>
+    <button class="form-item" type="submit">
+      {#if !editStatus}Save{:else}Update{/if}
+    </button>
+    {#if editStatus}
+      <button on:click={cancelAction} class="form-item">Cancel</button>
+    {/if}
   </form>
 </div>
 

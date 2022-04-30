@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  export interface Reminder {
+  export type Reminder = {
     id?: string;
     tipology: Tipology;
     alias: string;

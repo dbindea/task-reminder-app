@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewReminder from '../components/NewReminder.svelte';
+  import ReminderForm from '../components/ReminderForm.svelte';
   import ReminderList from '../components/ReminderList.svelte';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
 
@@ -13,7 +13,7 @@
 </script>
 
 <div class="main">
-  <NewReminder />
+  <ReminderForm />
   <ReminderList />
 </div>
 
