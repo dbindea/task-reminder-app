@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>Icons/Black/condense</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons/Black/condense" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path" fill="#425968" fill-rule="nonzero" points="16.6864137 11.4644278 7.30749343 11.4644278 7.30749343 12.6644278 16.6864137 12.6644278"></polygon>
+        <path d="M19,3.4 L5,3.4 C4.1163444,3.4 3.4,4.1163444 3.4,5 L3.4,19 C3.4,19.8836556 4.1163444,20.6 5,20.6 L19,20.6 C19.8836556,20.6 20.6,19.8836556 20.6,19 L20.6,5 C20.6,4.1163444 19.8836556,3.4 19,3.4 Z M5,4.6 L19,4.6 C19.2209139,4.6 19.4,4.7790861 19.4,5 L19.4,19 C19.4,19.2209139 19.2209139,19.4 19,19.4 L5,19.4 C4.7790861,19.4 4.6,19.2209139 4.6,19 L4.6,5 C4.6,4.7790861 4.7790861,4.6 5,4.6 Z" id="Rectangle" fill="#425968" fill-rule="nonzero"></path>
+    </g>
+</svg>

@@ -1,0 +1,23 @@
+{
+  "app": {
+    "header": {},
+    "main": {
+      "card": {
+        "tipology": "Recordatorio",
+        "date": "Fecha"
+      },
+      "form": {
+        "CHECKIN": "Realizar Check-in",
+        "PAYMENT": "Pago Reserva",
+        "alias": "Alias",
+        "provider": "Proveedor",
+        "locatorId": "Localizador",
+        "amount": "Importe",
+        "save": "Guardar",
+        "update": "Actualizar",
+        "cancel": "Cancelar"
+      },
+      "list": {}
+    }
+  }
+}

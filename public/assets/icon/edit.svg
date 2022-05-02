@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>Icons/Black/edit</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons/Black/edit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M8.58382449,18.7504758 L10.8700999,22.434418 C11.1147297,22.8285972 11.6325868,22.9498309 12.026766,22.7052011 C12.1366719,22.6369928 12.2293408,22.5443239 12.2975491,22.434418 L14.5838245,18.7504758 L14.5838245,1.44661554 L8.58382449,1.44661554 L8.58382449,18.7504758 Z M9.78382449,2.64661554 L13.3838245,2.64661554 L13.3838245,18.4083754 L11.5838245,21.3087679 L9.78382449,18.4083754 L9.78382449,2.64661554 Z" id="Path-16" fill="#425968" fill-rule="nonzero" transform="translate(11.583824, 12.139103) rotate(-315.000000) translate(-11.583824, -12.139103) "></path>
+        <path d="M5.31407756,17.6781369 L6.1626057,18.526665 L5.39319817,19.2960726 L4.54467003,18.4475444 L5.31407756,17.6781369 Z M15.4415411,4.26888048 L19.0415411,7.86888048 L18.1930129,8.71740862 L14.5930129,5.11740862 L15.4415411,4.26888048 Z" id="Combined-Shape" fill="#425968" fill-rule="nonzero"></path>
+        <polygon id="Path-20" fill="#425968" fill-rule="nonzero" points="16.2192583 6.65900383 6.6192583 16.2590038 7.46778643 17.107532 17.0677864 7.50753197"></polygon>
+    </g>
+</svg>

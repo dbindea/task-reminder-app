@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>Icons/Black/progress-spinner</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons/Black/progress-spinner" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,19.6 C16.1973641,19.6 19.6,16.1973641 19.6,12 C19.6,9.97561631 18.8041269,8.07545582 17.41068,6.66290742 C15.9920827,5.22486381 14.0607425,4.4 12,4.4 C7.8026359,4.4 4.4,7.8026359 4.4,12 L5.6,12 C5.6,8.4653776 8.4653776,5.6 12,5.6 C13.7363339,5.6 15.3610467,6.29390507 16.5563954,7.50563977 C17.7305076,8.69584676 18.4,10.2942713 18.4,12 C18.4,15.5346224 15.5346224,18.4 12,18.4 L12,19.6 Z" id="Oval" fill="#425968" fill-rule="nonzero" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) "></path>
+    </g>
+</svg>

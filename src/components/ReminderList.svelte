@@ -34,6 +34,5 @@
 <style type="scss">
   .reminder-list {
     padding: 8px;
-    // border-color: #ffffff;
   }
 </style>

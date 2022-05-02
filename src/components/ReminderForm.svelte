@@ -3,6 +3,7 @@
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   let reminder: Reminder = getEmptyReminder();
 
@@ -87,72 +88,103 @@
   };
 </script>
 
-<div class="new-reminder">
+<div class="form-reminder">
   <form class="form" on:submit|preventDefault={submitAction}>
-    <select class="form-item" name="tipology" bind:value={reminder.tipology} id="tipology">
-      <option value="CHECKIN">Checkin</option>
-      <option value="PAYMENT">Payment</option>
-    </select>
-    <input
-      class="form-item capitalize"
-      type="text"
-      name="alias"
-      bind:value={reminder.alias}
-      bind:this={inputAlias}
-      id="alias"
-      placeholder="Alias"
-      spellcheck="false"
-      autocomplete="off"
-    />
-    <input class="form-item capitalize" type="text" name="provider" bind:value={reminder.provider} id="provider" placeholder="Proveedor" spellcheck="false" />
-    <input
-      class="form-item uppercase"
-      type="text"
-      name="locatorId"
-      bind:value={reminder.locatorId}
-      id="locatorId"
-      placeholder="Localizador"
-      spellcheck="false"
-      autocomplete="off"
-    />
-    <input class="form-item" type="date" name="date" bind:value={reminder.date} id="date" placeholder="Fecha recordatorio" />
-    <input class="form-item" type="number" name="amount" bind:value={reminder.amount} id="amount" placeholder="Importe" autocomplete="off" />
-    <button class="form-item" type="submit">
-      {#if !editStatus}Save{:else}Update{/if}
+    <div class="a">
+      <div class="b">
+        <span class="icon-hamburger c" />
+        <select class="d" name="tipology" bind:value={reminder.tipology} id="tipology">
+          {#each Object.keys(Tipology) as optionKey}
+            <option value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
+          {/each}
+        </select>
+      </div>
+    </div>
+
+    <div class="a">
+      <div class="b">
+        <span class="icon-edit c" />
+        <input
+          class="capitalize d"
+          type="text"
+          name="alias"
+          bind:value={reminder.alias}
+          bind:this={inputAlias}
+          id="alias"
+          placeholder={$_('app.main.form.alias')}
+          spellcheck="false"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="a">
+      <div class="b">
+        <span class="icon-edit c" />
+        <input
+          class="d capitalize"
+          type="text"
+          name="provider"
+          bind:value={reminder.provider}
+          id="provider"
+          placeholder={$_('app.main.form.provider')}
+          spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <div class="a">
+      <div class="b">
+        <span class="icon-edit c" />
+        <input
+          class="d uppercase"
+          type="text"
+          name="locatorId"
+          bind:value={reminder.locatorId}
+          id="locatorId"
+          placeholder={$_('app.main.form.locatorId')}
+          spellcheck="false"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="a">
+      <div class="b">
+        <span class="icon-clock c" />
+        <input class="d" type="date" name="date" bind:value={reminder.date} id="date" />
+      </div>
+    </div>
+
+    <div class="a">
+      <div class="b">
+        <span class="icon-edit c" />
+        <input class="d" type="number" name="amount" bind:value={reminder.amount} id="amount" placeholder={$_('app.main.form.amount')} autocomplete="off" />
+      </div>
+    </div>
+
+    <button class="f" type="submit">
+      {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}
-      <button on:click={cancelAction} class="form-item">Cancel</button>
+      <button on:click={cancelAction} class="f" type="reset">{$_('app.main.form.cancel')}</button>
     {/if}
   </form>
 </div>
 
 <style type="scss">
-  .new-reminder {
-    background-color: #425968;
+  .form-reminder {
+    -webkit-box-shadow: 0 4px 250px 200px rgb(18 61 112 / 60%);
+    box-shadow: 0 4px 250px 200px rgb(18 61 112 / 60%);
+    margin: 4px;
+    border-radius: 8px;
   }
   .form {
-    padding: 8px;
-
-    input:focus:hover,
-    select:focus:hover,
-    textarea:focus:hover {
-      border-color: #2d96cd;
-    }
-
-    input::placeholder,
-    select::placeholder,
-    textarea::placeholder {
-      color: #d6e0eb;
-    }
+    padding: 16px 8px;
 
     select > option {
-      color: #425968;
       background-color: #ffffff;
     }
-  }
-
-  .form-item {
-    width: 100%;
   }
 
   .capitalize {
@@ -167,9 +199,66 @@
     text-transform: uppercase;
   }
 
-  input[type='date'] {
-    i {
-      color: #ffffff;
+  .a {
+    padding: 2px;
+    caret-color: #f1f2f6;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.18);
+    cursor: text;
+    margin-bottom: 12px;
+
+    &:hover {
+      background: -webkit-gradient(linear, left top, left bottom, from(#3ddcff), to(#d150ff));
+      background: -moz-linear-gradient(top, #3ddcff 0, #d150ff 100%);
+      background: linear-gradient(180deg, #3ddcff, #d150ff);
+    }
+
+    .b {
+      background: #0b1b2e;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      height: 48px;
+
+      .c {
+        color: #617389;
+        font-size: 24px;
+        padding: 0 8px;
+      }
+      .d {
+        padding: 8px 8px;
+        width: 100%;
+        outline: none;
+        border: 0;
+        font-size: 16px;
+        line-height: 22px;
+        background: #617389;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        /*         color: -webkit-gradient(linear, left top, left bottom, from(#3ddcff), to(#d150ff));
+        color: -moz-linear-gradient(top, #3ddcff 0, #d150ff 100%);
+        color: linear-gradient(180deg, #3ddcff, #d150ff); */
+      }
+    }
+  }
+
+  .f {
+    border: none;
+    width: 100%;
+    -moz-box-pack: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: -moz-linear-gradient(315deg, #3ddcff 0, #d150ff 100%);
+    background: linear-gradient(135deg, #3ddcff, #d150ff);
+    color: #f1f2f6;
+    border-radius: 6px;
+    font-size: 18px;
+    line-height: 36px;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(19, 200, 239, 1) 0%, rgba(184, 39, 237, 1) 99.48%);
     }
   }
 </style>
