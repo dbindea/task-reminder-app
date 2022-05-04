@@ -3,13 +3,14 @@
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
-  import { _ } from 'svelte-i18n';
+  import { date, _ } from 'svelte-i18n';
 
   let reminder: Reminder = getEmptyReminder();
 
   let inputAlias;
   let editStatus = false;
   let currentId = '';
+  let validForm = false;
 
   onMount(() => inputAlias.focus());
 
@@ -24,6 +25,39 @@
       amount: null,
     };
   }
+
+  $: {
+    reminder, validateForm();
+  }
+
+  const validateForm = () => {
+    console.log(reminder);
+
+    const validation = {
+      tipology: (data: string) => !!data,
+      alias: (data: string) => !!data && data.length >= 3,
+      provider: (data: string) => !!data && data.length >= 3,
+      locatorId: (data: string) => !!data && data.length >= 5,
+      date: (data: Date) => !!data, //&& data.getTime() > Date.now()
+      amount: (data: number, tipology: Tipology) => {
+        if (tipology === Tipology.PAYMENT) {
+          return !!data && data > 0;
+        }
+        return true;
+      },
+    };
+
+    const validationArray = [
+      validation.tipology(reminder.tipology),
+      validation.alias(reminder.alias),
+      validation.provider(reminder.provider),
+      validation.locatorId(reminder.locatorId),
+      validation.date(reminder.date),
+      validation.amount(reminder.amount, reminder.tipology),
+    ];
+
+    validForm = validationArray.every((e) => e === true);
+  };
 
   const addReminder = async () => {
     try {
@@ -163,7 +197,7 @@
       </div>
     </div>
 
-    <button class="f" type="submit">
+    <button class="f" type="submit" disabled={!validForm}>
       {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}
