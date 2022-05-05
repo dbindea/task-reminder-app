@@ -3,16 +3,21 @@
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
-  import { date, _ } from 'svelte-i18n';
+  import { _ } from 'svelte-i18n';
 
-  let reminder: Reminder = getEmptyReminder();
+  export let reminder: Reminder = getEmptyReminder();
+  export let action: string;
+  export let idToRemove: string;
+  export let reminderToUpdate: Reminder;
 
   let inputAlias;
   let editStatus = false;
   let currentId = '';
   let validForm = false;
 
-  onMount(() => inputAlias.focus());
+  onMount(() => {
+    inputAlias.focus();
+  });
 
   function getEmptyReminder(): Reminder {
     return {
@@ -27,12 +32,26 @@
   }
 
   $: {
+    action, onAction();
+  }
+
+  function onAction() {
+    switch (action) {
+      case 'remove':
+        removeReminder(idToRemove);
+        break;
+
+      case 'update':
+        editAction(reminderToUpdate);
+        break;
+    }
+  }
+
+  $: {
     reminder, validateForm();
   }
 
   const validateForm = () => {
-    console.log(reminder);
-
     const validation = {
       tipology: (data: string) => !!data,
       alias: (data: string) => !!data && data.length >= 3,
@@ -69,26 +88,30 @@
         text: "New Task created",
       }).showToast(); */
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
   const updateReminder = async () => {
     try {
+      console.log('update', reminder);
+
       await updateDoc(doc(db, 'Reminders', currentId), reminder);
       /*  Toastify({
         text: "Task updated",
       }).showToast(); */
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
-  const deleteReminder = async (id) => {
+  const removeReminder = async (id) => {
     try {
+      console.log('delete', id);
+
       await deleteDoc(doc(db, 'Reminders', id));
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -197,7 +220,7 @@
       </div>
     </div>
 
-    <button class="f" type="submit" disabled={!validForm}>
+    <button class={!validForm ? 'f-disabled' : 'f'} type="submit" disabled={!validForm}>
       {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}
@@ -289,10 +312,24 @@
     color: #f1f2f6;
     border-radius: 6px;
     font-size: 18px;
-    line-height: 36px;
+    line-height: 28px;
+    margin-top: 12px;
 
     &:hover {
       background: linear-gradient(135deg, rgba(19, 200, 239, 1) 0%, rgba(184, 39, 237, 1) 99.48%);
     }
+  }
+
+  .f-disabled {
+    background-color: rgb(15 46 82);
+    border: none;
+    width: 100%;
+    -moz-box-pack: center;
+    padding: 8px 16px;
+    color: #b7bfc8;
+    border-radius: 6px;
+    font-size: 18px;
+    line-height: 28px;
+    margin-top: 12px;
   }
 </style>
