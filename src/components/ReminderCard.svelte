@@ -2,25 +2,30 @@
   import type { Reminder } from '../model/Reminder.model.svelte';
   import { _ } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
+  import { ActionType } from '../model/ActionType.model.svelte';
+  import { format_DDMMYYYY } from '../services/utils.service.svelte';
 
   export let reminder: Reminder;
+  const formatDate = format_DDMMYYYY;
+
   const dispatch = createEventDispatcher();
 
   const update = (reminder: Reminder) => {
-    dispatch('update', reminder);
+    dispatch(ActionType.UPDATE, reminder);
   };
 
   const remove = (id: string) => {
-    dispatch('remove', id);
+    dispatch(ActionType.REMOVE, id);
   };
 </script>
 
 <div class="reminder-card">
-  <div class="actions">
+  <div class="first-item">
     <span>{$_('app.main.card.tipology')}: {$_(`app.main.form.${reminder.tipology}`)}</span>
+    <!-- DROPDOWN -->
     <span class="icon-actions rotate dropdown">
-      <div class="dropdown-content a">
-        <div class="b">
+      <div class="dropdown-content">
+        <div class="dropdown-actions">
           <ul>
             <li on:click={() => update(reminder)}>Actualizar</li>
             <li on:click={() => remove(reminder.id)}>Eliminar</li>
@@ -29,11 +34,11 @@
       </div>
     </span>
   </div>
-  <span>{$_('app.main.form.alias')}: {reminder.alias}</span>
-  <span>{$_('app.main.form.provider')}: {reminder.provider}</span>
-  <span>{$_('app.main.form.locatorId')}: {reminder.locatorId}</span>
-  <span>{$_('app.main.card.date')}: {reminder.date}</span>
-  <span>{$_('app.main.form.amount')}: {reminder.amount}</span>
+  <span class="capitalize">{$_('app.main.form.alias')}: {reminder.alias}</span>
+  <span class="capitalize">{$_('app.main.form.provider')}: {reminder.provider}</span>
+  <span>{$_('app.main.form.locatorId')}: <span class="uppercase">{reminder.locatorId}</span></span>
+  <span>{$_('app.main.card.date')}: {formatDate(reminder.date, '/')}</span>
+  <span class:disabled={!reminder.amount}>{$_('app.main.form.amount')}: {reminder.amount} €</span>
 </div>
 
 <style type="scss">
@@ -41,6 +46,7 @@
     rotate: initial;
     position: relative;
     display: inline-block;
+    cursor: pointer;
   }
   .dropdown-content {
     transform: translateY(12px) rotate(-90deg);
@@ -49,14 +55,11 @@
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     font-size: 16px;
-
-    &.a {
-      background: linear-gradient(180deg, #3ddcff, #d150ff);
-      border-radius: 8px;
-    }
+    background: linear-gradient(180deg, #3ddcff, #d150ff);
+    border-radius: 8px;
   }
 
-  .b {
+  .dropdown-actions {
     padding: 12px;
     border-radius: 8px;
     background-color: #0b1b2e;
@@ -92,10 +95,9 @@
     }
   }
 
-  .actions {
+  .first-item {
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
   }
   .rotate {
     transform: rotate(90deg);

@@ -69,3 +69,15 @@ button:not(:disabled):active {
 button:focus {
   border-color: #666;
 }
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.disabled {
+  display: none;
+}

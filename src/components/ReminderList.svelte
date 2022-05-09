@@ -1,33 +1,33 @@
 <script lang="ts">
   import { db } from '../firebase';
   import type { Reminder } from '../model/Reminder.model.svelte';
-  import { onDestroy, onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { onSnapshot, collection } from 'firebase/firestore';
   import ReminderCard from './ReminderCard.svelte';
+  import { format_YYYYMMDD } from '../services/utils.service.svelte';
 
   let reminders: Reminder[] = [];
+  const today = format_YYYYMMDD(new Date(), '-');
 
-  const unsubscribe = onSnapshot(
+  const getReminders = onSnapshot(
     collection(db, 'Reminders'),
     (querySnapshot) => {
-      // console.log('log', querySnapshot);
-
-      reminders = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Reminder[];
-
-      console.log(reminders);
+      reminders = (
+        querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as Reminder[]
+      )
+        .filter((r: Reminder) => format_YYYYMMDD(r.date, '-') >= today)
+        .sort((a, b) => (a.date > b.date ? 1 : -1));
     },
-    (err) => {
-      console.log(err);
+
+    (error) => {
+      console.error(error);
     },
   );
 
-  onMount(() => {
-    unsubscribe;
-  });
-  // onDestroy(unsubscribe);
+  onDestroy(getReminders);
 </script>
 
 <div class="reminder-list">

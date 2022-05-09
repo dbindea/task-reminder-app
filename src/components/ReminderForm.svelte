@@ -4,9 +4,12 @@
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
+  import { ActionType } from '../model/ActionType.model.svelte';
+  import { format_YYYYMMDD } from '../services/utils.service.svelte';
 
   export let reminder: Reminder = getEmptyReminder();
-  export let action: string;
+  export let reminderOp: { action: ActionType };
+
   export let idToRemove: string;
   export let reminderToUpdate: Reminder;
 
@@ -14,6 +17,7 @@
   let editStatus = false;
   let currentId = '';
   let validForm = false;
+  const minDate: string = format_YYYYMMDD(new Date(), '-');
 
   onMount(() => {
     inputAlias.focus();
@@ -32,23 +36,23 @@
   }
 
   $: {
-    action, onAction();
-  }
-
-  function onAction() {
-    switch (action) {
-      case 'remove':
-        removeReminder(idToRemove);
-        break;
-
-      case 'update':
-        editAction(reminderToUpdate);
-        break;
-    }
+    reminderOp, onAction();
   }
 
   $: {
     reminder, validateForm();
+  }
+
+  function onAction() {
+    switch (reminderOp?.action) {
+      case ActionType.REMOVE:
+        removeReminder(idToRemove);
+        break;
+
+      case ActionType.UPDATE:
+        editAction(reminderToUpdate);
+        break;
+    }
   }
 
   const validateForm = () => {
@@ -57,7 +61,7 @@
       alias: (data: string) => !!data && data.length >= 3,
       provider: (data: string) => !!data && data.length >= 3,
       locatorId: (data: string) => !!data && data.length >= 5,
-      date: (data: Date) => !!data, //&& data.getTime() > Date.now()
+      date: (data: Date) => !!data,
       amount: (data: number, tipology: Tipology) => {
         if (tipology === Tipology.PAYMENT) {
           return !!data && data > 0;
@@ -88,30 +92,26 @@
         text: "New Task created",
       }).showToast(); */
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const updateReminder = async () => {
     try {
-      console.log('update', reminder);
-
       await updateDoc(doc(db, 'Reminders', currentId), reminder);
       /*  Toastify({
         text: "Task updated",
       }).showToast(); */
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const removeReminder = async (id) => {
     try {
-      console.log('delete', id);
-
       await deleteDoc(doc(db, 'Reminders', id));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -147,10 +147,10 @@
 
 <div class="form-reminder">
   <form class="form" on:submit|preventDefault={submitAction}>
-    <div class="a">
-      <div class="b">
-        <span class="icon-hamburger c" />
-        <select class="d" name="tipology" bind:value={reminder.tipology} id="tipology">
+    <div class="field-container">
+      <div class="field-subcontainer">
+        <span class="icon-checklist field-icon" />
+        <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
           {#each Object.keys(Tipology) as optionKey}
             <option value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}
@@ -158,11 +158,11 @@
       </div>
     </div>
 
-    <div class="a">
-      <div class="b">
-        <span class="icon-edit c" />
+    <div class="field-container">
+      <div class="field-subcontainer">
+        <span class="icon-user-ok field-icon" />
         <input
-          class="capitalize d"
+          class="capitalize field-input"
           type="text"
           name="alias"
           bind:value={reminder.alias}
@@ -175,11 +175,11 @@
       </div>
     </div>
 
-    <div class="a">
-      <div class="b">
-        <span class="icon-edit c" />
+    <div class="field-container">
+      <div class="field-subcontainer">
+        <span class="icon-language field-icon" />
         <input
-          class="d capitalize"
+          class="capitalize field-input"
           type="text"
           name="provider"
           bind:value={reminder.provider}
@@ -190,41 +190,52 @@
       </div>
     </div>
 
-    <div class="a">
-      <div class="b">
-        <span class="icon-edit c" />
+    <div class="field-container">
+      <div class="field-subcontainer">
+        <span class="icon-success field-icon" />
         <input
-          class="d uppercase"
+          class="uppercase field-input"
           type="text"
           name="locatorId"
           bind:value={reminder.locatorId}
           id="locatorId"
           placeholder={$_('app.main.form.locatorId')}
           spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <div class="field-container">
+      <div class="field-subcontainer">
+        <span class="icon-clock field-icon" />
+        <input class="field-input" type="date" name="date" min={minDate} bind:value={reminder.date} id="date" />
+      </div>
+    </div>
+
+    <div class={reminder.tipology != Tipology.PAYMENT ? 'disabled' : 'field-container'}>
+      <div class="field-subcontainer">
+        <span class="icon-euro field-icon" />
+        <input
+          class="field-input"
+          type="number"
+          name="amount"
+          bind:value={reminder.amount}
+          id="amount"
+          placeholder={$_('app.main.form.amount')}
           autocomplete="off"
         />
       </div>
     </div>
 
-    <div class="a">
-      <div class="b">
-        <span class="icon-clock c" />
-        <input class="d" type="date" name="date" bind:value={reminder.date} id="date" />
-      </div>
-    </div>
-
-    <div class="a">
-      <div class="b">
-        <span class="icon-edit c" />
-        <input class="d" type="number" name="amount" bind:value={reminder.amount} id="amount" placeholder={$_('app.main.form.amount')} autocomplete="off" />
-      </div>
-    </div>
-
-    <button class={!validForm ? 'f-disabled' : 'f'} type="submit" disabled={!validForm}>
+    <button class={!validForm ? 'button--disabled' : 'button'} type="submit" disabled={!validForm}>
       {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}
       <button on:click={cancelAction} class="f" type="reset">{$_('app.main.form.cancel')}</button>
+    {/if}
+
+    {#if !validForm}
+      <!-- <div class="error">Formulario incompleto</div> -->
     {/if}
   </form>
 </div>
@@ -244,19 +255,11 @@
     }
   }
 
-  .capitalize {
-    text-transform: capitalize;
-  }
-
   input[type='text']::placeholder {
     text-transform: none;
   }
 
-  .uppercase {
-    text-transform: uppercase;
-  }
-
-  .a {
+  .field-container {
     padding: 2px;
     caret-color: #f1f2f6;
     border-radius: 8px;
@@ -270,38 +273,44 @@
       background: linear-gradient(180deg, #3ddcff, #d150ff);
     }
 
-    .b {
+    .field-subcontainer {
       background: #0b1b2e;
       border-radius: 8px;
       display: flex;
       align-items: center;
       height: 48px;
 
-      .c {
+      .field-icon {
         color: #617389;
         font-size: 24px;
         padding: 0 8px;
       }
-      .d {
+      .field-input {
         padding: 8px 8px;
         width: 100%;
         outline: none;
         border: 0;
         font-size: 16px;
         line-height: 22px;
-        background: #617389;
+        color: rgba(255, 255, 255, 0.7);
+        text-shadow: 0 0 4px rgb(0 0 0 / 40%);
+
         background-clip: text;
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
 
-        /*         color: -webkit-gradient(linear, left top, left bottom, from(#3ddcff), to(#d150ff));
-        color: -moz-linear-gradient(top, #3ddcff 0, #d150ff 100%);
-        color: linear-gradient(180deg, #3ddcff, #d150ff); */
+        input::placeholder {
+          color: #617389;
+        }
+
+        option {
+          color: rgb(15 46 82);
+          text-shadow: 0 0 4px rgb(0 0 0 / 40%);
+        }
       }
     }
   }
 
-  .f {
+  .button {
     border: none;
     width: 100%;
     -moz-box-pack: center;
@@ -320,7 +329,7 @@
     }
   }
 
-  .f-disabled {
+  .button--disabled {
     background-color: rgb(15 46 82);
     border: none;
     width: 100%;
@@ -331,5 +340,10 @@
     font-size: 18px;
     line-height: 28px;
     margin-top: 12px;
+  }
+
+  .error {
+    padding: 12px 0 0;
+    color: red;
   }
 </style>

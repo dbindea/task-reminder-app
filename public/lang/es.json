@@ -7,8 +7,8 @@
         "date": "Fecha"
       },
       "form": {
-        "CHECKIN": "Realizar Check-in",
-        "PAYMENT": "Pago Reserva",
+        "CHECKIN": "Check-in",
+        "PAYMENT": "Pago",
         "alias": "Alias",
         "provider": "Proveedor",
         "locatorId": "Localizador",
