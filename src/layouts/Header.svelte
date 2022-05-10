@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { todayReminders, totalReminders } from '../services/store.service';
+  import { todayReminders } from '../services/store.service';
 </script>
 
 <div class="header">
-  <span class="colours">Today Reminders</span><span class="colours colours--fine">{$todayReminders}/{$totalReminders}</span>
+  <span class="colours">Today Reminders</span><span class="colours colours--fine">{$todayReminders}</span>
 </div>
 
 <style type="scss">
@@ -22,7 +22,6 @@
     font-weight: 600;
     &--fine {
       font-weight: 300;
-      letter-spacing: 2px;
     }
   }
 </style>
