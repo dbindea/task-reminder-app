@@ -1,0 +1,23 @@
+{
+  "app": {
+    "header": {},
+    "main": {
+      "card": {
+        "tipology": "Recordatorio"
+      },
+      "form": {
+        "CHECKIN": "Check-in",
+        "PAYMENT": "Pago",
+        "alias": "Alias",
+        "provider": "Proveedor",
+        "locatorId": "Localizador",
+        "date": "Fecha",
+        "amount": "Importe",
+        "save": "Save",
+        "update": "Actualizar",
+        "cancel": "Cancel"
+      },
+      "list": {}
+    }
+  }
+}

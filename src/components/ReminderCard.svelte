@@ -144,6 +144,10 @@
     font-weight: 300;
   }
 
+  .action-item {
+    cursor: pointer;
+  }
+
   .rotate {
     transform: rotate(90deg);
     font-size: 28px;
