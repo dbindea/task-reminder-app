@@ -33,7 +33,7 @@
   .lang {
     display: flex;
     gap: 16px;
-    height: 24px;
+    height: 18px;
   }
   .flag {
     cursor: pointer;

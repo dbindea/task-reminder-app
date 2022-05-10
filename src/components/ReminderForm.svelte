@@ -52,7 +52,7 @@
 
       case ActionType.UPDATE:
         editAction(reminderToUpdate);
-        divForm.focus();
+        // divForm.focus();
         break;
     }
   }
@@ -124,7 +124,7 @@
           background: 'linear-gradient(180deg, red, var(--color-dark))',
         },
       }).showToast();
-      divForm.focus();
+      // divForm.focus();
     } catch (error) {
       console.error(error);
     }
@@ -148,7 +148,8 @@
       updateReminder();
       editStatus = false;
       currentId = '';
-      divForm.focus();
+      // divForm.focus();
+      // inputAlias.focus();
     }
     reminder = getEmptyReminder();
   };
