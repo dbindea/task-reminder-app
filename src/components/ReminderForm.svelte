@@ -52,6 +52,7 @@
 
       case ActionType.UPDATE:
         editAction(reminderToUpdate);
+        divForm.focus();
         break;
     }
   }
@@ -280,7 +281,9 @@
     }
   }
 
-  input[type='text']::placeholder {
+  input[type='text']::placeholder,
+  input[type='number']::placeholder,
+  input[type='date']::placeholder {
     text-transform: none;
     color: var(--color-placeholder);
   }
