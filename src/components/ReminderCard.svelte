@@ -21,6 +21,11 @@
   const formatNumber = (number: number) => {
     if (number) return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   };
+
+  const getDiffDays = (date: Date) => {
+    const difference = new Date(date).getTime() - new Date().getTime();
+    return Math.ceil(difference / (1000 * 3600 * 24));
+  };
 </script>
 
 <div class="card">
@@ -52,7 +57,8 @@
       <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{reminder.locatorId}</span>
     </div>
     <div class="field">
-      <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text">{formatDate(reminder.date, '/')}</span>
+      <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
+      <span class="colours">Faltan {getDiffDays(reminder.date)} días</span>
     </div>
     <div class={!reminder.amount ? 'disabled' : 'field'}>
       <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(reminder.amount)} €</span>
@@ -66,6 +72,10 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
   }
   .dropdown-content {
     transform: translateY(12px) rotate(-90deg);
@@ -98,9 +108,6 @@
         gap: 8px;
       }
     }
-  }
-  .dropdown:hover .dropdown-content {
-    display: block;
   }
 
   .card {
@@ -151,5 +158,14 @@
   .rotate {
     transform: rotate(90deg);
     font-size: 28px;
+  }
+
+  .colours {
+    background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 16px;
+    font-weight: 600;
   }
 </style>

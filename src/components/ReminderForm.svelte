@@ -7,6 +7,7 @@
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
   import Toastify from 'toastify-js';
+  import { isLoggedIn, user } from '../services/store.service';
 
   export let reminder: Reminder = getEmptyReminder();
   export let reminderOp: { action: ActionType };
@@ -32,7 +33,7 @@
       provider: '',
       locatorId: '',
       date: null,
-      amount: null,
+      amount: null
     };
   }
 
@@ -52,7 +53,7 @@
 
       case ActionType.UPDATE:
         editAction(reminderToUpdate);
-        divForm.focus();
+        // divForm.focus();
         break;
     }
   }
@@ -88,6 +89,7 @@
     try {
       await addDoc(collection(db, 'Reminders'), {
         ...reminder,
+        uid: $user['uid'],
         createdAt: Date.now(),
       });
       Toastify({
@@ -124,7 +126,7 @@
           background: 'linear-gradient(180deg, red, var(--color-dark))',
         },
       }).showToast();
-      divForm.focus();
+      // divForm.focus();
     } catch (error) {
       console.error(error);
     }
@@ -138,6 +140,7 @@
     reminder.locatorId = currentReminder.locatorId;
     reminder.date = currentReminder.date;
     reminder.amount = currentReminder.amount;
+    reminder.uid = currentReminder.uid;
     editStatus = true;
   };
 
@@ -148,7 +151,8 @@
       updateReminder();
       editStatus = false;
       currentId = '';
-      divForm.focus();
+      // divForm.focus();
+      // inputAlias.focus();
     }
     reminder = getEmptyReminder();
   };
@@ -253,7 +257,7 @@
       </div>
     </div>
 
-    <button class={!validForm ? 'button-cancel button-cancel--disabled' : 'button'} type="submit" disabled={!validForm}>
+    <button class={!validForm || !$isLoggedIn ? 'button-cancel button-cancel--disabled' : 'button'} type="submit" disabled={!validForm || !$isLoggedIn}>
       {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}

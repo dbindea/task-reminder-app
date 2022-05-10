@@ -7,6 +7,7 @@
     locatorId: string;
     date: Date;
     amount?: number;
+    uid?: string;
   }
 
   export enum Tipology {
