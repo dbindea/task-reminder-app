@@ -6,6 +6,7 @@
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
+  import Toastify from 'toastify-js';
 
   export let reminder: Reminder = getEmptyReminder();
   export let reminderOp: { action: ActionType };
@@ -13,7 +14,7 @@
   export let idToRemove: string;
   export let reminderToUpdate: Reminder;
 
-  let inputAlias;
+  let inputAlias, divForm;
   let editStatus = false;
   let currentId = '';
   let validForm = false;
@@ -88,9 +89,12 @@
         ...reminder,
         createdAt: Date.now(),
       });
-      /* Toastify({
-        text: "New Task created",
-      }).showToast(); */
+      Toastify({
+        text: 'Reminder task created',
+        style: {
+          background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
+        },
+      }).showToast();
     } catch (error) {
       console.error(error);
     }
@@ -99,9 +103,12 @@
   const updateReminder = async () => {
     try {
       await updateDoc(doc(db, 'Reminders', currentId), reminder);
-      /*  Toastify({
-        text: "Task updated",
-      }).showToast(); */
+      Toastify({
+        text: 'Reminder task updated',
+        style: {
+          background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
+        },
+      }).showToast();
     } catch (error) {
       console.error(error);
     }
@@ -110,6 +117,13 @@
   const removeReminder = async (id) => {
     try {
       await deleteDoc(doc(db, 'Reminders', id));
+      Toastify({
+        text: 'Reminder task deleted',
+        style: {
+          background: 'linear-gradient(180deg, red, var(--color-dark))',
+        },
+      }).showToast();
+      divForm.focus();
     } catch (error) {
       console.error(error);
     }
@@ -133,6 +147,7 @@
       updateReminder();
       editStatus = false;
       currentId = '';
+      divForm.focus();
     }
     reminder = getEmptyReminder();
   };
@@ -144,7 +159,7 @@
   };
 </script>
 
-<div class="form-reminder">
+<div class="form-reminder" bind:this={divForm}>
   <form class="form" on:submit|preventDefault={submitAction}>
     <div class="field-container">
       <div class="field-subcontainer">
@@ -176,7 +191,7 @@
 
     <div class="field-container">
       <div class="field-subcontainer">
-        <span class="icon-language field-icon" />
+        <span class="icon-favorite-on field-icon" />
         <input
           class="capitalize field-input"
           type="text"
@@ -342,10 +357,11 @@
     font-size: 18px;
     line-height: 28px;
     margin-top: 12px;
+    cursor: pointer;
     &--disabled {
       color: var(--color-placeholder);
+      cursor: auto;
     }
-
   }
 
   .error {

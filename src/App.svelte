@@ -2,7 +2,7 @@
   import Header from './layouts/Header.svelte';
   import Main from './layouts/Main.svelte';
   import { setupI18n, isLocaleLoaded } from './services/i18n.service';
-
+  import 'toastify-js/src/toastify.css';
 
   $: if (!$isLocaleLoaded) {
     const lang = localStorage.getItem('lang') || 'es';
@@ -12,8 +12,8 @@
 
 <main>
   {#if $isLocaleLoaded}
-  <Header />
-  <Main />
+    <Header />
+    <Main />
   {:else}
     <p>Loading...</p>
   {/if}

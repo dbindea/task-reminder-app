@@ -45,7 +45,8 @@
       <span class="field-title">{$_('app.main.form.alias')}</span><span class="capitalize field-text">{reminder.alias}</span>
     </div>
     <div class="field">
-      <span class="field-title">{$_('app.main.form.provider')}</span><span class="field-text capitalize">{reminder.provider}</span>
+      <span class="field-title">{$_('app.main.form.provider')}</span>
+      <span class="field-text capitalize">{reminder.provider}</span>
     </div>
     <div class="field">
       <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{reminder.locatorId}</span>
