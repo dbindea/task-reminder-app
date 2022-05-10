@@ -5,11 +5,12 @@
   import { onSnapshot, collection } from 'firebase/firestore';
   import ReminderCard from './ReminderCard.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
+  import { todayReminders, totalReminders } from '../services/store.service';
 
   let reminders: Reminder[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
 
-  const getReminders = onSnapshot(
+  const usubReminders = onSnapshot(
     collection(db, 'Reminders'),
     (querySnapshot) => {
       reminders = (
@@ -21,13 +22,21 @@
         .filter((r: Reminder) => format_YYYYMMDD(r.date, '-') >= today)
         .sort((a, b) => (a.date > b.date ? 1 : -1));
     },
-
     (error) => {
       console.error(error);
     },
   );
 
-  onDestroy(getReminders);
+  $: {
+    reminders, updateStore();
+  }
+
+  function updateStore() {
+    totalReminders.update(() => reminders.length);
+    todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
+  }
+
+  onDestroy(usubReminders);
 </script>
 
 <div class="reminder-list">
