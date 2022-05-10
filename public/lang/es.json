@@ -3,8 +3,7 @@
     "header": {},
     "main": {
       "card": {
-        "tipology": "Recordatorio",
-        "date": "Fecha"
+        "tipology": "Recordatorio"
       },
       "form": {
         "CHECKIN": "Check-in",
@@ -12,6 +11,7 @@
         "alias": "Alias",
         "provider": "Proveedor",
         "locatorId": "Localizador",
+        "date": "Fecha",
         "amount": "Importe",
         "save": "Guardar",
         "update": "Actualizar",

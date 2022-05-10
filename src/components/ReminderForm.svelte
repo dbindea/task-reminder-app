@@ -135,7 +135,6 @@
       currentId = '';
     }
     reminder = getEmptyReminder();
-    inputAlias.focus();
   };
 
   const cancelAction = () => {
@@ -152,7 +151,7 @@
         <span class="icon-checklist field-icon" />
         <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
           {#each Object.keys(Tipology) as optionKey}
-            <option value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
+            <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}
         </select>
       </div>
@@ -186,6 +185,7 @@
           id="provider"
           placeholder={$_('app.main.form.provider')}
           spellcheck="false"
+          autocomplete="off"
         />
       </div>
     </div>
@@ -201,6 +201,7 @@
           id="locatorId"
           placeholder={$_('app.main.form.locatorId')}
           spellcheck="false"
+          autocomplete="off"
         />
       </div>
     </div>
@@ -208,7 +209,16 @@
     <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-clock field-icon" />
-        <input class="field-input" type="date" name="date" min={minDate} bind:value={reminder.date} id="date" />
+        <input
+          class="field-input"
+          type="date"
+          name="date"
+          min={minDate}
+          bind:value={reminder.date}
+          id="date"
+          autocomplete="off"
+          placeholder={$_('app.main.form.date')}
+        />
       </div>
     </div>
 
@@ -227,11 +237,11 @@
       </div>
     </div>
 
-    <button class={!validForm ? 'button--disabled' : 'button'} type="submit" disabled={!validForm}>
+    <button class={!validForm ? 'button-cancel button-cancel--disabled' : 'button'} type="submit" disabled={!validForm}>
       {#if !editStatus}{$_('app.main.form.save')}{:else}{$_('app.main.form.update')}{/if}
     </button>
     {#if editStatus}
-      <button on:click={cancelAction} class="f" type="reset">{$_('app.main.form.cancel')}</button>
+      <button on:click={cancelAction} class="button-cancel" type="reset">{$_('app.main.form.cancel')}</button>
     {/if}
 
     {#if !validForm}
@@ -242,46 +252,47 @@
 
 <style type="scss">
   .form-reminder {
-    -webkit-box-shadow: 0 4px 250px 200px rgb(18 61 112 / 60%);
-    box-shadow: 0 4px 250px 200px rgb(18 61 112 / 60%);
+    background-color: var(--color-dark);
     margin: 4px;
     border-radius: 8px;
+    box-shadow: var(--bg-shadow);
   }
   .form {
     padding: 16px 8px;
 
     select > option {
-      background-color: #ffffff;
+      background-color: var(--color-dark);
     }
   }
 
   input[type='text']::placeholder {
     text-transform: none;
+    color: var(--color-placeholder);
   }
 
   .field-container {
     padding: 2px;
     caret-color: #f1f2f6;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.18);
+    background: var(--color-border);
     cursor: text;
     margin-bottom: 12px;
 
     &:hover {
-      background: -webkit-gradient(linear, left top, left bottom, from(#3ddcff), to(#d150ff));
-      background: -moz-linear-gradient(top, #3ddcff 0, #d150ff 100%);
-      background: linear-gradient(180deg, #3ddcff, #d150ff);
+      background: -webkit-gradient(linear, left top, left bottom, from(var(--color-turq)), to(var(--color-fucs)));
+      background: -moz-linear-gradient(top, var(--color-turq) 0, var(--color-fucs) 100%);
+      background: linear-gradient(180deg, var(--color-turq), var(--color-fucs));
     }
 
     .field-subcontainer {
-      background: #0b1b2e;
+      background: var(--color-dark);
       border-radius: 8px;
       display: flex;
       align-items: center;
       height: 48px;
 
       .field-icon {
-        color: #617389;
+        color: var(--color-placeholder);
         font-size: 24px;
         padding: 0 8px;
       }
@@ -292,20 +303,11 @@
         border: 0;
         font-size: 16px;
         line-height: 22px;
-        color: rgba(255, 255, 255, 0.7);
-        text-shadow: 0 0 4px rgb(0 0 0 / 40%);
+        color: var(--color-text);
+        text-shadow: var(--text-shadow);
 
         background-clip: text;
         -webkit-background-clip: text;
-
-        input::placeholder {
-          color: #617389;
-        }
-
-        option {
-          color: rgb(15 46 82);
-          text-shadow: 0 0 4px rgb(0 0 0 / 40%);
-        }
       }
     }
   }
@@ -316,8 +318,8 @@
     -moz-box-pack: center;
     padding: 8px 16px;
     cursor: pointer;
-    background: -moz-linear-gradient(315deg, #3ddcff 0, #d150ff 100%);
-    background: linear-gradient(135deg, #3ddcff, #d150ff);
+    background: -moz-linear-gradient(315deg, var(--color-turq) 0, var(--color-fucs) 100%);
+    background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));
     color: #f1f2f6;
     border-radius: 6px;
     font-size: 18px;
@@ -329,17 +331,21 @@
     }
   }
 
-  .button--disabled {
-    background-color: rgb(15 46 82);
+  .button-cancel {
+    background-color: var(--color-light);
     border: none;
     width: 100%;
     -moz-box-pack: center;
     padding: 8px 16px;
-    color: #b7bfc8;
+    color: var(--color-text);
     border-radius: 6px;
     font-size: 18px;
     line-height: 28px;
     margin-top: 12px;
+    &--disabled {
+      color: var(--color-placeholder);
+    }
+
   }
 
   .error {

@@ -1,3 +1,16 @@
+:root {
+  --color-dark: #0b1b2e;
+  --color-light: #0f2f54;
+  --color-turq: #3ddcff;
+  --color-fucs: #d150ff;
+  --color-border: #385270;
+  --color-placeholder: #617389;
+
+  --color-text: rgba(255, 255, 255, 0.7);
+  --text-shadow: 0 0 4px rgb(0 0 0 / 40%);
+  --bg-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
 html,
 body {
   position: relative;
@@ -6,49 +19,30 @@ body {
 }
 
 body {
-  background-color: #0b1b2e;
+  background-color: var(--color-light);
   margin: 0;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
-a {
+/* a {
   color: rgb(0, 100, 200);
   text-decoration: none;
-}
+} */
 
-a:hover {
+/* a:hover {
   text-decoration: underline;
 }
 
 a:visited {
   color: rgb(0, 80, 160);
-}
+} */
 
-label {
+/* label {
   display: block;
-}
+} */
 
-input,
-button,
-select,
-textarea {
-  /*   font-family: inherit;
-  font-size: inherit;
-  font-weight: 300;
-  -webkit-padding: 0.4em 0;
-  padding: 0.5em;
-  margin: 0 0 1em 0;
-  box-sizing: border-box;
-  border: 1px solid #ffffff;
-  background-color: #425968;
-  color: #ffffff;
-  height: 2.5rem;
-  outline: none; */
-  /* transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s; */
-}
-
-input:disabled {
+/* input:disabled {
   color: #ccc;
 }
 
@@ -68,7 +62,7 @@ button:not(:disabled):active {
 
 button:focus {
   border-color: #666;
-}
+} */
 
 .uppercase {
   text-transform: uppercase;
