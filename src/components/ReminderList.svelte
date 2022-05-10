@@ -5,7 +5,7 @@
   import { onSnapshot, collection } from 'firebase/firestore';
   import ReminderCard from './ReminderCard.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import { todayReminders, totalReminders } from '../services/store.service';
+  import { todayReminders, totalReminders, isLoggedIn } from '../services/store.service';
 
   let reminders: Reminder[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
@@ -36,7 +36,11 @@
     todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
   }
 
-  onDestroy(usubReminders);
+  onDestroy(() => {
+    if ($isLoggedIn) {
+      usubReminders;
+    }
+  });
 </script>
 
 <div class="reminder-list">
