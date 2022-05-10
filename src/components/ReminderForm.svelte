@@ -176,7 +176,7 @@
 
     <div class="field-container">
       <div class="field-subcontainer">
-        <span class="icon-language field-icon" />
+        <span class="icon-favorite-on field-icon" />
         <input
           class="capitalize field-input"
           type="text"
@@ -342,8 +342,10 @@
     font-size: 18px;
     line-height: 28px;
     margin-top: 12px;
+    cursor: pointer;
     &--disabled {
       color: var(--color-placeholder);
+      cursor: auto;
     }
 
   }
