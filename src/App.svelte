@@ -17,11 +17,15 @@
     <Main />
     <Footer />
   {:else}
-    <p>Loading...</p>
+    <p class="loading">Loading...</p>
   {/if}
 </main>
 
 <style>
+
+  .loading {
+    padding: 16px;
+  }
   @media screen and (min-width: 800px) {
     main {
       max-width: 30%;

@@ -325,7 +325,6 @@
         border: 0;
         font-size: 16px;
         line-height: 22px;
-        color: var(--color-text);
         text-shadow: var(--text-shadow);
 
         background-clip: text;
@@ -359,7 +358,6 @@
     width: 100%;
     -moz-box-pack: center;
     padding: 8px 16px;
-    color: var(--color-text);
     border-radius: 6px;
     font-size: 18px;
     line-height: 28px;

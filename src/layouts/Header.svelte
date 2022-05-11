@@ -5,7 +5,6 @@
   import { user, isLoggedIn } from '../services/store.service';
   import Toastify from 'toastify-js';
 
-
   const login = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -21,7 +20,6 @@
       }).showToast();
 
       console.log('user', $user);
-      
     } catch (error) {
       console.error(error);
     }
@@ -40,7 +38,6 @@
 
       $user = {};
       $isLoggedIn = false;
-
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +47,6 @@
     $user = authUser;
     $isLoggedIn = !!authUser;
   });
-
 </script>
 
 <div class="header">
@@ -58,7 +54,7 @@
     <span class="colours">Today Reminders</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-    <span class="logout" on:click={() => logout()} >{$user['displayName']}</span>
+    <span class="logout" on:click={() => logout()}>{$user['displayName']}</span>
   {:else}
     <img class="flag" src="assets/img/google.svg" alt="google" on:click={() => login()} />
   {/if}
@@ -77,11 +73,12 @@
     cursor: pointer;
     object-fit: fill;
     height: 18px;
+    margin-right: 16px;
   }
 
   .logout {
     cursor: pointer;
-    color: var(--color-text);
+    font-size: 16px;
   }
   .colours {
     background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));

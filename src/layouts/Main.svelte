@@ -26,7 +26,6 @@
 
 <style type="scss">
   .main {
-    color: var(--color-text);
     text-shadow: var(--text-shadow);
   }
 </style>

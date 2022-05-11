@@ -22,7 +22,6 @@
     display: flex;
     align-items: center;
     padding: 8px 32px 8px 16px;
-    color: var(--color-text);
     justify-content: space-between;
     margin: 0 8px;
     border-radius: 8px;
