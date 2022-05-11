@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { db } from '../firebase';
+  import { db, COLLECTION } from '../firebase';
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
@@ -8,6 +8,7 @@
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
   import Toastify from 'toastify-js';
   import { isLoggedIn, user } from '../services/store.service';
+  import type { User } from '../model/user.model';
 
   export let reminder: Reminder = getEmptyReminder();
   export let reminderOp: { action: ActionType };
@@ -33,7 +34,7 @@
       provider: '',
       locatorId: '',
       date: null,
-      amount: null
+      amount: null,
     };
   }
 
@@ -87,9 +88,10 @@
 
   const addReminder = async () => {
     try {
-      await addDoc(collection(db, 'Reminders'), {
+      await addDoc(collection(db, COLLECTION), {
         ...reminder,
-        uid: $user['uid'],
+        uid: ($user as User).uid,
+        email: ($user as User).email,
         createdAt: Date.now(),
       });
       Toastify({
@@ -105,7 +107,7 @@
 
   const updateReminder = async () => {
     try {
-      await updateDoc(doc(db, 'Reminders', currentId), reminder);
+      await updateDoc(doc(db, COLLECTION, currentId), reminder);
       Toastify({
         text: 'Reminder task updated',
         style: {
@@ -119,7 +121,7 @@
 
   const removeReminder = async (id) => {
     try {
-      await deleteDoc(doc(db, 'Reminders', id));
+      await deleteDoc(doc(db, COLLECTION, id));
       Toastify({
         text: 'Reminder task deleted',
         style: {
@@ -134,13 +136,7 @@
 
   const editAction = (currentReminder) => {
     currentId = currentReminder.id;
-    reminder.tipology = currentReminder.tipology;
-    reminder.alias = currentReminder.alias;
-    reminder.provider = currentReminder.provider;
-    reminder.locatorId = currentReminder.locatorId;
-    reminder.date = currentReminder.date;
-    reminder.amount = currentReminder.amount;
-    reminder.uid = currentReminder.uid;
+    reminder = { ...currentReminder };
     editStatus = true;
   };
 
