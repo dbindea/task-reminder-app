@@ -1,9 +1,9 @@
 <script lang="ts">
   import Header from './layouts/Header.svelte';
   import Main from './layouts/Main.svelte';
-  import { setupI18n, isLocaleLoaded } from './services/i18n.service';
-  import 'toastify-js/src/toastify.css';
   import Footer from './layouts/Footer.svelte';
+  import 'toastify-js/src/toastify.css';
+  import { setupI18n, isLocaleLoaded } from './services/i18n.service';
 
   $: if (!$isLocaleLoaded) {
     const lang = localStorage.getItem('lang') || 'es';
@@ -17,11 +17,14 @@
     <Main />
     <Footer />
   {:else}
-    <p>Loading...</p>
+    <p class="loading">Loading...</p>
   {/if}
 </main>
 
 <style>
+  .loading {
+    padding: 16px;
+  }
   @media screen and (min-width: 800px) {
     main {
       max-width: 30%;

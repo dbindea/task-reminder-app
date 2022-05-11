@@ -1,10 +1,13 @@
 <script lang="ts">
+  import type { User } from '../model/user.model';
+  import Toastify from 'toastify-js';
   import { todayReminders } from '../services/store.service';
   import { auth } from '../firebase';
   import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
   import { user, isLoggedIn } from '../services/store.service';
-  import Toastify from 'toastify-js';
+  import { _ } from 'svelte-i18n';
 
+  let userLogin: User;
 
   const login = async () => {
     try {
@@ -14,14 +17,11 @@
       $isLoggedIn = true;
 
       Toastify({
-        text: 'Bienvenido ' + $user['displayName'],
+        text: $_('app.header.login_hello', { values: { name: userLogin.displayName } }),
         style: {
           background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
         },
       }).showToast();
-
-      console.log('user', $user);
-      
     } catch (error) {
       console.error(error);
     }
@@ -32,7 +32,7 @@
       await signOut(auth);
 
       Toastify({
-        text: 'Hasta luego!',
+        text: $_('app.header.logout_bye'),
         style: {
           background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
         },
@@ -40,7 +40,6 @@
 
       $user = {};
       $isLoggedIn = false;
-
     } catch (error) {
       console.error(error);
     }
@@ -49,18 +48,24 @@
   onAuthStateChanged(auth, (authUser) => {
     $user = authUser;
     $isLoggedIn = !!authUser;
+    userLogin = authUser;
   });
-
 </script>
 
 <div class="header">
   <div>
-    <span class="colours">Today Reminders</span><span class="colours colours--fine">{$todayReminders}</span>
+    <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-    <span class="logout" on:click={() => logout()} >{$user['displayName']}</span>
+    <div class="auth">
+      <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
+      <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
+    </div>
   {:else}
-    <img class="flag" src="assets/img/google.svg" alt="google" on:click={() => login()} />
+    <div class="auth">
+      <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
+      <img class="photo" src="assets/img/google.svg" alt="Google" on:click={() => login()} />
+    </div>
   {/if}
 </div>
 
@@ -73,15 +78,17 @@
     align-items: center;
   }
 
-  .flag {
-    cursor: pointer;
+  .photo {
     object-fit: fill;
-    height: 18px;
+    height: 24px;
+    border-radius: 4px;
+    margin: 0 16px 0 8px;
+    vertical-align: middle;
   }
 
-  .logout {
+  .auth {
     cursor: pointer;
-    color: var(--color-text);
+    vertical-align: middle;
   }
   .colours {
     background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));

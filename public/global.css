@@ -36,3 +36,12 @@ body {
 .disabled {
   display: none;
 }
+
+p,
+div,
+span,
+input,
+select,
+option {
+  color: var(--color-text);
+}

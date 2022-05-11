@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { db } from '../firebase';
+  import Toastify from 'toastify-js';
+  import { db, COLLECTION } from '../firebase';
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import Toastify from 'toastify-js';
   import { isLoggedIn, user } from '../services/store.service';
+  import type { User } from '../model/user.model';
 
   export let reminder: Reminder = getEmptyReminder();
   export let reminderOp: { action: ActionType };
-
   export let idToRemove: string;
   export let reminderToUpdate: Reminder;
 
-  let inputAlias, divForm;
+  let inputAlias;
   let editStatus = false;
   let currentId = '';
   let validForm = false;
@@ -33,7 +33,7 @@
       provider: '',
       locatorId: '',
       date: null,
-      amount: null
+      amount: null,
     };
   }
 
@@ -53,7 +53,6 @@
 
       case ActionType.UPDATE:
         editAction(reminderToUpdate);
-        // divForm.focus();
         break;
     }
   }
@@ -87,13 +86,14 @@
 
   const addReminder = async () => {
     try {
-      await addDoc(collection(db, 'Reminders'), {
+      await addDoc(collection(db, COLLECTION), {
         ...reminder,
-        uid: $user['uid'],
+        uid: ($user as User).uid,
+        email: ($user as User).email,
         createdAt: Date.now(),
       });
       Toastify({
-        text: 'Reminder task created',
+        text: $_('app.main.form.add_msg'),
         style: {
           background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
         },
@@ -105,9 +105,9 @@
 
   const updateReminder = async () => {
     try {
-      await updateDoc(doc(db, 'Reminders', currentId), reminder);
+      await updateDoc(doc(db, COLLECTION, currentId), reminder);
       Toastify({
-        text: 'Reminder task updated',
+        text: $_('app.main.form.update_msg'),
         style: {
           background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
         },
@@ -119,14 +119,13 @@
 
   const removeReminder = async (id) => {
     try {
-      await deleteDoc(doc(db, 'Reminders', id));
+      await deleteDoc(doc(db, COLLECTION, id));
       Toastify({
-        text: 'Reminder task deleted',
+        text: $_('app.main.form.remove_msg'),
         style: {
           background: 'linear-gradient(180deg, red, var(--color-dark))',
         },
       }).showToast();
-      // divForm.focus();
     } catch (error) {
       console.error(error);
     }
@@ -134,13 +133,7 @@
 
   const editAction = (currentReminder) => {
     currentId = currentReminder.id;
-    reminder.tipology = currentReminder.tipology;
-    reminder.alias = currentReminder.alias;
-    reminder.provider = currentReminder.provider;
-    reminder.locatorId = currentReminder.locatorId;
-    reminder.date = currentReminder.date;
-    reminder.amount = currentReminder.amount;
-    reminder.uid = currentReminder.uid;
+    reminder = { ...currentReminder };
     editStatus = true;
   };
 
@@ -151,8 +144,6 @@
       updateReminder();
       editStatus = false;
       currentId = '';
-      // divForm.focus();
-      // inputAlias.focus();
     }
     reminder = getEmptyReminder();
   };
@@ -164,7 +155,7 @@
   };
 </script>
 
-<div class="form-reminder" bind:this={divForm}>
+<div class="form-reminder">
   <form class="form" on:submit|preventDefault={submitAction}>
     <div class="field-container">
       <div class="field-subcontainer">
@@ -251,6 +242,7 @@
           name="amount"
           bind:value={reminder.amount}
           id="amount"
+          step="0.01"
           placeholder={$_('app.main.form.amount')}
           autocomplete="off"
         />
@@ -262,10 +254,6 @@
     </button>
     {#if editStatus}
       <button on:click={cancelAction} class="button-cancel" type="reset">{$_('app.main.form.cancel')}</button>
-    {/if}
-
-    {#if !validForm}
-      <!-- <div class="error">Formulario incompleto</div> -->
     {/if}
   </form>
 </div>
@@ -325,7 +313,6 @@
         border: 0;
         font-size: 16px;
         line-height: 22px;
-        color: var(--color-text);
         text-shadow: var(--text-shadow);
 
         background-clip: text;
@@ -359,7 +346,6 @@
     width: 100%;
     -moz-box-pack: center;
     padding: 8px 16px;
-    color: var(--color-text);
     border-radius: 6px;
     font-size: 18px;
     line-height: 28px;
@@ -369,10 +355,5 @@
       color: var(--color-placeholder);
       cursor: auto;
     }
-  }
-
-  .error {
-    padding: 12px 0 0;
-    color: red;
   }
 </style>

@@ -8,7 +8,8 @@
     date: Date;
     amount?: number;
     uid?: string;
-  }
+    email?: string;
+  };
 
   export enum Tipology {
     CHECKIN = 'CHECKIN',

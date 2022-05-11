@@ -39,8 +39,8 @@
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => update(reminder)}><span class="icon-edit" />Actualizar</li>
-              <li class="action-item" on:click={() => remove(reminder.id)}><span class="icon-delete" />Eliminar</li>
+              <li class="action-item" on:click={() => update(reminder)}><span class="icon-edit" />{$_('app.main.card.update')}</li>
+              <li class="action-item" on:click={() => remove(reminder.id)}><span class="icon-delete" />{$_('app.main.card.remove')}</li>
             </ul>
           </div>
         </div>
@@ -58,7 +58,7 @@
     </div>
     <div class="field">
       <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
-      <span class="colours">Faltan {getDiffDays(reminder.date)} días</span>
+      <span class="colours">{$_('app.main.card.count_days', { values: { number: getDiffDays(reminder.date) } })}</span>
     </div>
     <div class={!reminder.amount ? 'disabled' : 'field'}>
       <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(reminder.amount)} €</span>

@@ -1,31 +1,27 @@
 <script lang="ts">
-  import { db } from '../firebase';
-  import type { Reminder } from '../model/Reminder.model.svelte';
-  import { onDestroy } from 'svelte';
-  import { onSnapshot, collection } from 'firebase/firestore';
   import ReminderCard from './ReminderCard.svelte';
+  import { COLLECTION, db } from '../firebase';
+  import { onMount } from 'svelte';
+  import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import { todayReminders, totalReminders, isLoggedIn } from '../services/store.service';
+  import { todayReminders, totalReminders, isLoggedIn, user } from '../services/store.service';
+  import { _ } from 'svelte-i18n';
+  import type { Reminder } from '../model/Reminder.model.svelte';
+  import type { User } from '../model/user.model';
+  import type { Unsubscribe } from 'firebase/auth';
 
   let reminders: Reminder[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
 
-  const usubReminders = onSnapshot(
-    collection(db, 'Reminders'),
-    (querySnapshot) => {
-      reminders = (
-        querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        })) as Reminder[]
-      )
-        .filter((r: Reminder) => format_YYYYMMDD(r.date, '-') >= today)
-        .sort((a, b) => (a.date > b.date ? 1 : -1));
-    },
-    (error) => {
-      console.error(error);
-    },
-  );
+  const watchFirestore = (uid: string): Unsubscribe => {
+    const q = query(collection(db, COLLECTION), where('uid', '==', uid), where('date', '>=', today), orderBy('date', 'asc'));
+    return onSnapshot(q, (querySnapshot) => {
+      reminders = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })) as Reminder[];
+    });
+  };
 
   $: {
     reminders, updateStore();
@@ -36,14 +32,23 @@
     todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
   }
 
-  onDestroy(() => {
-    if ($isLoggedIn) {
-      usubReminders;
-    }
+  onMount(() => {
+    isLoggedIn.subscribe((isLogged) => {
+      if (isLogged && ($user as User).uid) {
+        watchFirestore(($user as User).uid);
+      } else {
+        reminders = [];
+      }
+    });
   });
 </script>
 
 <div class="reminder-list">
+  {#if !$isLoggedIn}
+    <div class="panel">{$_('app.main.list.no_auth')}</div>
+  {:else if !reminders.length}
+    <div class="panel">{$_('app.main.list.no_reminder')}</div>
+  {/if}
   {#each reminders as reminder}
     <ReminderCard {reminder} on:remove on:update />
   {/each}
@@ -52,5 +57,15 @@
 <style type="scss">
   .reminder-list {
     padding: 8px;
+  }
+
+  .panel {
+    padding: 64px;
+    text-align: center;
+    line-height: 32px;
+    letter-spacing: 0.5px;
+    border: solid 2px #385270;
+    border-radius: 8px;
+    margin: 16px 0;
   }
 </style>
