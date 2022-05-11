@@ -1,23 +1,41 @@
 {
   "app": {
-    "header": {},
+    "header": {
+      "login": "Login",
+      "logout": "Logout",
+      "login_hello": "Hello {name}!",
+      "logout_bye": "See you later!",
+      "today_reminders": "Today Reminders"
+    },
     "main": {
       "card": {
-        "tipology": "Recordatorio"
+        "tipology": "Reminder",
+        "update": "Update",
+        "remove": "Remove",
+        "count_days": "{number} days left!"
       },
       "form": {
         "CHECKIN": "Check-in",
-        "PAYMENT": "Pago",
+        "PAYMENT": "Payment",
         "alias": "Alias",
-        "provider": "Proveedor",
-        "locatorId": "Localizador",
-        "date": "Fecha",
-        "amount": "Importe",
+        "provider": "Provider",
+        "locatorId": "Reference",
+        "date": "Date",
+        "amount": "Amount",
         "save": "Save",
-        "update": "Actualizar",
-        "cancel": "Cancel"
+        "update": "Update",
+        "cancel": "Cancel",
+        "add_msg": "Reminder created!",
+        "update_msg": "Reminder updated!",
+        "demove_msg": "Reminder removed!"
       },
-      "list": {}
+      "list": {
+        "no_auth": "You need to login with a Google account to view or save reminders!",
+        "no_reminder": "Create your first reminder!"
+      }
+    },
+    "footer": {
+      "app_name": "Task Reminder App"
     }
   }
 }

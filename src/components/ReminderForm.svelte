@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Toastify from 'toastify-js';
   import { db, COLLECTION } from '../firebase';
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { Reminder, Tipology } from '../model/Reminder.model.svelte';
@@ -6,17 +7,15 @@
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import Toastify from 'toastify-js';
   import { isLoggedIn, user } from '../services/store.service';
   import type { User } from '../model/user.model';
 
   export let reminder: Reminder = getEmptyReminder();
   export let reminderOp: { action: ActionType };
-
   export let idToRemove: string;
   export let reminderToUpdate: Reminder;
 
-  let inputAlias, divForm;
+  let inputAlias;
   let editStatus = false;
   let currentId = '';
   let validForm = false;
@@ -54,7 +53,6 @@
 
       case ActionType.UPDATE:
         editAction(reminderToUpdate);
-        // divForm.focus();
         break;
     }
   }
@@ -95,7 +93,7 @@
         createdAt: Date.now(),
       });
       Toastify({
-        text: 'Reminder task created',
+        text: $_('app.main.form.add_msg'),
         style: {
           background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
         },
@@ -109,7 +107,7 @@
     try {
       await updateDoc(doc(db, COLLECTION, currentId), reminder);
       Toastify({
-        text: 'Reminder task updated',
+        text: $_('app.main.form.update_msg'),
         style: {
           background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
         },
@@ -123,12 +121,11 @@
     try {
       await deleteDoc(doc(db, COLLECTION, id));
       Toastify({
-        text: 'Reminder task deleted',
+        text: $_('app.main.form.remove_msg'),
         style: {
           background: 'linear-gradient(180deg, red, var(--color-dark))',
         },
       }).showToast();
-      // divForm.focus();
     } catch (error) {
       console.error(error);
     }
@@ -147,8 +144,6 @@
       updateReminder();
       editStatus = false;
       currentId = '';
-      // divForm.focus();
-      // inputAlias.focus();
     }
     reminder = getEmptyReminder();
   };
@@ -160,7 +155,7 @@
   };
 </script>
 
-<div class="form-reminder" bind:this={divForm}>
+<div class="form-reminder">
   <form class="form" on:submit|preventDefault={submitAction}>
     <div class="field-container">
       <div class="field-subcontainer">
@@ -247,6 +242,7 @@
           name="amount"
           bind:value={reminder.amount}
           id="amount"
+          step="0.01"
           placeholder={$_('app.main.form.amount')}
           autocomplete="off"
         />
@@ -258,10 +254,6 @@
     </button>
     {#if editStatus}
       <button on:click={cancelAction} class="button-cancel" type="reset">{$_('app.main.form.cancel')}</button>
-    {/if}
-
-    {#if !validForm}
-      <!-- <div class="error">Formulario incompleto</div> -->
     {/if}
   </form>
 </div>
@@ -363,10 +355,5 @@
       color: var(--color-placeholder);
       cursor: auto;
     }
-  }
-
-  .error {
-    padding: 12px 0 0;
-    color: red;
   }
 </style>

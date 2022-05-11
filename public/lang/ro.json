@@ -1,23 +1,41 @@
 {
   "app": {
-    "header": {},
+    "header": {
+      "login": "Intră",
+      "logout": "Ieșire",
+      "login_hello": "Salutare {name}!",
+      "logout_bye": "La revedere!",
+      "today_reminders": "Activități Azi"
+    },
     "main": {
       "card": {
-        "tipology": "Recordatorio"
+        "tipology": "De realizat",
+        "update": "Actualizează",
+        "remove": "Șterge",
+        "count_days": "{number} zile rămase!"
       },
       "form": {
         "CHECKIN": "Check-in",
-        "PAYMENT": "Pago",
-        "alias": "Alias",
-        "provider": "Proveedor",
-        "locatorId": "Localizador",
-        "date": "Fecha",
-        "amount": "Importe",
-        "save": "Salveaza",
-        "update": "Actualizar",
-        "cancel": "Abandoneaza"
+        "PAYMENT": "Efectuează plată",
+        "alias": "Notițe",
+        "provider": "Furnizor",
+        "locatorId": "Cod rezervă",
+        "date": "Data",
+        "amount": "Suma",
+        "save": "Salvează",
+        "update": "Actualizează",
+        "cancel": "Renunță",
+        "add_msg": "Activitate creată!",
+        "update_msg": "Activitate actualizată!",
+        "demove_msg": "Activitate ștearsă!"
       },
-      "list": {}
+      "list": {
+        "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
+        "no_reminder": "Crează prima ta activitate de reținut!"
+      }
+    },
+    "footer": {
+      "app_name": "Task Reminder App"
     }
   }
 }

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import ReminderCard from './ReminderCard.svelte';
   import { COLLECTION, db } from '../firebase';
-  import type { Reminder } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
-  import ReminderCard from './ReminderCard.svelte';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
   import { todayReminders, totalReminders, isLoggedIn, user } from '../services/store.service';
+  import { _ } from 'svelte-i18n';
+  import type { Reminder } from '../model/Reminder.model.svelte';
   import type { User } from '../model/user.model';
   import type { Unsubscribe } from 'firebase/auth';
 
@@ -44,9 +45,9 @@
 
 <div class="reminder-list">
   {#if !$isLoggedIn}
-    <div class="panel">¡Necesitas entrar con una cuenta de Google para ver tus recordatorios!</div>
+    <div class="panel">{$_('app.main.list.no_auth')}</div>
   {:else if !reminders.length}
-    <div class="panel">¡Crea tu primer recordatorio!</div>
+    <div class="panel">{$_('app.main.list.no_reminder')}</div>
   {/if}
   {#each reminders as reminder}
     <ReminderCard {reminder} on:remove on:update />

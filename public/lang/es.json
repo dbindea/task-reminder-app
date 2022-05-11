@@ -1,23 +1,41 @@
 {
   "app": {
-    "header": {},
+    "header": {
+      "login": "Entrar",
+      "logout": "Salir",
+      "login_hello": "¡Hola {name}!",
+      "logout_bye": "¡Hasta luego!",
+      "today_reminders": "Recordatorios Hoy"
+    },
     "main": {
       "card": {
-        "tipology": "Recordatorio"
+        "tipology": "Recordatorio",
+        "update": "Actualizar",
+        "remove": "Eliminar",
+        "count_days": "Faltan {number} días!"
       },
       "form": {
         "CHECKIN": "Check-in",
         "PAYMENT": "Pago",
-        "alias": "Alias",
+        "alias": "Notas",
         "provider": "Proveedor",
         "locatorId": "Localizador",
         "date": "Fecha",
         "amount": "Importe",
         "save": "Guardar",
         "update": "Actualizar",
-        "cancel": "Cancelar"
+        "cancel": "Abandonar",
+        "add_msg": "¡Recordatorio creado!",
+        "update_msg": "¡Recordatorio actualizado!",
+        "demove_msg": "¡Recordatorio eliminado!"
       },
-      "list": {}
+      "list": {
+        "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",
+        "no_reminder": "¡Crea tu primer recordatorio!"
+      }
+    },
+    "footer": {
+      "app_name": "Task Reminder App"
     }
   }
 }
