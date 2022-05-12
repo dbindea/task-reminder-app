@@ -5,19 +5,27 @@
       "logout": "Logout",
       "login_hello": "Hello {name}!",
       "logout_bye": "See you later!",
-      "today_reminders": "Today Reminders"
+      "today_reminders": "Today reminders"
+    },
+    "subheader": {
+      "total": "Totals {number}, today {date}",
+      "filter": "Filter"
     },
     "main": {
       "card": {
         "tipology": "Reminder",
         "update": "Update",
         "remove": "Remove",
-        "count_days": "{number} days left!"
+        "count_days_today": "Today",
+        "count_days_sg": "One day left!",
+        "count_days_pl": "{number} days left!"
       },
       "form": {
         "CHECKIN": "Check-in",
-        "PAYMENT": "Payment",
-        "alias": "Alias",
+        "PAYMENT": "Payments",
+        "SEARCH": "Travel search",
+        "DEFAULT": "Other tasks",
+        "alias": "Notes",
         "provider": "Provider",
         "locatorId": "Reference",
         "date": "Date",
@@ -27,7 +35,8 @@
         "cancel": "Cancel",
         "add_msg": "Reminder created!",
         "update_msg": "Reminder updated!",
-        "demove_msg": "Reminder removed!"
+        "remove_msg": "Reminder removed!",
+        "validate_msg": "Now you can save!"
       },
       "list": {
         "no_auth": "You need to login with a Google account to view or save reminders!",

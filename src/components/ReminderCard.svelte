@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Reminder } from '../model/Reminder.model.svelte';
+  import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.model.svelte';
   import { _ } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
   import { ActionType } from '../model/ActionType.model.svelte';
@@ -18,13 +18,22 @@
     dispatch(ActionType.REMOVE, id);
   };
 
-  const formatNumber = (number: number) => {
+  const formatNumber = (number: number): string => {
     if (number) return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
   };
 
-  const getDiffDays = (date: Date) => {
+  const getDiffDays = (date: Date): number => {
     const difference = new Date(date).getTime() - new Date().getTime();
     return Math.ceil(difference / (1000 * 3600 * 24));
+  };
+
+  const getTranslation = (numberDays: number) => {
+    const mapDays = {
+      0: 'app.main.card.count_days_today',
+      1: 'app.main.card.count_days_sg',
+      default: 'app.main.card.count_days_pl',
+    };
+    return mapDays[numberDays] ? mapDays[numberDays] : mapDays['default'];
   };
 </script>
 
@@ -32,7 +41,7 @@
   <div class="reminder-card">
     <div class="first-item">
       <div class="field">
-        <span class="field-title">{$_('app.main.card.tipology')}</span><span class="field-text">{$_(`app.main.form.${reminder.tipology}`)}</span>
+        <span class="field-title">{$_('app.main.card.tipology')}</span><span class="field-text capitalize">{$_(`app.main.form.${reminder.tipology}`)}</span>
       </div>
       <!-- DROPDOWN -->
       <span class="icon-actions rotate dropdown">
@@ -49,18 +58,18 @@
     <div class="field">
       <span class="field-title">{$_('app.main.form.alias')}</span><span class="capitalize field-text">{reminder.alias}</span>
     </div>
-    <div class="field">
+    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.provider}>
       <span class="field-title">{$_('app.main.form.provider')}</span>
       <span class="field-text capitalize">{reminder.provider}</span>
     </div>
-    <div class="field">
+    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.locatorId}>
       <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{reminder.locatorId}</span>
     </div>
     <div class="field">
       <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
-      <span class="colours">{$_('app.main.card.count_days', { values: { number: getDiffDays(reminder.date) } })}</span>
+      <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: getDiffDays(reminder.date) } })}</span>
     </div>
-    <div class={!reminder.amount ? 'disabled' : 'field'}>
+    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.amount}>
       <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(reminder.amount)} €</span>
     </div>
   </div>

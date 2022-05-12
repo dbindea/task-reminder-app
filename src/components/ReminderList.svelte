@@ -64,7 +64,7 @@
     text-align: center;
     line-height: 32px;
     letter-spacing: 0.5px;
-    border: solid 2px #385270;
+    border: solid 2px var(--color-border);
     border-radius: 8px;
     margin: 16px 0;
   }

@@ -5,18 +5,26 @@
       "logout": "Ieșire",
       "login_hello": "Salutare {name}!",
       "logout_bye": "La revedere!",
-      "today_reminders": "Activități Azi"
+      "today_reminders": "Activități azi"
+    },
+    "subheader": {
+      "total": "Totale {number}, azi {date}",
+      "filter": "Filtrează"
     },
     "main": {
       "card": {
         "tipology": "De realizat",
         "update": "Actualizează",
         "remove": "Șterge",
-        "count_days": "{number} zile rămase!"
+        "count_days_today": "Azi!",
+        "count_days_sg": "Peste o zi!",
+        "count_days_pl": "{number} zile rămase!"
       },
       "form": {
         "CHECKIN": "Check-in",
-        "PAYMENT": "Efectuează plată",
+        "PAYMENT": "Efectuează plăți",
+        "SEARCH": "Caută călătorii",
+        "DEFAULT": "Alte activități",
         "alias": "Notițe",
         "provider": "Furnizor",
         "locatorId": "Cod rezervă",
@@ -27,7 +35,8 @@
         "cancel": "Renunță",
         "add_msg": "Activitate creată!",
         "update_msg": "Activitate actualizată!",
-        "demove_msg": "Activitate ștearsă!"
+        "remove_msg": "Activitate ștearsă!",
+        "validate_msg": "Acum poți salva!"
       },
       "list": {
         "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",

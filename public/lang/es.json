@@ -5,18 +5,26 @@
       "logout": "Salir",
       "login_hello": "¡Hola {name}!",
       "logout_bye": "¡Hasta luego!",
-      "today_reminders": "Recordatorios Hoy"
+      "today_reminders": "Recordatorios hoy"
+    },
+    "subheader": {
+      "total": "Totales {number}, hoy {date}",
+      "filter": "Filtrar"
     },
     "main": {
       "card": {
         "tipology": "Recordatorio",
         "update": "Actualizar",
         "remove": "Eliminar",
-        "count_days": "Faltan {number} días!"
+        "count_days_today": "Hoy",
+        "count_days_sg": "¡Falta un día!",
+        "count_days_pl": "¡Faltan {number} días!"
       },
       "form": {
         "CHECKIN": "Check-in",
-        "PAYMENT": "Pago",
+        "PAYMENT": "Pagos",
+        "SEARCH": "Busca viajes",
+        "DEFAULT": "Otras actividades",
         "alias": "Notas",
         "provider": "Proveedor",
         "locatorId": "Localizador",
@@ -27,7 +35,8 @@
         "cancel": "Abandonar",
         "add_msg": "¡Recordatorio creado!",
         "update_msg": "¡Recordatorio actualizado!",
-        "demove_msg": "¡Recordatorio eliminado!"
+        "remove_msg": "¡Recordatorio eliminado!",
+        "validate_msg": "¡Ahora puedes Guardar"
       },
       "list": {
         "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",

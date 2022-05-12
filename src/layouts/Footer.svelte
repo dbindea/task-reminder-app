@@ -1,11 +1,29 @@
 <script>
+  import { onDestroy, onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { setupI18n } from '../services/i18n.service';
+
+  const scrollFooter = 120;
+  let show = false;
 
   const changeLang = (lang) => {
     setupI18n({ withLocale: lang });
     localStorage.setItem('lang', lang);
   };
+
+  const scrollTop = () => {
+    document.body.scrollIntoView();
+  };
+
+  onMount(() => {
+    window.onscroll = () => {
+      show = window.scrollY > scrollFooter;
+    };
+  });
+
+  onDestroy(() => {
+    window.onscroll = () => {};
+  });
 </script>
 
 <div class="footer">
@@ -14,6 +32,9 @@
     <img class="flag" src="assets/img/ro.svg" alt="ro" on:click={() => changeLang('ro')} />
     <img class="flag" src="assets/img/es.svg" alt="es" on:click={() => changeLang('es')} />
     <img class="flag" src="assets/img/uk.svg" alt="en" on:click={() => changeLang('en')} />
+  </div>
+  <div class={show ? 'up' : 'disabled'} on:click={scrollTop}>
+    <span class="icon-arrow icon" />
   </div>
 </div>
 
@@ -38,5 +59,37 @@
     cursor: pointer;
     object-fit: fill;
     border-radius: 4px;
+  }
+
+  .up {
+    transform: rotate(90deg);
+    position: fixed;
+    bottom: 42px;
+    right: 16px;
+    height: 36px;
+    width: 36px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    background: var(--color-dark);
+    border-radius: 8px;
+    font-size: 32px;
+    box-shadow: 0 0 2px 1px #244974;
+    transition: 0.4s ease;
+    cursor: pointer;
+  }
+
+  .icon {
+    animation: MoveUpDown 1.4s linear infinite;
+  }
+
+  @keyframes MoveUpDown {
+    0%,
+    100% {
+      transform: translateX(2px);
+    }
+    50% {
+      transform: translateX(-2px);
+    }
   }
 </style>

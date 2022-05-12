@@ -2,7 +2,7 @@
   import Toastify from 'toastify-js';
   import { db, COLLECTION } from '../firebase';
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-  import { Reminder, Tipology } from '../model/Reminder.model.svelte';
+  import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
@@ -20,6 +20,7 @@
   let currentId = '';
   let validForm = false;
   const minDate: string = format_YYYYMMDD(new Date(), '-');
+  const trim = (x) => (x == null ? null : x.trim());
 
   onMount(() => {
     inputAlias.focus();
@@ -28,7 +29,7 @@
   function getEmptyReminder(): Reminder {
     return {
       id: '',
-      tipology: Tipology.CHECKIN,
+      tipology: null,
       alias: '',
       provider: '',
       locatorId: '',
@@ -61,27 +62,31 @@
     const validation = {
       tipology: (data: string) => !!data,
       alias: (data: string) => !!data && data.length >= 3,
-      provider: (data: string) => !!data && data.length >= 3,
-      locatorId: (data: string) => !!data && data.length >= 5,
+      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 3),
+      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
       date: (data: Date) => !!data,
-      amount: (data: number, tipology: Tipology) => {
-        if (tipology === Tipology.PAYMENT) {
-          return !!data && data > 0;
-        }
-        return true;
-      },
+      amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
     };
 
     const validationArray = [
       validation.tipology(reminder.tipology),
       validation.alias(reminder.alias),
-      validation.provider(reminder.provider),
-      validation.locatorId(reminder.locatorId),
+      validation.provider(reminder.provider, reminder.tipology),
+      validation.locatorId(reminder.locatorId, reminder.tipology),
       validation.date(reminder.date),
       validation.amount(reminder.amount, reminder.tipology),
     ];
 
     validForm = validationArray.every((e) => e === true);
+
+    if (validForm) {
+      Toastify({
+        text: $_('app.main.form.validate_msg'),
+        style: {
+          background: 'linear-gradient(180deg, var(--color-border), var(--color-dark))',
+        },
+      }).showToast();
+    }
   };
 
   const addReminder = async () => {
@@ -135,9 +140,14 @@
     currentId = currentReminder.id;
     reminder = { ...currentReminder };
     editStatus = true;
+    document.body.scrollIntoView();
   };
 
   const submitAction = () => {
+    reminder.alias = trim(reminder.alias);
+    reminder.locatorId = trim(reminder.locatorId);
+    reminder.provider = trim(reminder.provider);
+
     if (!editStatus) {
       addReminder();
     } else {
@@ -161,6 +171,7 @@
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
         <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
+          <option class="option" value={null}>Tipo recordatorio</option>
           {#each Object.keys(Tipology) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}
@@ -185,7 +196,7 @@
       </div>
     </div>
 
-    <div class="field-container">
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.provider}>
       <div class="field-subcontainer">
         <span class="icon-favorite-on field-icon" />
         <input
@@ -201,7 +212,7 @@
       </div>
     </div>
 
-    <div class="field-container">
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.locatorId}>
       <div class="field-subcontainer">
         <span class="icon-success field-icon" />
         <input
@@ -233,7 +244,7 @@
       </div>
     </div>
 
-    <div class={reminder.tipology != Tipology.PAYMENT ? 'disabled' : 'field-container'}>
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.amount}>
       <div class="field-subcontainer">
         <span class="icon-euro field-icon" />
         <input
@@ -282,7 +293,7 @@
 
   .field-container {
     padding: 2px;
-    caret-color: #f1f2f6;
+    caret-color: var(--color-text);
     border-radius: 8px;
     background: var(--color-border);
     cursor: text;
@@ -329,7 +340,7 @@
     cursor: pointer;
     background: -moz-linear-gradient(315deg, var(--color-turq) 0, var(--color-fucs) 100%);
     background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));
-    color: #f1f2f6;
+    color: var(--color-text);
     border-radius: 6px;
     font-size: 18px;
     line-height: 28px;
