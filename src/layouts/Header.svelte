@@ -57,6 +57,7 @@
     <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
+  <div class="vertical-separator" />
     <div class="auth">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
       <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
@@ -76,6 +77,8 @@
     gap: 12px;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 8px;
+    box-shadow: var(--bg-shadow);
   }
 
   .photo {
@@ -101,5 +104,9 @@
       font-weight: 300;
       margin-left: 8px;
     }
+  }
+
+  .vertical-separator {
+    border-left: solid 1px var(--color-text);
   }
 </style>
