@@ -3,7 +3,7 @@
   import Header from './layouts/Header.svelte';
   import Main from './layouts/Main.svelte';
   import Footer from './layouts/Footer.svelte';
-  import SubHeader from './layouts/SubHeader.svelte';
+  import Subheader from './layouts/Subheader.svelte';
   import { setupI18n, isLocaleLoaded } from './services/i18n.service';
 
   $: if (!$isLocaleLoaded) {
@@ -15,7 +15,7 @@
 <main>
   {#if $isLocaleLoaded}
     <Header />
-    <SubHeader />
+    <Subheader />
     <Main />
     <Footer />
   {:else}
