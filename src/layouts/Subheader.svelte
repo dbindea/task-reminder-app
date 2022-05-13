@@ -2,12 +2,10 @@
   import { totalReminders } from '../services/store.service';
   import { isLoggedIn } from '../services/store.service';
   import { _ } from 'svelte-i18n';
-
   import { onMount, onDestroy } from 'svelte';
-  import { format_DDMMYYYY } from '../services/utils.service.svelte';
 
+  let filter;
   const scrollNavBar = 60;
-  let isShowFilter: boolean = false;
   let show = false;
 
   onMount(() => {
@@ -17,8 +15,11 @@
   });
 
   const showFilter = () => {
-    isShowFilter = !isShowFilter;
-    // TODO: filter implement...
+    filter.focus();
+  };
+
+  const filterChange = () => {
+    console.log('value', filter.value);
   };
 
   onDestroy(() => {
@@ -27,14 +28,29 @@
 </script>
 
 <nav class={$isLoggedIn ? 'subheader sticky' : 'disabled'} class:scrolled={show} class:disabled={!$isLoggedIn}>
-  <div class="section">{$_('app.subheader.total', { values: { number: $totalReminders, date: format_DDMMYYYY(new Date(), '/') } })}</div>
-  <!-- <div class="vertical-separator" />
-  <div class="section filter" on:click={() => showFilter()}>{$_('app.subheader.filter')} <span class="icon-filter icon" /></div> -->
+  <div class="section">{$_('app.subheader.total', { values: { number: $totalReminders } })}</div>
+
+  <div class="field-container">
+    <div class="field-subcontainer">
+      <span class="icon-filter field-icon" on:click={showFilter} />
+      <input
+        class="field-input"
+        type="text"
+        name="filter"
+        bind:this={filter}
+        on:input={() => filterChange()}
+        id="filter"
+        placeholder={$_('app.subheader.filter')}
+        spellcheck="false"
+        autocomplete="off"
+      />
+    </div>
+  </div>
 </nav>
 
 <style type="scss">
   .subheader {
-    padding: 8px 16px;
+    padding: 4px;
     background: var(--color-border);
     margin: 0 4px 16px;
     box-shadow: inset -1px 1px 16px 4px rgb(0 0 0 / 20%);
@@ -56,10 +72,6 @@
     padding: 0 8px;
   }
 
-  .vertical-separator {
-    border-left: solid 1px var(--color-text);
-  }
-
   span.icon {
     font-size: 24px;
     vertical-align: middle;
@@ -67,5 +79,58 @@
 
   .filter {
     cursor: pointer;
+  }
+
+  .field-container {
+    padding: 2px;
+    margin-right: 4px;
+    caret-color: var(--color-text);
+    border-radius: 8px;
+    background: var(--color-border);
+    cursor: text;
+
+    &:hover {
+      background: -webkit-gradient(linear, left top, left bottom, from(var(--color-turq)), to(var(--color-fucs)));
+      background: -moz-linear-gradient(top, var(--color-turq) 0, var(--color-fucs) 100%);
+      background: linear-gradient(180deg, var(--color-turq), var(--color-fucs));
+    }
+
+    .field-subcontainer {
+      background: var(--color-dark);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      width: 48px;
+      transition: width 0.6s;
+
+      .field-icon {
+        color: var(--color-placeholder);
+        font-size: 24px;
+        padding: 0 8px;
+        margin-left: 4px;
+        cursor: pointer;
+      }
+      .field-input {
+        padding: 8px 8px;
+        width: 100%;
+        outline: none;
+        border: 0;
+        font-size: 16px;
+        line-height: 22px;
+        text-shadow: var(--text-shadow);
+
+        background-clip: text;
+        -webkit-background-clip: text;
+
+        &::placeholder {
+          color: var(--color-placeholder);
+        }
+      }
+    }
+  }
+
+  .field-container:hover .field-subcontainer {
+    width: 240px;
   }
 </style>

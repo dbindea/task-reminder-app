@@ -92,6 +92,7 @@
   .auth {
     cursor: pointer;
     vertical-align: middle;
+    user-select: none;
   }
   .colours {
     background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));

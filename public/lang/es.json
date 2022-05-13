@@ -8,7 +8,7 @@
       "today_reminders": "Recordatorios hoy"
     },
     "subheader": {
-      "total": "Totales {number}, hoy {date}",
+      "total": "Totales {number}",
       "filter": "Filtrar"
     },
     "main": {

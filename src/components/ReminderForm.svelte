@@ -62,7 +62,7 @@
     const validation = {
       tipology: (data: string) => !!data,
       alias: (data: string) => !!data && data.length >= 3,
-      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 3),
+      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
       locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
       date: (data: Date) => !!data,
       amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
@@ -325,7 +325,6 @@
         font-size: 16px;
         line-height: 22px;
         text-shadow: var(--text-shadow);
-
         background-clip: text;
         -webkit-background-clip: text;
       }

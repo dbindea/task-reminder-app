@@ -8,7 +8,7 @@
       "today_reminders": "Today reminders"
     },
     "subheader": {
-      "total": "Totals {number}, today {date}",
+      "total": "Totals {number}",
       "filter": "Filter"
     },
     "main": {

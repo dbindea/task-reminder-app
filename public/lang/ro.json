@@ -8,7 +8,7 @@
       "today_reminders": "Activități azi"
     },
     "subheader": {
-      "total": "Totale {number}, azi {date}",
+      "total": "Totale {number}",
       "filter": "Filtrează"
     },
     "main": {

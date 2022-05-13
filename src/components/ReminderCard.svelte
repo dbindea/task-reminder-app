@@ -19,7 +19,7 @@
   };
 
   const formatNumber = (number: number): string => {
-    if (number) return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    if (number) return Number(number).toLocaleString("es", {minimumFractionDigits: 2})
   };
 
   const getDiffDays = (date: Date): number => {
@@ -162,6 +162,7 @@
 
   .action-item {
     cursor: pointer;
+    user-select: none;
   }
 
   .rotate {
