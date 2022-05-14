@@ -8,7 +8,7 @@
       "today_reminders": "Recordatorios hoy"
     },
     "subheader": {
-      "total": "Totales {number}, hoy {date}",
+      "total": "Totales {number}",
       "filter": "Filtrar"
     },
     "main": {
@@ -36,7 +36,8 @@
         "add_msg": "¡Recordatorio creado!",
         "update_msg": "¡Recordatorio actualizado!",
         "remove_msg": "¡Recordatorio eliminado!",
-        "validate_msg": "¡Ahora puedes Guardar"
+        "validate_msg": "¡Ahora puedes Guardar",
+        "option_empty": "Tipo recordatorio"
       },
       "list": {
         "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",

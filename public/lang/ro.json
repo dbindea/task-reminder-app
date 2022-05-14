@@ -8,7 +8,7 @@
       "today_reminders": "Activități azi"
     },
     "subheader": {
-      "total": "Totale {number}, azi {date}",
+      "total": "Totale {number}",
       "filter": "Filtrează"
     },
     "main": {
@@ -36,7 +36,8 @@
         "add_msg": "Activitate creată!",
         "update_msg": "Activitate actualizată!",
         "remove_msg": "Activitate ștearsă!",
-        "validate_msg": "Acum poți salva!"
+        "validate_msg": "Acum poți salva!",
+        "option_empty": "Tipul activității"
       },
       "list": {
         "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",

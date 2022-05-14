@@ -62,7 +62,7 @@
     const validation = {
       tipology: (data: string) => !!data,
       alias: (data: string) => !!data && data.length >= 3,
-      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 3),
+      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
       locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
       date: (data: Date) => !!data,
       amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
@@ -171,7 +171,7 @@
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
         <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
-          <option class="option" value={null}>Tipo recordatorio</option>
+          <option class="option" value={null}>{$_('app.main.form.option_empty')}</option>
           {#each Object.keys(Tipology) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}
@@ -325,7 +325,6 @@
         font-size: 16px;
         line-height: 22px;
         text-shadow: var(--text-shadow);
-
         background-clip: text;
         -webkit-background-clip: text;
       }

@@ -34,7 +34,7 @@ body {
 }
 
 .disabled {
-  display: none !important;
+  display: none;
 }
 
 .sticky {
