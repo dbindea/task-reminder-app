@@ -98,24 +98,30 @@
   }
 
   .dropdown-actions {
-    padding: 12px 12px 12px 0;
+    padding: 4px 16px;
     border-radius: 8px;
     background-color: var(--color-dark);
     margin: 2px;
 
     ul {
       list-style-type: none;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      padding-left: 24px;
-      padding-right: 24px;
-
+      padding-left: 0;
       li {
         cursor: pointer;
         display: flex;
         gap: 8px;
       }
+    }
+  }
+
+  .action-item {
+    cursor: pointer;
+    user-select: none;
+    padding: 16px 32px 16px 24px;
+    &:hover {
+      border-radius: 8px;
+      background: var(--color-border);
+      box-shadow: inset -1px 1px 16px 4px rgb(0 0 0 / 20%);
     }
   }
 
@@ -161,11 +167,6 @@
 
   .field-text {
     font-weight: 300;
-  }
-
-  .action-item {
-    cursor: pointer;
-    user-select: none;
   }
 
   .rotate {

@@ -30,7 +30,7 @@
 
   function updateStore() {
     filterReminders = filterByValue($filterValue);
-    totalReminders.update(() => reminders.length);
+    totalReminders.update(() => filterReminders.length);
     todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
   }
 
@@ -45,6 +45,7 @@
 
     filterValue.subscribe((filterValue) => {
       filterReminders = filterByValue(filterValue);
+      totalReminders.update(() => filterReminders.length);
     });
   });
 
