@@ -19,7 +19,7 @@
   };
 
   const formatNumber = (number: number): string => {
-    if (number) return Number(number).toLocaleString("es", {minimumFractionDigits: 2})
+    if (number) return Number(number).toLocaleString('es', { minimumFractionDigits: 2 });
   };
 
   const getDiffDays = (date: Date): number => {
@@ -58,18 +58,18 @@
     <div class="field">
       <span class="field-title">{$_('app.main.form.alias')}</span><span class="capitalize field-text">{reminder.alias}</span>
     </div>
-    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.provider}>
+    <div class={!hiddenOptionsByTipology[reminder.tipology]?.provider ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_('app.main.form.provider')}</span>
       <span class="field-text capitalize">{reminder.provider}</span>
     </div>
-    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.locatorId}>
+    <div class={!hiddenOptionsByTipology[reminder.tipology]?.locatorId ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{reminder.locatorId}</span>
     </div>
     <div class="field">
       <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
       <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: getDiffDays(reminder.date) } })}</span>
     </div>
-    <div class="field" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.amount}>
+    <div class={!hiddenOptionsByTipology[reminder.tipology]?.amount ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(reminder.amount)} €</span>
     </div>
   </div>
@@ -149,6 +149,9 @@
   .field {
     display: flex;
     align-items: center;
+    &--disabled {
+      display: none;
+    }
   }
   .field-title {
     font-weight: 600;

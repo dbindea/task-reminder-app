@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { totalReminders } from '../services/store.service';
+  import { filterValue, totalReminders } from '../services/store.service';
   import { isLoggedIn } from '../services/store.service';
   import { _ } from 'svelte-i18n';
   import { onMount, onDestroy } from 'svelte';
 
-  let filter;
+  let filterInput;
   const scrollNavBar = 60;
   let show = false;
 
@@ -14,12 +14,11 @@
     };
   });
 
-  const showFilter = () => {
-    filter.focus();
-  };
-
-  const filterChange = () => {
-    console.log('value', filter.value);
+  const showFilter = () => filterInput.focus();
+  const filterChange = () => ($filterValue = filterInput.value);
+  const deleteFilterValue = () => {
+    filterInput.value = null;
+    $filterValue = filterInput.value;
   };
 
   onDestroy(() => {
@@ -29,7 +28,6 @@
 
 <nav class={$isLoggedIn ? 'subheader sticky' : 'disabled'} class:scrolled={show} class:disabled={!$isLoggedIn}>
   <div class="section">{$_('app.subheader.total', { values: { number: $totalReminders } })}</div>
-
   <div class="field-container">
     <div class="field-subcontainer">
       <span class="icon-filter field-icon" on:click={showFilter} />
@@ -37,13 +35,14 @@
         class="field-input"
         type="text"
         name="filter"
-        bind:this={filter}
+        bind:this={filterInput}
         on:input={() => filterChange()}
         id="filter"
         placeholder={$_('app.subheader.filter')}
         spellcheck="false"
         autocomplete="off"
       />
+      <span class="icon-delete field-icon delete" on:click={deleteFilterValue} />
     </div>
   </div>
 </nav>
@@ -65,6 +64,7 @@
 
   nav {
     transition: 0.4s ease;
+    z-index: 1;
   }
 
   .section {
@@ -132,5 +132,16 @@
 
   .field-container:hover .field-subcontainer {
     width: 240px;
+
+    .delete {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .delete {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
   }
 </style>

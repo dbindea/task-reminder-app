@@ -4,13 +4,14 @@
   import { onMount } from 'svelte';
   import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import { todayReminders, totalReminders, isLoggedIn, user } from '../services/store.service';
+  import { todayReminders, totalReminders, isLoggedIn, user, filterValue } from '../services/store.service';
   import { _ } from 'svelte-i18n';
   import type { Reminder } from '../model/Reminder.model.svelte';
   import type { User } from '../model/user.model';
   import type { Unsubscribe } from 'firebase/auth';
 
   let reminders: Reminder[] = [];
+  let filterReminders: Reminder[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
 
   const watchFirestore = (uid: string): Unsubscribe => {
@@ -28,6 +29,7 @@
   }
 
   function updateStore() {
+    filterReminders = filterByValue($filterValue);
     totalReminders.update(() => reminders.length);
     todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
   }
@@ -40,7 +42,24 @@
         reminders = [];
       }
     });
+
+    filterValue.subscribe((filterValue) => {
+      filterReminders = filterByValue(filterValue);
+    });
   });
+
+  const filterByValue = (value: string) => {
+    if (value) {
+      return reminders.filter((reminder: Reminder) => {
+        const reminderString = Object.keys(reminder)
+          .map((key) => reminder[key])
+          .join(' ');
+        return reminderString?.toLowerCase().includes(value.toLowerCase());
+      });
+    } else {
+      return reminders;
+    }
+  };
 </script>
 
 <div class="reminder-list">
@@ -49,7 +68,7 @@
   {:else if !reminders.length}
     <div class="panel">{$_('app.main.list.no_reminder')}</div>
   {/if}
-  {#each reminders as reminder}
+  {#each filterReminders as reminder}
     <ReminderCard {reminder} on:remove on:update />
   {/each}
 </div>

@@ -171,7 +171,7 @@
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
         <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
-          <option class="option" value={null}>Tipo recordatorio</option>
+          <option class="option" value={null}>{$_('app.main.form.option_empty')}</option>
           {#each Object.keys(Tipology) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}

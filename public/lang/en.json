@@ -36,7 +36,8 @@
         "add_msg": "Reminder created!",
         "update_msg": "Reminder updated!",
         "remove_msg": "Reminder removed!",
-        "validate_msg": "Now you can save!"
+        "validate_msg": "Now you can save!",
+        "option_empty": "Reminder type"
       },
       "list": {
         "no_auth": "You need to login with a Google account to view or save reminders!",
