@@ -12,7 +12,9 @@
   };
 
   const scrollTop = () => {
-    document.body.scrollIntoView();
+    document.body.scrollIntoView({
+      behavior: 'smooth',
+    });
   };
 
   onMount(() => {
@@ -75,7 +77,6 @@
     border-radius: 8px;
     font-size: 32px;
     box-shadow: 0 0 2px 1px #244974;
-    transition: 0.4s ease;
     cursor: pointer;
   }
 

@@ -17,8 +17,9 @@
 
   let inputAlias;
   let editStatus = false;
-  let currentId = '';
   let validForm = false;
+  let hasShownMsg = false;
+  let currentId = '';
   const minDate: string = format_YYYYMMDD(new Date(), '-');
   const trim = (x) => (x == null ? null : x.trim());
 
@@ -79,13 +80,14 @@
 
     validForm = validationArray.every((e) => e === true);
 
-    if (validForm) {
+    if (validForm && !hasShownMsg) {
       Toastify({
         text: $_('app.main.form.validate_msg'),
         style: {
           background: 'linear-gradient(180deg, var(--color-border), var(--color-dark))',
         },
       }).showToast();
+      hasShownMsg = true;
     }
   };
 
@@ -140,7 +142,9 @@
     currentId = currentReminder.id;
     reminder = { ...currentReminder };
     editStatus = true;
-    document.body.scrollIntoView();
+    document.body.scrollIntoView({
+      behavior: 'smooth',
+    });
   };
 
   const submitAction = () => {
@@ -155,11 +159,13 @@
       editStatus = false;
       currentId = '';
     }
+    hasShownMsg = false;
     reminder = getEmptyReminder();
   };
 
   const cancelAction = () => {
     editStatus = false;
+    hasShownMsg = false;
     currentId = '';
     reminder = getEmptyReminder();
   };
@@ -171,7 +177,7 @@
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
         <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
-          <option class="option" value={null}>{$_('app.main.form.option_empty')}</option>
+          <option class="option" value={null} disabled>{$_('app.main.form.option_empty')}</option>
           {#each Object.keys(Tipology) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
           {/each}
@@ -181,7 +187,7 @@
 
     <div class="field-container">
       <div class="field-subcontainer">
-        <span class="icon-user-ok field-icon" />
+        <span class="icon-edit field-icon" />
         <input
           class="capitalize field-input"
           type="text"
@@ -281,6 +287,9 @@
 
     select > option {
       background-color: var(--color-dark);
+      &[disabled] {
+        color: var(--color-placeholder);
+      }
     }
   }
 

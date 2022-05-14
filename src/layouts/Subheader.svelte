@@ -19,6 +19,7 @@
   const deleteFilterValue = () => {
     filterInput.value = null;
     $filterValue = filterInput.value;
+    filterInput.focus();
   };
 
   onDestroy(() => {
@@ -27,7 +28,7 @@
 </script>
 
 <nav class={$isLoggedIn ? 'subheader sticky' : 'disabled'} class:scrolled={show} class:disabled={!$isLoggedIn}>
-  <div class="section">{$_('app.subheader.total', { values: { number: $totalReminders } })}</div>
+  <div class="section">{$_($filterValue ? 'app.subheader.search' : 'app.subheader.total', { values: { number: $totalReminders } })}</div>
   <div class="field-container">
     <div class="field-subcontainer">
       <span class="icon-filter field-icon" on:click={showFilter} />
@@ -63,7 +64,6 @@
   }
 
   nav {
-    transition: 0.4s ease;
     z-index: 1;
   }
 
@@ -102,14 +102,14 @@
       align-items: center;
       height: 48px;
       width: 48px;
-      transition: width 0.6s;
+      transition: width 0.4s;
 
       .field-icon {
         color: var(--color-placeholder);
         font-size: 24px;
         padding: 0 8px;
         margin-left: 4px;
-        cursor: pointer;
+        cursor: unset;
       }
       .field-input {
         padding: 8px 8px;
@@ -130,18 +130,15 @@
     }
   }
 
+  .delete {
+    display: none;
+  }
   .field-container:hover .field-subcontainer {
     width: 240px;
 
     .delete {
-      visibility: visible;
-      opacity: 1;
+      display: inline;
+      cursor: pointer;
     }
-  }
-
-  .delete {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.5s linear;
   }
 </style>

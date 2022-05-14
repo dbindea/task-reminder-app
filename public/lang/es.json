@@ -9,7 +9,8 @@
     },
     "subheader": {
       "total": "Totales {number}",
-      "filter": "Filtrar"
+      "filter": "Filtrar",
+      "search": "Encontrados {number}"
     },
     "main": {
       "card": {

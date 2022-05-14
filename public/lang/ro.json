@@ -9,7 +9,8 @@
     },
     "subheader": {
       "total": "Totale {number}",
-      "filter": "Filtrează"
+      "filter": "Filtrează",
+      "search": "Găsite {number}"
     },
     "main": {
       "card": {
