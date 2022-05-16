@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { User } from '../model/user.model';
-  import { todayReminders } from '../services/store.service';
+  import { isVisibleMenu, todayReminders } from '../services/store.service';
   import { auth } from '../firebase';
   import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
   import { user, isLoggedIn } from '../services/store.service';
@@ -8,6 +8,7 @@
   import { toast, ToastSeverity } from '../services/utils.service.svelte';
 
   let userLogin: User;
+  let showMenu = false;
 
   const login = async () => {
     try {
@@ -39,20 +40,27 @@
     $isLoggedIn = !!authUser;
     userLogin = authUser;
   });
+
+  const toggle = () => {
+    showMenu = !showMenu;
+    $isVisibleMenu = showMenu;
+  };
 </script>
 
 <div class="header">
-  <div>
+  <div class="header-option">
+    <span class={showMenu ? 'icon-cross' : 'icon-hamburger'} class:toggle={true} on:click={toggle} />
+  </div>
+  <div class="header-option">
     <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-    <div class="vertical-separator" />
-    <div class="auth">
+    <div class="auth header-option">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
       <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
     </div>
   {:else}
-    <div class="auth">
+    <div class="auth header-option" style="float: right;">
       <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
       <img class="photo" src="assets/img/google.svg" alt="Google" on:click={() => login()} />
     </div>
@@ -61,13 +69,22 @@
 
 <style type="scss">
   .header {
-    padding: 16px;
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    align-items: center;
+    padding: 8px;
     margin-bottom: 8px;
     box-shadow: var(--bg-shadow);
+    height: 42px;
+  }
+
+  .header-option {
+    float: left;
+    padding: 8px;
+  }
+
+  .toggle {
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
   }
 
   .photo {
@@ -94,9 +111,5 @@
       font-weight: 300;
       margin-left: 8px;
     }
-  }
-
-  .vertical-separator {
-    border-left: solid 1px var(--color-text);
   }
 </style>
