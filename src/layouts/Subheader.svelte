@@ -72,15 +72,6 @@
     padding: 0 8px;
   }
 
-  span.icon {
-    font-size: 24px;
-    vertical-align: middle;
-  }
-
-  .filter {
-    cursor: pointer;
-  }
-
   .field-container {
     padding: 2px;
     margin-right: 4px;

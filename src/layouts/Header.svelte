@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { User } from '../model/user.model';
-  import Toastify from 'toastify-js';
   import { todayReminders } from '../services/store.service';
   import { auth } from '../firebase';
   import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
   import { user, isLoggedIn } from '../services/store.service';
   import { _ } from 'svelte-i18n';
+  import { toast, ToastSeverity } from '../services/utils.service.svelte';
 
   let userLogin: User;
 
@@ -15,14 +15,9 @@
       const res = await signInWithPopup(auth, provider);
       $user = res.user;
       $isLoggedIn = true;
-
-      Toastify({
-        text: $_('app.header.login_hello', { values: { name: userLogin.displayName } }),
-        style: {
-          background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
-        },
-      }).showToast();
+      toast(ToastSeverity.INFO, $_('app.header.login_hello', { values: { name: userLogin.displayName } }));
     } catch (error) {
+      toast(ToastSeverity.INFO, error);
       console.error(error);
     }
   };
@@ -30,17 +25,11 @@
   const logout = async () => {
     try {
       await signOut(auth);
-
-      Toastify({
-        text: $_('app.header.logout_bye'),
-        style: {
-          background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
-        },
-      }).showToast();
-
+      toast(ToastSeverity.INFO, $_('app.header.logout_bye'));
       $user = {};
       $isLoggedIn = false;
     } catch (error) {
+      toast(ToastSeverity.INFO, error);
       console.error(error);
     }
   };
@@ -57,7 +46,7 @@
     <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-  <div class="vertical-separator" />
+    <div class="vertical-separator" />
     <div class="auth">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
       <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />

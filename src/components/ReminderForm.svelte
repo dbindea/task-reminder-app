@@ -1,12 +1,11 @@
 <script lang="ts">
-  import Toastify from 'toastify-js';
   import { db, COLLECTION } from '../firebase';
   import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
-  import { format_YYYYMMDD } from '../services/utils.service.svelte';
+  import { format_YYYYMMDD, toast, ToastSeverity } from '../services/utils.service.svelte';
   import { isLoggedIn, user } from '../services/store.service';
   import type { User } from '../model/user.model';
 
@@ -81,12 +80,7 @@
     validForm = validationArray.every((e) => e === true);
 
     if (validForm && !hasShownMsg) {
-      Toastify({
-        text: $_('app.main.form.validate_msg'),
-        style: {
-          background: 'linear-gradient(180deg, var(--color-border), var(--color-dark))',
-        },
-      }).showToast();
+      toast(ToastSeverity.INFO, $_('app.main.form.validate_msg'));
       hasShownMsg = true;
     }
   };
@@ -99,13 +93,9 @@
         email: ($user as User).email,
         createdAt: Date.now(),
       });
-      Toastify({
-        text: $_('app.main.form.add_msg'),
-        style: {
-          background: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
-        },
-      }).showToast();
+      toast(ToastSeverity.SUCCESS, $_('app.main.form.add_msg'));
     } catch (error) {
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
@@ -113,13 +103,9 @@
   const updateReminder = async () => {
     try {
       await updateDoc(doc(db, COLLECTION, currentId), reminder);
-      Toastify({
-        text: $_('app.main.form.update_msg'),
-        style: {
-          background: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
-        },
-      }).showToast();
+      toast(ToastSeverity.INFO, $_('app.main.form.update_msg'));
     } catch (error) {
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
@@ -127,13 +113,9 @@
   const removeReminder = async (id) => {
     try {
       await deleteDoc(doc(db, COLLECTION, id));
-      Toastify({
-        text: $_('app.main.form.remove_msg'),
-        style: {
-          background: 'linear-gradient(180deg, red, var(--color-dark))',
-        },
-      }).showToast();
+      toast(ToastSeverity.ERROR, $_('app.main.form.remove_msg'));
     } catch (error) {
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
