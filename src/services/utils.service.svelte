@@ -1,4 +1,12 @@
 <script lang="ts" context="module">
+  import Toastify from 'toastify-js';
+
+  export enum ToastSeverity {
+    ERROR = 'ERROR',
+    SUCCESS = 'SUCCESS',
+    INFO = 'INFO',
+  }
+
   export const format_YYYYMMDD = (date: Date, separator: string): string => {
     let d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -21,5 +29,19 @@
     if (day.length < 2) day = '0' + day;
 
     return [day, month, year].join(separator);
+  };
+
+  export const toast = (severity: ToastSeverity, text: string) => {
+    const colorMap: { [key in ToastSeverity]: string } = {
+      [ToastSeverity.ERROR]: 'linear-gradient(180deg, red, var(--color-dark))',
+      [ToastSeverity.SUCCESS]: 'linear-gradient(180deg, var(--color-fucs), var(--color-dark))',
+      [ToastSeverity.INFO]: 'linear-gradient(180deg, var(--color-turq), var(--color-dark))',
+    };
+    Toastify({
+      text,
+      style: {
+        background: colorMap[severity],
+      },
+    }).showToast();
   };
 </script>

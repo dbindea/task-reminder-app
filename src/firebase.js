@@ -2,16 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-const serviceAccount = {
-  apiKey: 'AIzaSyAHQBm7lW3rc2fWgf7se0tTKuAejTizaR4',
-  authDomain: 'task-reminder-4e65a.firebaseapp.com',
-  projectId: 'task-reminder-4e65a',
-  storageBucket: 'task-reminder-4e65a.appspot.com',
-  messagingSenderId: '218840294044',
-  appId: '1:218840294044:web:58e5648dab1c30df460359',
-};
-
-initializeApp(serviceAccount);
+initializeApp({
+  apiKey: 'AIzaSyBPUEDqe10v3EwKR07dESS3S1diLkZLQ70',
+  authDomain: 'taskreminderapp-com.firebaseapp.com',
+  projectId: 'taskreminderapp-com',
+  storageBucket: 'taskreminderapp-com.appspot.com',
+  messagingSenderId: '749583481836',
+  appId: '1:749583481836:web:0d50eda0efa29766c89ec9',
+});
 
 export const db = getFirestore();
 export const auth = getAuth();
