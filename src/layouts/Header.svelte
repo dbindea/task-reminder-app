@@ -17,7 +17,7 @@
       $isLoggedIn = true;
       toast(ToastSeverity.INFO, $_('app.header.login_hello', { values: { name: userLogin.displayName } }));
     } catch (error) {
-      toast(ToastSeverity.INFO, error);
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
@@ -29,7 +29,7 @@
       $user = {};
       $isLoggedIn = false;
     } catch (error) {
-      toast(ToastSeverity.INFO, error);
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
