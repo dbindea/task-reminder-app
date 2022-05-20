@@ -8,7 +8,6 @@
   import { toast, ToastSeverity } from '../services/utils.service.svelte';
 
   let userLogin: User;
-  let showMenu = false;
 
   const login = async () => {
     try {
@@ -42,25 +41,24 @@
   });
 
   const toggle = () => {
-    showMenu = !showMenu;
-    $isVisibleMenu = showMenu;
+    $isVisibleMenu = !$isVisibleMenu;
   };
 </script>
 
 <div class="header">
   <div class="header-option">
-    <span class={showMenu ? 'icon-cross' : 'icon-hamburger'} class:toggle={true} on:click={toggle} />
+    <span class={$isVisibleMenu ? 'icon-cross toggle' : 'icon-hamburger toggle'} on:click={toggle} />
   </div>
   <div class="header-option">
     <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-    <div class="auth header-option">
+    <div class="auth header-option--right">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
       <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
     </div>
   {:else}
-    <div class="auth header-option" style="float: right;">
+    <div class="auth header-option--right" style="float: right;">
       <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
       <img class="photo" src="assets/img/google.svg" alt="Google" on:click={() => login()} />
     </div>
@@ -78,6 +76,10 @@
   .header-option {
     float: left;
     padding: 8px;
+    &--right {
+      float: right;
+      padding: 8px;
+    }
   }
 
   .toggle {
