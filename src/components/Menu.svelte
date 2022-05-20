@@ -91,7 +91,7 @@
       padding-bottom: 8px;
     }
     &--option {
-      padding: 16px;
+      padding: 16px 16px 16px 0;
       cursor: pointer;
       transition: all 0.2s;
       user-select: none;

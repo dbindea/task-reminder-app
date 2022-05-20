@@ -55,12 +55,12 @@
   {#if $isLoggedIn}
     <div class="auth header-option--right">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
-      <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
+      <img class="photo" src={userLogin.photoURL} alt='' on:click={logout} />
     </div>
   {:else}
     <div class="auth header-option--right" style="float: right;">
       <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
-      <img class="photo" src="assets/img/google.svg" alt="Google" on:click={() => login()} />
+      <img class="photo" src="assets/img/google.svg" alt="Google" on:click={login} />
     </div>
   {/if}
 </div>

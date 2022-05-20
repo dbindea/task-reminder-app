@@ -1,18 +1,25 @@
 <script lang="ts">
-  import { db, COLLECTION } from '../firebase';
-  import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-  import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
+  import { db } from '../firebase';
+  import { addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+  import { Earning, hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD, toast, ToastSeverity } from '../services/utils.service.svelte';
-  import { isLoggedIn, user } from '../services/store.service';
+  import { appType, isLoggedIn, user } from '../services/store.service';
   import type { User } from '../model/user.model';
+  import { APP_TYPE } from '../model/AppType.model.svelte';
+  import AppType from '../model/AppType.model.svelte';
 
-  export let reminder: Reminder = getEmptyReminder();
+  /*   export let reminder: Reminder = getEmptyReminder();
+  export let earning: Earning = getEmptyEarning(); */
+
   export let reminderOp: { action: ActionType };
   export let idToRemove: string;
   export let reminderToUpdate: Reminder;
+
+  let appObject: any;
+  let collection;
 
   let inputAlias;
   let editStatus = false;
@@ -24,12 +31,28 @@
 
   onMount(() => {
     inputAlias.focus();
+    appType.subscribe((type: APP_TYPE) => {
+      collection = type;
+      appObject = AppType[collection];
+    });
   });
 
   function getEmptyReminder(): Reminder {
     return {
       id: '',
       tipology: null,
+      alias: '',
+      provider: '',
+      locatorId: '',
+      date: null,
+      amount: null,
+    };
+  }
+
+  function getEmptyEarning(): Earning {
+    return {
+      id: '',
+      product: null,
       alias: '',
       provider: '',
       locatorId: '',
@@ -49,7 +72,7 @@
   function onAction() {
     switch (reminderOp?.action) {
       case ActionType.REMOVE:
-        removeReminder(idToRemove);
+        remove(idToRemove);
         break;
 
       case ActionType.UPDATE:
@@ -59,25 +82,44 @@
   }
 
   const validateForm = () => {
-    const validation = {
-      tipology: (data: string) => !!data,
+    const validationReminder = {
       alias: (data: string) => !!data && data.length >= 3,
-      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
-      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
-      date: (data: Date) => !!data,
       amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
+      date: (data: Date) => !!data,
+      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
+      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
+      tipology: (data: string) => !!data,
     };
 
-    const validationArray = [
-      validation.tipology(reminder.tipology),
-      validation.alias(reminder.alias),
-      validation.provider(reminder.provider, reminder.tipology),
-      validation.locatorId(reminder.locatorId, reminder.tipology),
-      validation.date(reminder.date),
-      validation.amount(reminder.amount, reminder.tipology),
-    ];
+    const validationEarning = {
+      alias: (data: string) => !!data && data.length >= 3,
+      amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
+      date: (data: Date) => !!data,
+      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
+      product: (data: string) => !!data,
+      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
+    };
 
-    validForm = validationArray.every((e) => e === true);
+    const validationArray = {
+      [APP_TYPE.REMINDERS]: [
+        validationReminder.tipology(appObject.tipology),
+        validationReminder.alias(appObject.alias),
+        validationReminder.provider(appObject.provider, appObject.tipology),
+        validationReminder.locatorId(appObject.locatorId, appObject.tipology),
+        validationReminder.date(appObject.date),
+        validationReminder.amount(appObject.amount, appObject.tipology),
+      ],
+      [APP_TYPE.EARNINGS]: [
+        validationEarning.product(appObject.product),
+        validationEarning.alias(appObject.alias),
+        validationEarning.provider(appObject.provider, appObject.tipology),
+        validationEarning.locatorId(appObject.locatorId, appObject.tipology),
+        validationEarning.date(appObject.date),
+        validationEarning.amount(appObject.amount, appObject.tipology),
+      ],
+    };
+
+    validForm = validationArray[collection].every((e) => e === true);
 
     if (validForm && !hasShownMsg) {
       toast(ToastSeverity.INFO, $_('app.main.form.validate_msg'));
@@ -85,10 +127,10 @@
     }
   };
 
-  const addReminder = async () => {
+  const insert = async () => {
     try {
-      await addDoc(collection(db, COLLECTION), {
-        ...reminder,
+      await addDoc(collection(db, collection), {
+        ...appObject,
         uid: ($user as User).uid,
         email: ($user as User).email,
         createdAt: Date.now(),
@@ -100,9 +142,9 @@
     }
   };
 
-  const updateReminder = async () => {
+  const update = async () => {
     try {
-      await updateDoc(doc(db, COLLECTION, currentId), reminder);
+      await updateDoc(doc(db, collection, currentId), appObject);
       toast(ToastSeverity.INFO, $_('app.main.form.update_msg'));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -110,9 +152,9 @@
     }
   };
 
-  const removeReminder = async (id) => {
+  const remove = async (id) => {
     try {
-      await deleteDoc(doc(db, COLLECTION, id));
+      await deleteDoc(doc(db, collection, id));
       toast(ToastSeverity.ERROR, $_('app.main.form.remove_msg'));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -120,9 +162,9 @@
     }
   };
 
-  const editAction = (currentReminder) => {
-    currentId = currentReminder.id;
-    reminder = { ...currentReminder };
+  const editAction = (currentAppObject) => {
+    currentId = currentAppObject.id;
+    appObject = { ...currentAppObject };
     editStatus = true;
     document.body.scrollIntoView({
       behavior: 'smooth',
@@ -130,14 +172,14 @@
   };
 
   const submitAction = () => {
-    reminder.alias = trim(reminder.alias);
-    reminder.locatorId = trim(reminder.locatorId);
-    reminder.provider = trim(reminder.provider);
+    appObject.alias = trim(appObject.alias);
+    appObject.locatorId = trim(appObject.locatorId);
+    appObject.provider = trim(appObject.provider);
 
     if (!editStatus) {
-      addReminder();
+      insert();
     } else {
-      updateReminder();
+      update();
       editStatus = false;
       currentId = '';
     }
