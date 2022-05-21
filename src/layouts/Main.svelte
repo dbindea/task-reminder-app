@@ -2,25 +2,32 @@
   import ReminderForm from '../components/ReminderForm.svelte';
   import ReminderList from '../components/ReminderList.svelte';
   import type { ActionType } from '../model/ActionType.model.svelte';
+  import { APP_TYPE } from '../model/AppType.model.svelte';
   import type { Reminder } from '../model/Reminder.model.svelte';
+  import { appType } from '../services/store.service';
 
   let idToRemove: string;
-  let reminderToUpdate: Reminder;
-  let reminderOp: { action: ActionType };
+  let objectToUpdate: Reminder;
+  let operation: { action: ActionType };
 
   function handleRemove(event) {
     idToRemove = event.detail;
-    reminderOp = { ...{ action: event.type } };
+    operation = { ...{ action: event.type } };
   }
 
   function handleUpdate(event) {
-    reminderToUpdate = event.detail;
-    reminderOp = { ...{ action: event.type } };
+    objectToUpdate = event.detail;
+    operation = { ...{ action: event.type } };
   }
 </script>
 
 <div class="main">
-  <ReminderForm {idToRemove} {reminderToUpdate} {reminderOp} />
+  {#if $appType === APP_TYPE.REMINDERS}
+    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
+  {/if}
+  {#if $appType === APP_TYPE.EARNINGS}
+    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
+  {/if}
   <ReminderList on:remove={handleRemove} on:update={handleUpdate} />
 </div>
 

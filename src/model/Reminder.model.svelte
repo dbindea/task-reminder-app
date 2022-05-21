@@ -9,7 +9,7 @@
     id?: string;
     locatorId: string;
     provider: string;
-    product: Tipology;
+    product: Product;
     uid?: string;
   };
 

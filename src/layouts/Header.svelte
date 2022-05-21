@@ -55,7 +55,7 @@
   {#if $isLoggedIn}
     <div class="auth header-option--right">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
-      <img class="photo" src={userLogin.photoURL} alt='' on:click={logout} />
+      <img class="photo" src={userLogin.photoURL} alt="" on:click={logout} />
     </div>
   {:else}
     <div class="auth header-option--right" style="float: right;">
@@ -95,6 +95,10 @@
     border-radius: 4px;
     margin: 0 16px 0 8px;
     vertical-align: middle;
+    transition: transform 0.2s;
+    &:hover {
+      transform: scale(1.5);
+    }
   }
 
   .auth {

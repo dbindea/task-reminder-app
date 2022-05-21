@@ -29,8 +29,8 @@
 
 <nav class={$isLoggedIn ? 'subheader sticky' : 'disabled'} class:scrolled={show} class:disabled={!$isLoggedIn}>
   <div class="section">{$_($filterValue ? 'app.subheader.search' : 'app.subheader.total', { values: { number: $totalReminders } })}</div>
-  <div class="field-container">
-    <div class="field-subcontainer">
+  <div class="field-container" class:field-container--active={$filterValue}>
+    <div class="field-subcontainer value-display" class:field-subcontainer--active={$filterValue}>
       <span class="icon-filter field-icon" on:click={showFilter} />
       <input
         class="field-input"
@@ -43,7 +43,7 @@
         spellcheck="false"
         autocomplete="off"
       />
-      <span class="icon-delete field-icon delete" on:click={deleteFilterValue} />
+      <span class="icon-delete field-icon delete" class:delete--active={$filterValue} on:click={deleteFilterValue} />
     </div>
   </div>
 </nav>
@@ -86,6 +86,12 @@
       background: linear-gradient(180deg, var(--color-turq), var(--color-fucs));
     }
 
+    &--active {
+      background: -webkit-gradient(linear, left top, left bottom, from(var(--color-turq)), to(var(--color-fucs)));
+      background: -moz-linear-gradient(top, var(--color-turq) 0, var(--color-fucs) 100%);
+      background: linear-gradient(180deg, var(--color-turq), var(--color-fucs));
+    }
+
     .field-subcontainer {
       background: var(--color-dark);
       border-radius: 8px;
@@ -94,6 +100,10 @@
       height: 48px;
       width: 48px;
       transition: width 0.4s;
+
+      &--active {
+        width: 240px;
+      }
 
       .field-icon {
         color: var(--color-placeholder);
@@ -123,7 +133,12 @@
 
   .delete {
     display: none;
+    &--active {
+      display: inline;
+      cursor: pointer;
+    }
   }
+
   .field-container:hover .field-subcontainer {
     width: 240px;
 
@@ -132,4 +147,13 @@
       cursor: pointer;
     }
   }
+
+  /*   .value-display .field-subcontainer {
+    width: 240px;
+
+    .delete {
+      display: inline;
+      cursor: pointer;
+    }
+  } */
 </style>
