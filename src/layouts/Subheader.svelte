@@ -147,13 +147,4 @@
       cursor: pointer;
     }
   }
-
-  /*   .value-display .field-subcontainer {
-    width: 240px;
-
-    .delete {
-      display: inline;
-      cursor: pointer;
-    }
-  } */
 </style>

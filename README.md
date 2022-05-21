@@ -22,7 +22,7 @@ Are you interested in contributing?
 Download the project and install the dependencies...
 
 ```bash
-cd robible
+cd task-reminder-app
 npm install
 ```
 

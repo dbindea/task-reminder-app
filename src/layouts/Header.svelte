@@ -58,7 +58,7 @@
       <img class="photo" src={userLogin.photoURL} alt="" on:click={logout} />
     </div>
   {:else}
-    <div class="auth header-option--right" style="float: right;">
+    <div class="auth header-option--right">
       <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
       <img class="photo" src="assets/img/google.svg" alt="Google" on:click={login} />
     </div>
