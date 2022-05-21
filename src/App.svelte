@@ -3,8 +3,9 @@
   import Header from './layouts/Header.svelte';
   import Main from './layouts/Main.svelte';
   import Footer from './layouts/Footer.svelte';
-  import Subheader from './layouts/Subheader.svelte';
+  import SubHeader from './layouts/SubHeader.svelte';
   import { setupI18n, isLocaleLoaded } from './services/i18n.service';
+  import Menu from './components/Menu.svelte';
 
   $: if (!$isLocaleLoaded) {
     const lang = localStorage.getItem('lang') || 'es';
@@ -15,7 +16,8 @@
 <main>
   {#if $isLocaleLoaded}
     <Header />
-    <Subheader />
+    <Menu />
+    <SubHeader />
     <Main />
     <Footer />
   {:else}

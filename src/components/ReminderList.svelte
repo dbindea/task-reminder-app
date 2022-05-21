@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
   import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import { todayReminders, totalReminders, isLoggedIn, user, filterValue } from '../services/store.service';
+  import { todayReminders, totalReminders, isLoggedIn, user, filterValue, appType } from '../services/store.service';
   import { _ } from 'svelte-i18n';
   import type { Reminder } from '../model/Reminder.model.svelte';
   import type { User } from '../model/user.model';
@@ -35,6 +35,10 @@
   }
 
   onMount(() => {
+    appType.subscribe((e) => {
+      // TODO
+    });
+
     isLoggedIn.subscribe((isLogged) => {
       if (isLogged && ($user as User).uid) {
         watchFirestore(($user as User).uid);

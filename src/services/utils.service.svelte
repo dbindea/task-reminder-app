@@ -44,4 +44,6 @@
       },
     }).showToast();
   };
+
+  export const trim = (x) => (x == null ? null : x.trim());
 </script>

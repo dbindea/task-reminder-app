@@ -1,18 +1,20 @@
 <script lang="ts">
-  import { db, COLLECTION } from '../firebase';
-  import { collection, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+  import { db } from '../firebase';
+  import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
   import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
-  import { format_YYYYMMDD, toast, ToastSeverity } from '../services/utils.service.svelte';
+  import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
   import { isLoggedIn, user } from '../services/store.service';
   import type { User } from '../model/user.model';
+  import type { APP_TYPE } from '../model/AppType.model.svelte';
 
-  export let reminder: Reminder = getEmptyReminder();
-  export let reminderOp: { action: ActionType };
+  export let collectionObject: Reminder = getEmptyCollectionObject();
+  export let collectionName: APP_TYPE;
+  export let operation: { action: ActionType };
   export let idToRemove: string;
-  export let reminderToUpdate: Reminder;
+  export let objectToUpdate: Reminder;
 
   let inputAlias;
   let editStatus = false;
@@ -20,13 +22,12 @@
   let hasShownMsg = false;
   let currentId = '';
   const minDate: string = format_YYYYMMDD(new Date(), '-');
-  const trim = (x) => (x == null ? null : x.trim());
 
   onMount(() => {
     inputAlias.focus();
   });
 
-  function getEmptyReminder(): Reminder {
+  function getEmptyCollectionObject(): Reminder {
     return {
       id: '',
       tipology: null,
@@ -39,21 +40,21 @@
   }
 
   $: {
-    reminderOp, onAction();
+    operation, onAction();
   }
 
   $: {
-    reminder, validateForm();
+    collectionObject, validateForm();
   }
 
   function onAction() {
-    switch (reminderOp?.action) {
+    switch (operation?.action) {
       case ActionType.REMOVE:
-        removeReminder(idToRemove);
+        remove(idToRemove);
         break;
 
       case ActionType.UPDATE:
-        editAction(reminderToUpdate);
+        editAction(objectToUpdate);
         break;
     }
   }
@@ -69,12 +70,12 @@
     };
 
     const validationArray = [
-      validation.tipology(reminder.tipology),
-      validation.alias(reminder.alias),
-      validation.provider(reminder.provider, reminder.tipology),
-      validation.locatorId(reminder.locatorId, reminder.tipology),
-      validation.date(reminder.date),
-      validation.amount(reminder.amount, reminder.tipology),
+      validation.tipology(collectionObject.tipology),
+      validation.alias(collectionObject.alias),
+      validation.provider(collectionObject.provider, collectionObject.tipology),
+      validation.locatorId(collectionObject.locatorId, collectionObject.tipology),
+      validation.date(collectionObject.date),
+      validation.amount(collectionObject.amount, collectionObject.tipology),
     ];
 
     validForm = validationArray.every((e) => e === true);
@@ -85,10 +86,10 @@
     }
   };
 
-  const addReminder = async () => {
+  const insert = async () => {
     try {
-      await addDoc(collection(db, COLLECTION), {
-        ...reminder,
+      await addDoc(collection(db, collectionName), {
+        ...collectionObject,
         uid: ($user as User).uid,
         email: ($user as User).email,
         createdAt: Date.now(),
@@ -100,9 +101,9 @@
     }
   };
 
-  const updateReminder = async () => {
+  const update = async () => {
     try {
-      await updateDoc(doc(db, COLLECTION, currentId), reminder);
+      await updateDoc(doc(db, collectionName, currentId), collectionObject);
       toast(ToastSeverity.INFO, $_('app.main.form.update_msg'));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -110,9 +111,9 @@
     }
   };
 
-  const removeReminder = async (id) => {
+  const remove = async (id) => {
     try {
-      await deleteDoc(doc(db, COLLECTION, id));
+      await deleteDoc(doc(db, collectionName, id));
       toast(ToastSeverity.ERROR, $_('app.main.form.remove_msg'));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -120,9 +121,9 @@
     }
   };
 
-  const editAction = (currentReminder) => {
-    currentId = currentReminder.id;
-    reminder = { ...currentReminder };
+  const editAction = (current) => {
+    currentId = current.id;
+    collectionObject = { ...current };
     editStatus = true;
     document.body.scrollIntoView({
       behavior: 'smooth',
@@ -130,35 +131,35 @@
   };
 
   const submitAction = () => {
-    reminder.alias = trim(reminder.alias);
-    reminder.locatorId = trim(reminder.locatorId);
-    reminder.provider = trim(reminder.provider);
+    collectionObject.alias = trim(collectionObject.alias);
+    collectionObject.locatorId = trim(collectionObject.locatorId);
+    collectionObject.provider = trim(collectionObject.provider);
 
     if (!editStatus) {
-      addReminder();
+      insert();
     } else {
-      updateReminder();
+      update();
       editStatus = false;
       currentId = '';
     }
     hasShownMsg = false;
-    reminder = getEmptyReminder();
+    collectionObject = getEmptyCollectionObject();
   };
 
   const cancelAction = () => {
     editStatus = false;
     hasShownMsg = false;
     currentId = '';
-    reminder = getEmptyReminder();
+    collectionObject = getEmptyCollectionObject();
   };
 </script>
 
-<div class="form-reminder">
+<div class="form-collection">
   <form class="form" on:submit|preventDefault={submitAction}>
     <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
-        <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
+        <select class="field-input" name="tipology" bind:value={collectionObject.tipology} id="tipology">
           <option class="option" value={null} disabled>{$_('app.main.form.option_empty')}</option>
           {#each Object.keys(Tipology) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
@@ -174,7 +175,7 @@
           class="capitalize field-input"
           type="text"
           name="alias"
-          bind:value={reminder.alias}
+          bind:value={collectionObject.alias}
           bind:this={inputAlias}
           id="alias"
           placeholder={$_('app.main.form.alias')}
@@ -184,14 +185,14 @@
       </div>
     </div>
 
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.provider}>
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.provider}>
       <div class="field-subcontainer">
         <span class="icon-favorite-on field-icon" />
         <input
           class="capitalize field-input"
           type="text"
           name="provider"
-          bind:value={reminder.provider}
+          bind:value={collectionObject.provider}
           id="provider"
           placeholder={$_('app.main.form.provider')}
           spellcheck="false"
@@ -200,14 +201,14 @@
       </div>
     </div>
 
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.locatorId}>
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.locatorId}>
       <div class="field-subcontainer">
         <span class="icon-success field-icon" />
         <input
           class="uppercase field-input"
           type="text"
           name="locatorId"
-          bind:value={reminder.locatorId}
+          bind:value={collectionObject.locatorId}
           id="locatorId"
           placeholder={$_('app.main.form.locatorId')}
           spellcheck="false"
@@ -224,7 +225,7 @@
           type="date"
           name="date"
           min={minDate}
-          bind:value={reminder.date}
+          bind:value={collectionObject.date}
           id="date"
           autocomplete="off"
           placeholder={$_('app.main.form.date')}
@@ -232,14 +233,14 @@
       </div>
     </div>
 
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.amount}>
+    <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.amount}>
       <div class="field-subcontainer">
         <span class="icon-euro field-icon" />
         <input
           class="field-input"
           type="number"
           name="amount"
-          bind:value={reminder.amount}
+          bind:value={collectionObject.amount}
           id="amount"
           step="0.01"
           placeholder={$_('app.main.form.amount')}
@@ -258,7 +259,7 @@
 </div>
 
 <style type="scss">
-  .form-reminder {
+  .form-collection {
     background-color: var(--color-dark);
     margin: 4px;
     border-radius: 8px;

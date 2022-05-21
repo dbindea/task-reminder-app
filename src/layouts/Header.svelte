@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { User } from '../model/user.model';
-  import { todayReminders } from '../services/store.service';
+  import { isVisibleMenu, todayReminders } from '../services/store.service';
   import { auth } from '../firebase';
   import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
   import { user, isLoggedIn } from '../services/store.service';
@@ -17,7 +17,7 @@
       $isLoggedIn = true;
       toast(ToastSeverity.INFO, $_('app.header.login_hello', { values: { name: userLogin.displayName } }));
     } catch (error) {
-      toast(ToastSeverity.INFO, error);
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
@@ -29,7 +29,7 @@
       $user = {};
       $isLoggedIn = false;
     } catch (error) {
-      toast(ToastSeverity.INFO, error);
+      toast(ToastSeverity.ERROR, error);
       console.error(error);
     }
   };
@@ -39,35 +39,54 @@
     $isLoggedIn = !!authUser;
     userLogin = authUser;
   });
+
+  const toggle = () => {
+    $isVisibleMenu = !$isVisibleMenu;
+  };
 </script>
 
 <div class="header">
-  <div>
+  <div class="header-option">
+    <span class={$isVisibleMenu ? 'icon-cross toggle' : 'icon-hamburger toggle'} on:click={toggle} />
+  </div>
+  <div class="header-option">
     <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
   </div>
   {#if $isLoggedIn}
-    <div class="vertical-separator" />
-    <div class="auth">
+    <div class="auth header-option--right">
       <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
-      <img class="photo" src={userLogin.photoURL} alt={userLogin.displayName} on:click={() => logout()} />
+      <img class="photo" src={userLogin.photoURL} alt="" on:click={logout} />
     </div>
   {:else}
-    <div class="auth">
+    <div class="auth header-option--right">
       <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
-      <img class="photo" src="assets/img/google.svg" alt="Google" on:click={() => login()} />
+      <img class="photo" src="assets/img/google.svg" alt="Google" on:click={login} />
     </div>
   {/if}
 </div>
 
 <style type="scss">
   .header {
-    padding: 16px;
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    align-items: center;
+    padding: 8px;
     margin-bottom: 8px;
     box-shadow: var(--bg-shadow);
+    height: 42px;
+  }
+
+  .header-option {
+    float: left;
+    padding: 8px;
+    &--right {
+      float: right;
+      padding: 8px;
+    }
+  }
+
+  .toggle {
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
   }
 
   .photo {
@@ -76,6 +95,10 @@
     border-radius: 4px;
     margin: 0 16px 0 8px;
     vertical-align: middle;
+    transition: transform 0.2s;
+    &:hover {
+      transform: scale(1.5);
+    }
   }
 
   .auth {
@@ -94,9 +117,5 @@
       font-weight: 300;
       margin-left: 8px;
     }
-  }
-
-  .vertical-separator {
-    border-left: solid 1px var(--color-text);
   }
 </style>
