@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { APP_TYPE } from '../model/AppType.model.svelte';
+  import { AppType } from '../model/AppType.model.svelte';
   import { appType, isVisibleMenu } from '../services/store.service';
 
-  const changeApp = (type: APP_TYPE) => {
+  const changeApp = (type: AppType) => {
     localStorage.setItem('appType', type);
     $isVisibleMenu = false;
     $appType = type;
@@ -22,8 +22,8 @@
 
     <div class="item-block">
       <span class="item item--header uppercase">App Category</span>
-      <span class="item item--option" on:click={() => changeApp(APP_TYPE.REMINDERS)}><span class="icon-checklist item--icon" />Task Reminder</span>
-      <span class="item item--option" on:click={() => changeApp(APP_TYPE.EARNINGS)}><span class="icon-checklist item--icon" />Financial Earnings</span>
+      <span class="item item--option" on:click={() => changeApp(AppType.REMINDERS)}><span class="icon-checklist item--icon" />Task Reminder</span>
+      <span class="item item--option" on:click={() => changeApp(AppType.EARNINGS)}><span class="icon-checklist item--icon" />Financial Earnings</span>
     </div>
     <div class="item-block">
       <span class="item item--header uppercase">Settings</span>

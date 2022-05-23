@@ -34,11 +34,18 @@
         "save": "Guardar",
         "update": "Actualizar",
         "cancel": "Abandonar",
-        "add_msg": "¡Recordatorio creado!",
-        "update_msg": "¡Recordatorio actualizado!",
-        "remove_msg": "¡Recordatorio eliminado!",
         "validate_msg": "¡Ahora puedes Guardar",
-        "option_empty": "Tipo recordatorio"
+        "option_empty": "Tipo recordatorio",
+        "Reminders": {
+          "add_msg": "¡Recordatorio creado!",
+          "update_msg": "¡Recordatorio actualizado!",
+          "remove_msg": "¡Recordatorio eliminado!"
+        },
+        "Earnings": {
+          "add_msg": "¡Ingreso creado!",
+          "update_msg": "¡Ingreso actualizado!",
+          "remove_msg": "¡Ingreso eliminado!"
+        }
       },
       "list": {
         "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",

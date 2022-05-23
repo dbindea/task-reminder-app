@@ -1,13 +1,11 @@
 <script lang="ts">
-  import ReminderForm from '../components/ReminderForm.svelte';
-  import ReminderList from '../components/ReminderList.svelte';
+  import ReminderForm from '../components/ObjectForm.svelte';
+  import ReminderList from '../components/ItemList.svelte';
   import type { ActionType } from '../model/ActionType.model.svelte';
-  import { APP_TYPE } from '../model/AppType.model.svelte';
-  import type { Reminder } from '../model/Reminder.model.svelte';
-  import { appType } from '../services/store.service';
+  import type { AppObject } from '../model/AppObject.model.svelte';
 
   let idToRemove: string;
-  let objectToUpdate: Reminder;
+  let objectToUpdate: AppObject;
   let operation: { action: ActionType };
 
   function handleRemove(event) {
@@ -22,12 +20,7 @@
 </script>
 
 <div class="main">
-  {#if $appType === APP_TYPE.REMINDERS}
-    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
-  {/if}
-  {#if $appType === APP_TYPE.EARNINGS}
-    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
-  {/if}
+  <ReminderForm {idToRemove} {objectToUpdate} {operation} />
   <ReminderList on:remove={handleRemove} on:update={handleUpdate} />
 </div>
 

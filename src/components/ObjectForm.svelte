@@ -1,41 +1,51 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { db } from '../firebase';
   import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-  import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.model.svelte';
+  import { AppObject, hiddenOptionsByTipology, Product, Tipology } from '../model/AppObject.model.svelte';
   import { onMount } from 'svelte';
-  import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
-  import { isLoggedIn, user } from '../services/store.service';
+  import { appType, isLoggedIn, user } from '../services/store.service';
+  import { AppType } from '../model/AppType.model.svelte';
   import type { User } from '../model/user.model';
-  import type { APP_TYPE } from '../model/AppType.model.svelte';
 
-  export let collectionObject: Reminder = getEmptyCollectionObject();
-  export let collectionName: APP_TYPE;
-  export let operation: { action: ActionType };
   export let idToRemove: string;
-  export let objectToUpdate: Reminder;
+  export let objectToUpdate: AppObject;
+  export let operation: { action: ActionType };
+
+  let collectionObject: AppObject = getEmptyCollectionObject();
+  let collectionName: AppType;
 
   let inputAlias;
   let editStatus = false;
   let validForm = false;
   let hasShownMsg = false;
   let currentId = '';
-  const minDate: string = format_YYYYMMDD(new Date(), '-');
+  let minDate: string;
 
+  const minDateMap = {
+    [AppType.REMINDERS]: format_YYYYMMDD(new Date(), '-'),
+    [AppType.EARNINGS]: null,
+  };
   onMount(() => {
+    appType.subscribe((_appType: AppType) => {
+      collectionName = _appType;
+      minDate = minDateMap[collectionName];
+    });
     inputAlias.focus();
   });
 
-  function getEmptyCollectionObject(): Reminder {
+  function getEmptyCollectionObject(): AppObject {
     return {
-      id: '',
-      tipology: null,
       alias: '',
-      provider: '',
-      locatorId: '',
-      date: null,
       amount: null,
+      date: null,
+      id: '',
+      locatorId: '',
+      product: undefined,
+      provider: '',
+      tipology: undefined,
     };
   }
 
@@ -60,25 +70,46 @@
   }
 
   const validateForm = () => {
-    const validation = {
-      tipology: (data: string) => !!data,
+    let validationObject = {
       alias: (data: string) => !!data && data.length >= 3,
-      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
-      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
+      amount: (data: number, tipology?: Tipology) => !!data && data > 0,
       date: (data: Date) => !!data,
-      amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
+      locatorId: (data: string, tipology?: Tipology) => !!data && data.length >= 5,
+      product: (data: string) => !!data,
+      provider: (data: string, tipology?: Tipology) => !!data && data.length >= 2,
+      tipology: (data: string) => !!data,
+    };
+    switch (collectionName) {
+      case AppType.REMINDERS:
+        validationObject = Object.assign(validationObject, {
+          amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
+          locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
+          provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
+          tipology: (data: string) => !!data,
+        });
+        break;
+    }
+
+    const validationArray = {
+      [AppType.REMINDERS]: [
+        validationObject.alias(collectionObject.alias),
+        validationObject.amount(collectionObject.amount, collectionObject.tipology),
+        validationObject.date(collectionObject.date),
+        validationObject.locatorId(collectionObject.locatorId, collectionObject.tipology),
+        validationObject.provider(collectionObject.provider, collectionObject.tipology),
+        validationObject.tipology(collectionObject.tipology),
+      ],
+      [AppType.EARNINGS]: [
+        validationObject.alias(collectionObject.alias),
+        validationObject.amount(collectionObject.amount),
+        validationObject.date(collectionObject.date),
+        validationObject.locatorId(collectionObject.locatorId),
+        validationObject.product(collectionObject.product),
+        validationObject.provider(collectionObject.provider),
+      ],
     };
 
-    const validationArray = [
-      validation.tipology(collectionObject.tipology),
-      validation.alias(collectionObject.alias),
-      validation.provider(collectionObject.provider, collectionObject.tipology),
-      validation.locatorId(collectionObject.locatorId, collectionObject.tipology),
-      validation.date(collectionObject.date),
-      validation.amount(collectionObject.amount, collectionObject.tipology),
-    ];
-
-    validForm = validationArray.every((e) => e === true);
+    //validForm = validationArray[collectionName].every((e) => e === true);
 
     if (validForm && !hasShownMsg) {
       toast(ToastSeverity.INFO, $_('app.main.form.validate_msg'));
@@ -94,7 +125,7 @@
         email: ($user as User).email,
         createdAt: Date.now(),
       });
-      toast(ToastSeverity.SUCCESS, $_('app.main.form.add_msg'));
+      toast(ToastSeverity.SUCCESS, $_(`app.main.form.${collectionName}.add_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
@@ -104,7 +135,7 @@
   const update = async () => {
     try {
       await updateDoc(doc(db, collectionName, currentId), collectionObject);
-      toast(ToastSeverity.INFO, $_('app.main.form.update_msg'));
+      toast(ToastSeverity.INFO, $_(`app.main.form.${collectionName}.update_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
@@ -114,7 +145,7 @@
   const remove = async (id) => {
     try {
       await deleteDoc(doc(db, collectionName, id));
-      toast(ToastSeverity.ERROR, $_('app.main.form.remove_msg'));
+      toast(ToastSeverity.ERROR, $_(`app.main.form.${collectionName}.remove_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
@@ -156,18 +187,37 @@
 
 <div class="form-collection">
   <form class="form" on:submit|preventDefault={submitAction}>
-    <div class="field-container">
-      <div class="field-subcontainer">
-        <span class="icon-checklist field-icon" />
-        <select class="field-input" name="tipology" bind:value={collectionObject.tipology} id="tipology">
-          <option class="option" value={null} disabled>{$_('app.main.form.option_empty')}</option>
-          {#each Object.keys(Tipology) as optionKey}
-            <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
-          {/each}
-        </select>
+    <!-- TIPOLOGY -->
+    {#if collectionName === AppType.REMINDERS}
+      <div class="field-container">
+        <div class="field-subcontainer">
+          <span class="icon-checklist field-icon" />
+          <select class="field-input" name="tipology" bind:value={collectionObject.tipology} id="tipology">
+            <option class="option" value={null} disabled>{$_('app.main.form.option_empty')}</option>
+            {#each Object.keys(Tipology) as optionKey}
+              <option class="option" value={optionKey}>{$_(`app.main.form.${optionKey}`)}</option>
+            {/each}
+          </select>
+        </div>
       </div>
-    </div>
+    {/if}
 
+    <!-- PRODUCT -->
+    {#if collectionName === AppType.EARNINGS}
+      <div class="field-container">
+        <div class="field-subcontainer">
+          <span class="icon-checklist field-icon" />
+          <select class="field-input" name="product" bind:value={collectionObject.product} id="product">
+            <option class="option" value={null} disabled>{$_('app.main.form.option_empty')}</option>
+            {#each Object.keys(Product) as optionKey}
+              <option class="option" value={optionKey}>{$_(`app.main.form.${collectionName}.${optionKey}`)}</option>
+            {/each}
+          </select>
+        </div>
+      </div>
+    {/if}
+
+    <!-- ALIAS -->
     <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-edit field-icon" />
@@ -185,6 +235,7 @@
       </div>
     </div>
 
+    <!-- PROVIDER -->
     <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.provider}>
       <div class="field-subcontainer">
         <span class="icon-favorite-on field-icon" />
@@ -201,6 +252,7 @@
       </div>
     </div>
 
+    <!-- LOCATOR ID -->
     <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.locatorId}>
       <div class="field-subcontainer">
         <span class="icon-success field-icon" />
@@ -217,6 +269,7 @@
       </div>
     </div>
 
+    <!-- DATE -->
     <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-clock field-icon" />
@@ -233,6 +286,7 @@
       </div>
     </div>
 
+    <!-- AMOUNT -->
     <div class="field-container" class:disabled={hiddenOptionsByTipology[collectionObject.tipology]?.amount}>
       <div class="field-subcontainer">
         <span class="icon-euro field-icon" />

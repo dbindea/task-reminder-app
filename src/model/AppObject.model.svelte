@@ -1,48 +1,31 @@
 <script lang="ts" context="module">
-  import { APP_TYPE } from './AppType.model.svelte';
 
-  export type Earning = {
-    amount: number;
-    alias: string;
-    date: Date;
-    email?: string;
-    id?: string;
-    locatorId: string;
-    provider: string;
-    product: Product;
-    uid?: string;
-  };
-
-  export type Reminder = {
+  export type AppObject = {
     amount?: number;
     alias: string;
     date: Date;
     email?: string;
     id?: string;
     locatorId: string;
+    product?: Product;
     provider: string;
-    tipology: Tipology;
+    tipology?: Tipology;
     uid?: string;
-  };
-
-  export type AppObject = {
-    [APP_TYPE.REMINDERS]: Reminder;
-    [APP_TYPE.EARNINGS]: Earning;
   };
 
   export enum Tipology {
     CHECKIN = 'CHECKIN',
-    SEARCH = 'SEARCH',
-    PAYMENT = 'PAYMENT',
     DEFAULT = 'DEFAULT',
+    PAYMENT = 'PAYMENT',
+    SEARCH = 'SEARCH',
   }
 
   export enum Product {
     FLIGHT = 'FLIGHT',
     HOTEL = 'HOTEL',
     INSURANCE = 'INSURANCE',
-    RENTAL_CAR = 'RENTAL_CAR',
     PACK = 'PACK',
+    RENTAL_CAR = 'RENTAL_CAR',
   }
 
   export const hiddenOptionsByTipology: { [key in Tipology] } = {
@@ -59,5 +42,13 @@
       locatorId: true,
       amount: true,
     },
+  };
+
+  export const hiddenOptionsByProduct: { [key in Product] } = {
+    FLIGHT: {},
+    HOTEL: {},
+    INSURANCE: {},
+    RENTAL_CAR: {},
+    PACK: {}
   };
 </script>

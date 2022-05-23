@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-export enum APP_TYPE {
+export enum AppType {
     REMINDERS = 'Reminders',
     EARNINGS = 'Earnings'
 }

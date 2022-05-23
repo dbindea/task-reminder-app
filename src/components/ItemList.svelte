@@ -1,17 +1,17 @@
 <script lang="ts">
-  import ReminderCard from './ReminderCard.svelte';
+  import { _ } from 'svelte-i18n';
   import { COLLECTION, db } from '../firebase';
   import { onMount } from 'svelte';
   import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
   import { todayReminders, totalReminders, isLoggedIn, user, filterValue, appType } from '../services/store.service';
-  import { _ } from 'svelte-i18n';
-  import type { Reminder } from '../model/Reminder.model.svelte';
   import type { User } from '../model/user.model';
   import type { Unsubscribe } from 'firebase/auth';
+  import type { AppObject } from '../model/AppObject.model.svelte';
+import ObjectCard from './ObjectCard.svelte';
 
-  let reminders: Reminder[] = [];
-  let filterReminders: Reminder[] = [];
+  let reminders: AppObject[] = [];
+  let filterReminders: AppObject[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
 
   const watchFirestore = (uid: string): Unsubscribe => {
@@ -20,7 +20,7 @@
       reminders = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      })) as Reminder[];
+      })) as AppObject[];
     });
   };
 
@@ -31,7 +31,7 @@
   function updateStore() {
     filterReminders = filterByValue($filterValue);
     totalReminders.update(() => filterReminders.length);
-    todayReminders.update(() => reminders.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
+    todayReminders.update(() => reminders.filter((r: AppObject) => format_YYYYMMDD(r.date, '-') === today).length);
   }
 
   onMount(() => {
@@ -55,7 +55,7 @@
 
   const filterByValue = (value: string) => {
     if (value) {
-      return reminders.filter((reminder: Reminder) => {
+      return reminders.filter((reminder: AppObject) => {
         const reminderString = Object.keys(reminder)
           .map((key) => reminder[key])
           .join(' ');
@@ -74,7 +74,7 @@
     <div class="panel">{$_('app.main.list.no_reminder')}</div>
   {/if}
   {#each filterReminders as reminder}
-    <ReminderCard {reminder} on:remove on:update />
+    <ObjectCard appObject={reminder} on:remove on:update />
   {/each}
 </div>
 

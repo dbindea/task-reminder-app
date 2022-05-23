@@ -1,16 +1,17 @@
 <script lang="ts">
-  import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.model.svelte';
   import { _ } from 'svelte-i18n';
+  import { hiddenOptionsByTipology } from '../model/AppObject.model.svelte';
   import { createEventDispatcher } from 'svelte';
   import { ActionType } from '../model/ActionType.model.svelte';
   import { format_DDMMYYYY } from '../services/utils.service.svelte';
+  import type { AppObject } from '../model/AppObject.model.svelte';
 
-  export let reminder: Reminder;
+  export let appObject: AppObject;
   const formatDate = format_DDMMYYYY;
 
   const dispatch = createEventDispatcher();
 
-  const update = (reminder: Reminder) => {
+  const update = (reminder: AppObject) => {
     dispatch(ActionType.UPDATE, reminder);
   };
 
@@ -41,36 +42,36 @@
   <div class="reminder-card">
     <div class="first-item">
       <div class="field">
-        <span class="field-title">{$_('app.main.card.tipology')}</span><span class="field-text capitalize">{$_(`app.main.form.${reminder.tipology}`)}</span>
+        <span class="field-title">{$_('app.main.card.tipology')}</span><span class="field-text capitalize">{$_(`app.main.form.${appObject.tipology}`)}</span>
       </div>
       <!-- DROPDOWN -->
       <span class="icon-actions rotate dropdown">
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => update(reminder)}><span class="icon-edit" />{$_('app.main.card.update')}</li>
-              <li class="action-item" on:click={() => remove(reminder.id)}><span class="icon-delete" />{$_('app.main.card.remove')}</li>
+              <li class="action-item" on:click={() => update(appObject)}><span class="icon-edit" />{$_('app.main.card.update')}</li>
+              <li class="action-item" on:click={() => remove(appObject.id)}><span class="icon-delete" />{$_('app.main.card.remove')}</li>
             </ul>
           </div>
         </div>
       </span>
     </div>
     <div class="field">
-      <span class="field-title">{$_('app.main.form.alias')}</span><span class="capitalize field-text">{reminder.alias}</span>
+      <span class="field-title">{$_('app.main.form.alias')}</span><span class="capitalize field-text">{appObject.alias}</span>
     </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.provider ? 'field' : 'field--disabled'}>
+    <div class={!hiddenOptionsByTipology[appObject.tipology]?.provider ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_('app.main.form.provider')}</span>
-      <span class="field-text capitalize">{reminder.provider}</span>
+      <span class="field-text capitalize">{appObject.provider}</span>
     </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.locatorId ? 'field' : 'field--disabled'}>
-      <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{reminder.locatorId}</span>
+    <div class={!hiddenOptionsByTipology[appObject.tipology]?.locatorId ? 'field' : 'field--disabled'}>
+      <span class="field-title">{$_('app.main.form.locatorId')}</span><span class="field-text uppercase">{appObject.locatorId}</span>
     </div>
     <div class="field">
-      <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
-      <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: getDiffDays(reminder.date) } })}</span>
+      <span class="field-title">{$_('app.main.form.date')}</span><span class="field-text field-title">{formatDate(appObject.date, '/')}</span>
+      <span class="colours">{$_(getTranslation(getDiffDays(appObject.date)), { values: { number: getDiffDays(appObject.date) } })}</span>
     </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.amount ? 'field' : 'field--disabled'}>
-      <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(reminder.amount)} €</span>
+    <div class={!hiddenOptionsByTipology[appObject.tipology]?.amount ? 'field' : 'field--disabled'}>
+      <span class="field-title">{$_('app.main.form.amount')}</span><span class="field-text">{formatNumber(appObject.amount)} €</span>
     </div>
   </div>
 </div>
