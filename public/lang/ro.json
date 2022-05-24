@@ -6,7 +6,7 @@
         "logout": "Ieșire",
         "login_hello": "Salutare {name}!",
         "logout_bye": "La revedere!",
-        "today_count": "Activități azi"
+        "today_count": "Câstig azi"
       },
       "subheader": {
         "total": "Totale {number}",
@@ -15,19 +15,17 @@
       },
       "main": {
         "card": {
-          "tipology": "De realizat",
+          "product": "Serviciu",
           "update": "Actualizează",
-          "remove": "Șterge",
-          "count_days_today": "Azi!",
-          "count_days_sg": "Peste o zi!",
-          "count_days_pl": "{number} zile rămase!"
+          "remove": "Șterge"
         },
         "form": {
-          "CHECKIN": "Check-in",
-          "PAYMENT": "Efectuează plăți",
-          "SEARCH": "Caută călătorii",
-          "DEFAULT": "Alte activități",
-          "alias": "Notițe",
+          "FLIGHT": "Zboruri",
+          "HOTEL": "Hotel",
+          "INSURANCE": "Asigurări",
+          "PACK": "Pachet Vacanță",
+          "RENTAL_CAR": "Închirieri Mașini",
+          "alias": "Client",
           "provider": "Furnizor",
           "locatorId": "Cod rezervă",
           "date": "Data",
@@ -35,19 +33,22 @@
           "save": "Salvează",
           "update": "Actualizează",
           "cancel": "Renunță",
-          "add_msg": "Activitate creată!",
-          "update_msg": "Activitate actualizată!",
-          "remove_msg": "Activitate ștearsă!",
+          "add_msg": "Câstig înregistrat!",
+          "update_msg": "Câstig actualizat!",
+          "remove_msg": "Înregistrare ștearsă!",
           "validate_msg": "Acum poți salva!",
-          "option_empty": "Tipul activității"
+          "option_empty": "Tipul Serviciului"
         },
         "list": {
-          "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
-          "no_reminder": "Crează prima ta activitate de reținut!"
+          "no_auth": "Intră cu contul tău de Google pentru a crea și vedea câștigurile tale înregistrate!",
+          "no_items": "Înregistrează primul tău câștig!"
         }
       },
+      "menu": {
+        "app_type": "Aplicație"
+      },
       "footer": {
-        "app_name": "Task Reminder App"
+        "app_name": "Financial Earnings App"
       }
     },
     "Reminders": {
@@ -74,9 +75,9 @@
         },
         "form": {
           "CHECKIN": "Check-in",
-          "PAYMENT": "Efectuează plăți",
-          "SEARCH": "Caută călătorii",
-          "DEFAULT": "Alte activități",
+          "PAYMENT": "Efectuează Plăți",
+          "SEARCH": "Caută Călătorii",
+          "DEFAULT": "Alte Activități",
           "alias": "Notițe",
           "provider": "Furnizor",
           "locatorId": "Cod rezervă",
@@ -93,8 +94,11 @@
         },
         "list": {
           "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
-          "no_reminder": "Crează prima ta activitate de reținut!"
+          "no_items": "Crează prima ta activitate de reținut!"
         }
+      },
+      "menu": {
+        "app_type": "Aplicație"
       },
       "footer": {
         "app_name": "Task Reminder App"

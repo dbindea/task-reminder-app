@@ -50,6 +50,17 @@ span,
 input,
 select,
 option,
+textarea,
 button {
   color: var(--color-text);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }

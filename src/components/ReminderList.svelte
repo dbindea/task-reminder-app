@@ -70,7 +70,7 @@
   {#if !$isLoggedIn}
     <div class="panel">{$_(`app.${collectionName}.main.list.no_auth`)}</div>
   {:else if !items.length}
-    <div class="panel">{$_(`app.${collectionName}.main.list.no_reminder`)}</div>
+    <div class="panel">{$_(`app.${collectionName}.main.list.no_items`)}</div>
   {/if}
   {#each filterReminders as reminder}
     <ReminderCard {collectionName} {reminder} on:remove on:update />
