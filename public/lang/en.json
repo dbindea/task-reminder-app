@@ -1,11 +1,62 @@
 {
   "app": {
+    "Earnings": {
     "header": {
       "login": "Login",
       "logout": "Logout",
       "login_hello": "Hello {name}!",
       "logout_bye": "See you later!",
-      "today_reminders": "Today reminders"
+      "today_count": "Today reminders"
+    },
+    "subheader": {
+      "total": "Totals {number}",
+      "filter": "Filter",
+      "search": "Found {number}"
+    },
+    "main": {
+      "card": {
+        "tipology": "Reminder",
+        "update": "Update",
+        "remove": "Remove",
+        "count_days_today": "Today",
+        "count_days_sg": "One day left!",
+        "count_days_pl": "{number} days left!"
+      },
+      "form": {
+        "CHECKIN": "Check-in",
+        "PAYMENT": "Payments",
+        "SEARCH": "Travel search",
+        "DEFAULT": "Other tasks",
+        "alias": "Notes",
+        "provider": "Provider",
+        "locatorId": "Reference",
+        "date": "Date",
+        "amount": "Amount",
+        "save": "Save",
+        "update": "Update",
+        "cancel": "Cancel",
+        "add_msg": "Reminder created!",
+        "update_msg": "Reminder updated!",
+        "remove_msg": "Reminder removed!",
+        "validate_msg": "Now you can save!",
+        "option_empty": "Reminder type"
+      },
+      "list": {
+        "no_auth": "You need to login with a Google account to view or save reminders!",
+        "no_reminder": "Create your first reminder!"
+      }
+    },
+    "footer": {
+      "app_name": "Task Reminder App"
+    }
+  },
+  "Reminders": {
+    "header": {
+      "login": "Login",
+      "logout": "Logout",
+      "login_hello": "Hello {name}!",
+      "logout_bye": "See you later!",
+      "today_count": "Today reminders"
     },
     "subheader": {
       "total": "Totals {number}",
@@ -49,4 +100,5 @@
       "app_name": "Task Reminder App"
     }
   }
+}
 }

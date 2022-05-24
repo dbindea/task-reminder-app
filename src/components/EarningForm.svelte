@@ -1,7 +1,6 @@
 <script lang="ts">
   import { db } from '../firebase';
   import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-  import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.svelte';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.svelte';
@@ -9,12 +8,13 @@
   import { isLoggedIn, user } from '../services/store.service';
   import type { User } from '../model/user.model';
   import type { AppType } from '../model/AppType.svelte';
+  import { Earning, Product } from '../model/Earning.svelte';
 
-  let reminder: Reminder = getEmptyCollection();
+  let earning: Earning = getEmptyCollection();
   export let collectionName: AppType;
   export let operation: { action: ActionType };
   export let idToRemove: string;
-  export let objectToUpdate: Reminder;
+  export let objectToUpdate: Earning;
 
   let inputAlias;
   let editStatus = false;
@@ -27,15 +27,15 @@
     inputAlias.focus();
   });
 
-  function getEmptyCollection(): Reminder {
+  function getEmptyCollection(): Earning {
     return {
       alias: '',
       amount: null,
       date: null,
       id: '',
       locatorId: '',
+      product: null,
       provider: '',
-      tipology: null,
     };
   }
 
@@ -44,7 +44,7 @@
   }
 
   $: {
-    reminder, validateForm();
+    earning, validateForm();
   }
 
   function onAction() {
@@ -62,20 +62,20 @@
   const validateForm = () => {
     const validation = {
       alias: (data: string) => !!data && data.length >= 3,
-      amount: (data: number, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.amount || (!!data && data > 0),
+      amount: (data: number) => !!data && data > 0,
       date: (data: Date) => !!data,
-      locatorId: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.locatorId || (!!data && data.length >= 5),
-      provider: (data: string, tipology: Tipology) => hiddenOptionsByTipology[tipology]?.provider || (!!data && data.length >= 2),
-      tipology: (data: string) => !!data,
+      locatorId: (data: string) => !!data && data.length >= 5,
+      product: (data: string) => !!data,
+      provider: (data: string) => !!data && data.length >= 2,
     };
 
     const validationArray = [
-      validation.alias(reminder.alias),
-      validation.amount(reminder.amount, reminder.tipology),
-      validation.date(reminder.date),
-      validation.locatorId(reminder.locatorId, reminder.tipology),
-      validation.provider(reminder.provider, reminder.tipology),
-      validation.tipology(reminder.tipology),
+      validation.alias(earning.alias),
+      validation.amount(earning.amount),
+      validation.date(earning.date),
+      validation.locatorId(earning.locatorId),
+      validation.product(earning.product),
+      validation.provider(earning.provider),
     ];
 
     validForm = validationArray.every((e) => e === true);
@@ -89,7 +89,7 @@
   const insert = async () => {
     try {
       await addDoc(collection(db, collectionName), {
-        ...reminder,
+        ...earning,
         uid: ($user as User).uid,
         email: ($user as User).email,
         createdAt: Date.now(),
@@ -103,7 +103,7 @@
 
   const update = async () => {
     try {
-      await updateDoc(doc(db, collectionName, currentId), reminder);
+      await updateDoc(doc(db, collectionName, currentId), earning);
       toast(ToastSeverity.INFO, $_(`app.${collectionName}.main.form.update_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -123,7 +123,7 @@
 
   const editAction = (current) => {
     currentId = current.id;
-    reminder = { ...current };
+    earning = { ...current };
     editStatus = true;
     document.body.scrollIntoView({
       behavior: 'smooth',
@@ -131,9 +131,9 @@
   };
 
   const submitAction = () => {
-    reminder.alias = trim(reminder.alias);
-    reminder.locatorId = trim(reminder.locatorId);
-    reminder.provider = trim(reminder.provider);
+    earning.alias = trim(earning.alias);
+    earning.locatorId = trim(earning.locatorId);
+    earning.provider = trim(earning.provider);
 
     if (!editStatus) {
       insert();
@@ -143,26 +143,26 @@
       currentId = '';
     }
     hasShownMsg = false;
-    reminder = getEmptyCollection();
+    earning = getEmptyCollection();
   };
 
   const cancelAction = () => {
     editStatus = false;
     hasShownMsg = false;
     currentId = '';
-    reminder = getEmptyCollection();
+    earning = getEmptyCollection();
   };
 </script>
 
 <div class="form-collection">
   <form class="form" on:submit|preventDefault={submitAction}>
-    <!-- TIPOLOGY -->
+    <!-- PRODUCT -->
     <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-checklist field-icon" />
-        <select class="field-input" name="tipology" bind:value={reminder.tipology} id="tipology">
+        <select class="field-input" name="product" bind:value={earning.product} id="product">
           <option class="option" value={null} disabled>{$_(`app.${collectionName}.main.form.option_empty`)}</option>
-          {#each Object.keys(Tipology) as optionKey}
+          {#each Object.keys(Product) as optionKey}
             <option class="option" value={optionKey}>{$_(`app.${collectionName}.main.form.${optionKey}`)}</option>
           {/each}
         </select>
@@ -177,7 +177,7 @@
           class="capitalize field-input"
           type="text"
           name="alias"
-          bind:value={reminder.alias}
+          bind:value={earning.alias}
           bind:this={inputAlias}
           id="alias"
           placeholder={$_(`app.${collectionName}.main.form.alias`)}
@@ -188,14 +188,14 @@
     </div>
 
     <!-- PROVIDER -->
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.provider}>
+    <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-favorite-on field-icon" />
         <input
           class="capitalize field-input"
           type="text"
           name="provider"
-          bind:value={reminder.provider}
+          bind:value={earning.provider}
           id="provider"
           placeholder={$_(`app.${collectionName}.main.form.provider`)}
           spellcheck="false"
@@ -205,14 +205,14 @@
     </div>
 
     <!-- LOCATOR -->
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.locatorId}>
+    <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-success field-icon" />
         <input
           class="uppercase field-input"
           type="text"
           name="locatorId"
-          bind:value={reminder.locatorId}
+          bind:value={earning.locatorId}
           id="locatorId"
           placeholder={$_(`app.${collectionName}.main.form.locatorId`)}
           spellcheck="false"
@@ -229,8 +229,8 @@
           class="field-input"
           type="date"
           name="date"
-          min={today}
-          bind:value={reminder.date}
+          bind:value={earning.date}
+          max={today}
           id="date"
           autocomplete="off"
           placeholder={$_(`app.${collectionName}.main.form.date`)}
@@ -239,14 +239,14 @@
     </div>
 
     <!-- AMOUNT -->
-    <div class="field-container" class:disabled={hiddenOptionsByTipology[reminder.tipology]?.amount}>
+    <div class="field-container">
       <div class="field-subcontainer">
         <span class="icon-euro field-icon" />
         <input
           class="field-input"
           type="number"
           name="amount"
-          bind:value={reminder.amount}
+          bind:value={earning.amount}
           id="amount"
           step="0.01"
           placeholder={$_(`app.${collectionName}.main.form.amount`)}

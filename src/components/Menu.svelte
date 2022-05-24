@@ -1,16 +1,17 @@
 <script lang="ts">
-  import { APP_TYPE } from '../model/AppType.model.svelte';
+  import { _ } from 'svelte-i18n';
+  import { AppType } from '../model/AppType.svelte';
   import { appType, isVisibleMenu } from '../services/store.service';
 
-  const changeApp = (type: APP_TYPE) => {
-    localStorage.setItem('appType', type);
+  const changeApp = (type: AppType) => {
+    localStorage.setItem('AppType', type);
     $isVisibleMenu = false;
     $appType = type;
   };
 
-  const settings = () => {
+/*   const settings = () => {
     // TODO
-  };
+  }; */
 </script>
 
 <div class={$isVisibleMenu ? 'menu' : 'menu menu--toggle'}>
@@ -21,14 +22,14 @@
     </div>
 
     <div class="item-block">
-      <span class="item item--header uppercase">App Category</span>
-      <span class="item item--option" on:click={() => changeApp(APP_TYPE.REMINDERS)}><span class="icon-checklist item--icon" />Task Reminder</span>
-      <span class="item item--option" on:click={() => changeApp(APP_TYPE.EARNINGS)}><span class="icon-checklist item--icon" />Financial Earnings</span>
+      <span class="item item--header uppercase">{$_(`app.${$appType}.menu.app_type`)}</span>
+      <span class="item item--option" on:click={() => changeApp(AppType.Reminders)}><span class="icon-checklist item--icon" />{$_(`app.Reminders.footer.app_name`)}</span>
+      <span class="item item--option" on:click={() => changeApp(AppType.Earnings)}><span class="icon-dollar item--icon" />{$_(`app.Earnings.footer.app_name`)}</span>
     </div>
-    <div class="item-block">
+    <!--     <div class="item-block">
       <span class="item item--header uppercase">Settings</span>
       <span class="item item--option" on:click={settings}><span class="icon-checklist item--icon" />Manage Tipologies</span>
-    </div>
+    </div> -->
   {/if}
 </div>
 

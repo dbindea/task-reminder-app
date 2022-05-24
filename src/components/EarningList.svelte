@@ -1,29 +1,29 @@
 <script lang="ts">
-  import ReminderCard from './ReminderCard.svelte';
   import { db } from '../firebase';
   import { onMount } from 'svelte';
   import { onSnapshot, collection, where, query, orderBy } from 'firebase/firestore';
   import { format_YYYYMMDD } from '../services/utils.service.svelte';
-  import { todayReminders, totalReminders, isLoggedIn, user, filterValue } from '../services/store.service';
+  import { todayEarnings, totalEarnings, isLoggedIn, user, filterValue } from '../services/store.service';
   import { _ } from 'svelte-i18n';
-  import type { Reminder } from '../model/Reminder.svelte';
+  import type { Earning } from '../model/Earning.svelte';
   import type { User } from '../model/user.model';
   import type { Unsubscribe } from 'firebase/auth';
-  import { AppType } from '../model/AppType.svelte';
+  import EarningCard from './EarningCard.svelte';
+  import type { AppType } from '../model/AppType.svelte';
 
   export let collectionName: AppType;
 
-  let items: Reminder[] = [];
-  let filterReminders: Reminder[] = [];
+  let items: Earning[] = [];
+  let filterEarnings: Earning[] = [];
   const today = format_YYYYMMDD(new Date(), '-');
 
   const watchFirestore = (uid: string): Unsubscribe => {
-    const q = query(collection(db, AppType.Reminders), where('uid', '==', uid), where('date', '>=', today), orderBy('date', 'asc'));
+    const q = query(collection(db, collectionName), where('uid', '==', uid), where('date', '<=', today), orderBy('date', 'desc'));
     return onSnapshot(q, (querySnapshot) => {
       items = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      })) as Reminder[];
+      })) as Earning[];
     });
   };
 
@@ -32,9 +32,21 @@
   }
 
   function updateStore() {
-    filterReminders = filterByValue($filterValue);
-    totalReminders.update(() => filterReminders.length);
-    todayReminders.update(() => items.filter((r: Reminder) => format_YYYYMMDD(r.date, '-') === today).length);
+    filterEarnings = filterByValue($filterValue);
+    
+    totalEarnings.update(() =>
+      filterEarnings.reduce((prev, cur) => {
+        return prev + cur.amount;
+      }, 0),
+    );
+
+    todayEarnings.update(() =>
+      items
+        .filter((r: Earning) => format_YYYYMMDD(r.date, '-') === today)
+        .reduce((prev, cur) => {
+          return prev + cur.amount;
+        }, 0),
+    );
   }
 
   onMount(() => {
@@ -47,14 +59,14 @@
     });
 
     filterValue.subscribe((filterValue) => {
-      filterReminders = filterByValue(filterValue);
-      totalReminders.update(() => filterReminders.length);
+      filterEarnings = filterByValue(filterValue);
+      totalEarnings.update(() => filterEarnings.length);
     });
   });
 
   const filterByValue = (value: string) => {
     if (value) {
-      return items.filter((reminder: Reminder) => {
+      return items.filter((reminder: Earning) => {
         const reminderString = Object.keys(reminder)
           .map((key) => reminder[key])
           .join(' ');
@@ -72,8 +84,8 @@
   {:else if !items.length}
     <div class="panel">{$_(`app.${collectionName}.main.list.no_reminder`)}</div>
   {/if}
-  {#each filterReminders as reminder}
-    <ReminderCard {collectionName} {reminder} on:remove on:update />
+  {#each filterEarnings as earning}
+    <EarningCard {collectionName} {earning} on:remove on:update />
   {/each}
 </div>
 

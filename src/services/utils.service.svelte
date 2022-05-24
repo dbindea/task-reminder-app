@@ -46,4 +46,9 @@
   };
 
   export const trim = (x) => (x == null ? null : x.trim());
+
+  export const formatNumber = (number: number, locale: string): string => {
+    if (number) return Number(number).toLocaleString(locale, { minimumFractionDigits: 2, signDisplay: 'auto' });
+    else return '0 €';
+  };
 </script>
