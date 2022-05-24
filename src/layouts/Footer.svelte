@@ -2,6 +2,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import { setupI18n } from '../services/i18n.service';
+  import { appType, langStore } from '../services/store.service';
 
   const scrollFooter = 120;
   let show = false;
@@ -9,6 +10,7 @@
   const changeLang = (lang) => {
     setupI18n({ withLocale: lang });
     localStorage.setItem('lang', lang);
+    $langStore = lang;
   };
 
   const scrollTop = () => {
@@ -29,7 +31,7 @@
 </script>
 
 <div class="footer">
-  <p>{$_('app.footer.app_name')}</p>
+  <p>{$_(`app.${$appType}.footer.app_name`)}</p>
   <div class="lang">
     <img class="flag" src="assets/img/ro.svg" alt="ro" on:click={() => changeLang('ro')} />
     <img class="flag" src="assets/img/es.svg" alt="es" on:click={() => changeLang('es')} />

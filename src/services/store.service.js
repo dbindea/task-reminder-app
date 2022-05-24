@@ -1,10 +1,14 @@
 import { writable } from 'svelte/store';
-import { APP_TYPE } from '../model/AppType.model.svelte';
+import { AppType } from '../model/AppType.svelte';
 
 export const todayReminders = writable(0);
 export const totalReminders = writable(0);
+export const todayEarnings = writable(0);
+export const totalEarnings = writable(0);
+
 export const user = writable({});
 export const isLoggedIn = writable(false);
 export const isVisibleMenu = writable(false);
 export const filterValue = writable(null);
-export const appType = writable(localStorage.getItem('appType') || APP_TYPE.REMINDERS);
+export const langStore = writable(localStorage.getItem('lang') || 'es');
+export const appType = writable(localStorage.getItem('AppType') || AppType.Reminders);

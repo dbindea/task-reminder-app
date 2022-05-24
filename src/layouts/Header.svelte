@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { User } from '../model/user.model';
-  import { isVisibleMenu, todayReminders } from '../services/store.service';
+  import { appType, isVisibleMenu, langStore, todayEarnings, todayReminders } from '../services/store.service';
   import { auth } from '../firebase';
   import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
   import { user, isLoggedIn } from '../services/store.service';
   import { _ } from 'svelte-i18n';
-  import { toast, ToastSeverity } from '../services/utils.service.svelte';
+  import { formatNumber, toast, ToastSeverity } from '../services/utils.service.svelte';
+  import { AppType } from '../model/AppType.svelte';
 
   let userLogin: User;
 
@@ -15,7 +16,7 @@
       const res = await signInWithPopup(auth, provider);
       $user = res.user;
       $isLoggedIn = true;
-      toast(ToastSeverity.INFO, $_('app.header.login_hello', { values: { name: userLogin.displayName } }));
+      toast(ToastSeverity.INFO, $_(`app.${$appType}.header.login_hello`, { values: { name: userLogin.displayName } }));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
@@ -25,7 +26,7 @@
   const logout = async () => {
     try {
       await signOut(auth);
-      toast(ToastSeverity.INFO, $_('app.header.logout_bye'));
+      toast(ToastSeverity.INFO, $_(`app.${$appType}.header.logout_bye`));
       $user = {};
       $isLoggedIn = false;
     } catch (error) {
@@ -50,16 +51,23 @@
     <span class={$isVisibleMenu ? 'icon-cross toggle' : 'icon-hamburger toggle'} on:click={toggle} />
   </div>
   <div class="header-option">
-    <span class="colours">{$_('app.header.today_reminders')}</span><span class="colours colours--fine">{$todayReminders}</span>
+    <span class="colours">{$_(`app.${$appType}.header.today_count`)}</span><span class="colours colours--fine">
+      {#if $appType === AppType.Earnings}
+        {formatNumber($todayEarnings, $langStore)}
+      {/if}
+      {#if $appType === AppType.Reminders}
+        {$todayReminders}
+      {/if}
+    </span>
   </div>
   {#if $isLoggedIn}
     <div class="auth header-option--right">
-      <span class="auth" on:click={() => logout()}>{$_('app.header.logout')}</span>
+      <span class="auth" on:click={() => logout()}>{$_(`app.${$appType}.header.logout`)}</span>
       <img class="photo" src={userLogin.photoURL} alt="" on:click={logout} />
     </div>
   {:else}
     <div class="auth header-option--right">
-      <span class="auth" on:click={() => login()}>{$_('app.header.login')}</span>
+      <span class="auth" on:click={() => login()}>{$_(`app.${$appType}.header.login`)}</span>
       <img class="photo" src="assets/img/google.svg" alt="Google" on:click={login} />
     </div>
   {/if}

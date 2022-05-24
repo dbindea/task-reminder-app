@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { filterValue, totalReminders } from '../services/store.service';
+  import { appType, filterValue, langStore, totalEarnings, totalReminders } from '../services/store.service';
   import { isLoggedIn } from '../services/store.service';
   import { _ } from 'svelte-i18n';
   import { onMount, onDestroy } from 'svelte';
+  import { AppType } from '../model/AppType.svelte';
+  import { formatNumber } from '../services/utils.service.svelte';
 
   let filterInput;
   const scrollNavBar = 60;
@@ -28,7 +30,16 @@
 </script>
 
 <nav class={$isLoggedIn ? 'subheader sticky' : 'disabled'} class:scrolled={show} class:disabled={!$isLoggedIn}>
-  <div class="section">{$_($filterValue ? 'app.subheader.search' : 'app.subheader.total', { values: { number: $totalReminders } })}</div>
+  <div class="section">
+    {#if $appType === AppType.Earnings}
+      {$_($filterValue ? `app.${$appType}.subheader.search` : `app.${$appType}.subheader.total`, {
+        values: { number: formatNumber($totalEarnings, $langStore) },
+      })}
+    {/if}
+    {#if $appType === AppType.Reminders}
+      {$_($filterValue ? `app.${$appType}.subheader.search` : `app.${$appType}.subheader.total`, { values: { number: $totalReminders } })}
+    {/if}
+  </div>
   <div class="field-container" class:field-container--active={$filterValue}>
     <div class="field-subcontainer value-display" class:field-subcontainer--active={$filterValue}>
       <span class="icon-filter field-icon" on:click={showFilter} />
@@ -39,7 +50,7 @@
         bind:this={filterInput}
         on:input={() => filterChange()}
         id="filter"
-        placeholder={$_('app.subheader.filter')}
+        placeholder={$_(`app.${$appType}.subheader.filter`)}
         spellcheck="false"
         autocomplete="off"
       />

@@ -1,52 +1,108 @@
 {
   "app": {
-    "header": {
-      "login": "Entrar",
-      "logout": "Salir",
-      "login_hello": "¡Hola {name}!",
-      "logout_bye": "¡Hasta luego!",
-      "today_reminders": "Recordatorios hoy"
-    },
-    "subheader": {
-      "total": "Totales {number}",
-      "filter": "Filtrar",
-      "search": "Encontrados {number}"
-    },
-    "main": {
-      "card": {
-        "tipology": "Recordatorio",
-        "update": "Actualizar",
-        "remove": "Eliminar",
-        "count_days_today": "Hoy",
-        "count_days_sg": "¡Falta un día!",
-        "count_days_pl": "¡Faltan {number} días!"
+    "Earnings": {
+      "header": {
+        "login": "Entrar",
+        "logout": "Salir",
+        "login_hello": "¡Hola {name}!",
+        "logout_bye": "¡Hasta luego!",
+        "today_count": "Ingresos hoy"
       },
-      "form": {
-        "CHECKIN": "Check-in",
-        "PAYMENT": "Pagos",
-        "SEARCH": "Busca viajes",
-        "DEFAULT": "Otras actividades",
-        "alias": "Notas",
-        "provider": "Proveedor",
-        "locatorId": "Localizador",
-        "date": "Fecha",
-        "amount": "Importe",
-        "save": "Guardar",
-        "update": "Actualizar",
-        "cancel": "Abandonar",
-        "add_msg": "¡Recordatorio creado!",
-        "update_msg": "¡Recordatorio actualizado!",
-        "remove_msg": "¡Recordatorio eliminado!",
-        "validate_msg": "¡Ahora puedes Guardar",
-        "option_empty": "Tipo recordatorio"
+      "subheader": {
+        "total": "Total {number}",
+        "filter": "Filtrar",
+        "search": "Subtotal {number}"
       },
-      "list": {
-        "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",
-        "no_reminder": "¡Crea tu primer recordatorio!"
+      "main": {
+        "card": {
+          "product": "Servicio",
+          "update": "Actualizar",
+          "remove": "Eliminar"
+        },
+        "form": {
+          "FLIGHT": "Vuelos",
+          "HOTEL": "Hoteles",
+          "INSURANCE": "Seguros",
+          "PACK": "Paquete Vacacional",
+          "RENTAL_CAR": "Alquiler Coches",
+          "alias": "Notas",
+          "provider": "Proveedor",
+          "locatorId": "Localizador",
+          "date": "Fecha",
+          "amount": "Importe",
+          "save": "Guardar",
+          "update": "Actualizar",
+          "cancel": "Abandonar",
+          "add_msg": "¡Ganancia registrada!",
+          "update_msg": "¡Ganancia actualizada!",
+          "remove_msg": "¡Ganancia eliminada!",
+          "validate_msg": "¡Ahora puedes Guardar",
+          "option_empty": "Tipo Servicio"
+        },
+        "list": {
+          "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar tus ganancias!",
+          "no_reminder": "¡Registra tu primera ganancia!"
+        }
+      },
+      "menu": {
+        "app_type": "App Category"
+      },
+      "footer": {
+        "app_name": "Financial Earnings"
       }
     },
-    "footer": {
-      "app_name": "Task Reminder App"
+    "Reminders": {
+      "header": {
+        "login": "Entrar",
+        "logout": "Salir",
+        "login_hello": "¡Hola {name}!",
+        "logout_bye": "¡Hasta luego!",
+        "today_count": "Recordatorios hoy"
+      },
+      "subheader": {
+        "total": "Totales {number}",
+        "filter": "Filtrar",
+        "search": "Encontrados {number}"
+      },
+      "main": {
+        "card": {
+          "tipology": "Recordatorio",
+          "update": "Actualizar",
+          "remove": "Eliminar",
+          "count_days_today": "Hoy",
+          "count_days_sg": "¡Falta un día!",
+          "count_days_pl": "¡Faltan {number} días!"
+        },
+        "form": {
+          "CHECKIN": "Check-in",
+          "PAYMENT": "Pagos",
+          "SEARCH": "Busca Viajes",
+          "DEFAULT": "Otras Actividades",
+          "alias": "Notas",
+          "provider": "Proveedor",
+          "locatorId": "Localizador",
+          "date": "Fecha",
+          "amount": "Importe",
+          "save": "Guardar",
+          "update": "Actualizar",
+          "cancel": "Abandonar",
+          "add_msg": "¡Recordatorio creado!",
+          "update_msg": "¡Recordatorio actualizado!",
+          "remove_msg": "¡Recordatorio eliminado!",
+          "validate_msg": "¡Ahora puedes Guardar",
+          "option_empty": "Tipo recordatorio"
+        },
+        "list": {
+          "no_auth": "¡Necesitas entrar con una cuenta de Google para ver o guardar recordatorios!",
+          "no_reminder": "¡Crea tu primer recordatorio!"
+        }
+      },
+      "menu": {
+        "app_type": "App Category"
+      },
+      "footer": {
+        "app_name": "Task Reminder App"
+      }
     }
   }
 }

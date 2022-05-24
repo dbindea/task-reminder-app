@@ -1,13 +1,14 @@
 <script lang="ts">
+  import EarningForm from '../components/EarningForm.svelte';
+  import EarningList from '../components/EarningList.svelte';
   import ReminderForm from '../components/ReminderForm.svelte';
   import ReminderList from '../components/ReminderList.svelte';
-  import type { ActionType } from '../model/ActionType.model.svelte';
-  import { APP_TYPE } from '../model/AppType.model.svelte';
-  import type { Reminder } from '../model/Reminder.model.svelte';
+  import type { ActionType } from '../model/ActionType.svelte';
+  import { AppType } from '../model/AppType.svelte';
   import { appType } from '../services/store.service';
 
   let idToRemove: string;
-  let objectToUpdate: Reminder;
+  let objectToUpdate: any;
   let operation: { action: ActionType };
 
   function handleRemove(event) {
@@ -22,13 +23,14 @@
 </script>
 
 <div class="main">
-  {#if $appType === APP_TYPE.REMINDERS}
+  {#if $appType === AppType.Reminders}
     <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
+    <ReminderList collectionName={$appType} on:remove={handleRemove} on:update={handleUpdate} />
   {/if}
-  {#if $appType === APP_TYPE.EARNINGS}
-    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
+  {#if $appType === AppType.Earnings}
+    <EarningForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
+    <EarningList collectionName={$appType} on:remove={handleRemove} on:update={handleUpdate} />
   {/if}
-  <ReminderList on:remove={handleRemove} on:update={handleUpdate} />
 </div>
 
 <style type="scss">

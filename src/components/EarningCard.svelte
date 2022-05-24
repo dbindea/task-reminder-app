@@ -1,19 +1,20 @@
 <script lang="ts">
-  import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.svelte';
   import { _ } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
   import { ActionType } from '../model/ActionType.svelte';
   import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
+  import type { Earning } from '../model/Earning.svelte';
 import type { AppType } from '../model/AppType.svelte';
+import { setupI18n } from '../services/i18n.service';
 import { langStore } from '../services/store.service';
 
   export let collectionName: AppType;
-  export let reminder: Reminder;
+  export let earning: Earning;
   const formatDate = format_DDMMYYYY;
 
   const dispatch = createEventDispatcher();
 
-  const update = (reminder: Reminder) => {
+  const update = (reminder: Earning) => {
     dispatch(ActionType.UPDATE, reminder);
   };
 
@@ -21,55 +22,42 @@ import { langStore } from '../services/store.service';
     dispatch(ActionType.REMOVE, id);
   };
 
-  const getDiffDays = (date: Date): number => {
-    const difference = new Date(date).getTime() - new Date().getTime();
-    return Math.ceil(difference / (1000 * 3600 * 24));
-  };
-
-  const getTranslation = (numberDays: number) => {
-    const mapDays = {
-      0: `app.${collectionName}.main.card.count_days_today`,
-      1: `app.${collectionName}.main.card.count_days_sg`,
-      default: `app.${collectionName}.main.card.count_days_pl`,
-    };
-    return mapDays[numberDays] ? mapDays[numberDays] : mapDays['default'];
-  };
 </script>
 
 <div class="card">
   <div class="reminder-card">
     <div class="first-item">
       <div class="field">
-        <span class="field-title">{$_(`app.${collectionName}.main.card.tipology`)}</span><span class="field-text capitalize">{$_(`app.${collectionName}.main.form.${reminder.tipology}`)}</span>
+        <span class="field-title">{$_(`app.${collectionName}.main.card.product`)}</span><span class="field-text capitalize">{$_(`app.${collectionName}.main.form.${earning.product}`)}</span
+        >
       </div>
       <!-- DROPDOWN -->
       <span class="icon-actions rotate dropdown">
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => update(reminder)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
-              <li class="action-item" on:click={() => remove(reminder.id)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
+              <li class="action-item" on:click={() => update(earning)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
+              <li class="action-item" on:click={() => remove(earning.id)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
             </ul>
           </div>
         </div>
       </span>
     </div>
     <div class="field">
-      <span class="field-title">{$_(`app.${collectionName}.main.form.alias`)}</span><span class="capitalize field-text">{reminder.alias}</span>
-    </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.provider ? 'field' : 'field--disabled'}>
-      <span class="field-title">{$_(`app.${collectionName}.main.form.provider`)}</span>
-      <span class="field-text capitalize">{reminder.provider}</span>
-    </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.locatorId ? 'field' : 'field--disabled'}>
-      <span class="field-title">{$_(`app.${collectionName}.main.form.locatorId`)}</span><span class="field-text uppercase">{reminder.locatorId}</span>
+      <span class="field-title">{$_(`app.${collectionName}.main.form.alias`)}</span><span class="capitalize field-text">{earning.alias}</span>
     </div>
     <div class="field">
-      <span class="field-title">{$_(`app.${collectionName}.main.form.date`)}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
-      <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: getDiffDays(reminder.date) } })}</span>
+      <span class="field-title">{$_(`app.${collectionName}.main.form.provider`)}</span>
+      <span class="field-text capitalize">{earning.provider}</span>
     </div>
-    <div class={!hiddenOptionsByTipology[reminder.tipology]?.amount ? 'field' : 'field--disabled'}>
-      <span class="field-title">{$_(`app.${collectionName}.main.form.amount`)}</span><span class="field-text">{formatNumber(reminder.amount, $langStore)}</span>
+    <div class="field">
+      <span class="field-title">{$_(`app.${collectionName}.main.form.locatorId`)}</span><span class="field-text uppercase">{earning.locatorId}</span>
+    </div>
+    <div class="field">
+      <span class="field-title">{$_(`app.${collectionName}.main.form.date`)}</span><span class="field-text field-title">{formatDate(earning.date, '/')}</span>
+    </div>
+    <div class="field">
+      <span class="field-title">{$_(`app.${collectionName}.main.form.amount`)}</span><span class="field-text">{formatNumber(earning.amount, $langStore)}</span>
     </div>
   </div>
 </div>
@@ -154,9 +142,6 @@ import { langStore } from '../services/store.service';
   .field {
     display: flex;
     align-items: center;
-    &--disabled {
-      display: none;
-    }
   }
   .field-title {
     font-weight: 600;
@@ -171,14 +156,5 @@ import { langStore } from '../services/store.service';
   .rotate {
     transform: rotate(90deg);
     font-size: 28px;
-  }
-
-  .colours {
-    background: linear-gradient(135deg, var(--color-turq), var(--color-fucs));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 16px;
-    font-weight: 600;
   }
 </style>

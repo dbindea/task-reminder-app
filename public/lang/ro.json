@@ -1,52 +1,104 @@
 {
   "app": {
-    "header": {
-      "login": "Intră",
-      "logout": "Ieșire",
-      "login_hello": "Salutare {name}!",
-      "logout_bye": "La revedere!",
-      "today_reminders": "Activități azi"
-    },
-    "subheader": {
-      "total": "Totale {number}",
-      "filter": "Filtrează",
-      "search": "Găsite {number}"
-    },
-    "main": {
-      "card": {
-        "tipology": "De realizat",
-        "update": "Actualizează",
-        "remove": "Șterge",
-        "count_days_today": "Azi!",
-        "count_days_sg": "Peste o zi!",
-        "count_days_pl": "{number} zile rămase!"
+    "Earnings": {
+      "header": {
+        "login": "Intră",
+        "logout": "Ieșire",
+        "login_hello": "Salutare {name}!",
+        "logout_bye": "La revedere!",
+        "today_count": "Activități azi"
       },
-      "form": {
-        "CHECKIN": "Check-in",
-        "PAYMENT": "Efectuează plăți",
-        "SEARCH": "Caută călătorii",
-        "DEFAULT": "Alte activități",
-        "alias": "Notițe",
-        "provider": "Furnizor",
-        "locatorId": "Cod rezervă",
-        "date": "Data",
-        "amount": "Suma",
-        "save": "Salvează",
-        "update": "Actualizează",
-        "cancel": "Renunță",
-        "add_msg": "Activitate creată!",
-        "update_msg": "Activitate actualizată!",
-        "remove_msg": "Activitate ștearsă!",
-        "validate_msg": "Acum poți salva!",
-        "option_empty": "Tipul activității"
+      "subheader": {
+        "total": "Totale {number}",
+        "filter": "Filtrează",
+        "search": "Găsite {number}"
       },
-      "list": {
-        "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
-        "no_reminder": "Crează prima ta activitate de reținut!"
+      "main": {
+        "card": {
+          "tipology": "De realizat",
+          "update": "Actualizează",
+          "remove": "Șterge",
+          "count_days_today": "Azi!",
+          "count_days_sg": "Peste o zi!",
+          "count_days_pl": "{number} zile rămase!"
+        },
+        "form": {
+          "CHECKIN": "Check-in",
+          "PAYMENT": "Efectuează plăți",
+          "SEARCH": "Caută călătorii",
+          "DEFAULT": "Alte activități",
+          "alias": "Notițe",
+          "provider": "Furnizor",
+          "locatorId": "Cod rezervă",
+          "date": "Data",
+          "amount": "Suma",
+          "save": "Salvează",
+          "update": "Actualizează",
+          "cancel": "Renunță",
+          "add_msg": "Activitate creată!",
+          "update_msg": "Activitate actualizată!",
+          "remove_msg": "Activitate ștearsă!",
+          "validate_msg": "Acum poți salva!",
+          "option_empty": "Tipul activității"
+        },
+        "list": {
+          "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
+          "no_reminder": "Crează prima ta activitate de reținut!"
+        }
+      },
+      "footer": {
+        "app_name": "Task Reminder App"
       }
     },
-    "footer": {
-      "app_name": "Task Reminder App"
+    "Reminders": {
+      "header": {
+        "login": "Intră",
+        "logout": "Ieșire",
+        "login_hello": "Salutare {name}!",
+        "logout_bye": "La revedere!",
+        "today_count": "Activități azi"
+      },
+      "subheader": {
+        "total": "Totale {number}",
+        "filter": "Filtrează",
+        "search": "Găsite {number}"
+      },
+      "main": {
+        "card": {
+          "tipology": "De realizat",
+          "update": "Actualizează",
+          "remove": "Șterge",
+          "count_days_today": "Azi!",
+          "count_days_sg": "Peste o zi!",
+          "count_days_pl": "{number} zile rămase!"
+        },
+        "form": {
+          "CHECKIN": "Check-in",
+          "PAYMENT": "Efectuează plăți",
+          "SEARCH": "Caută călătorii",
+          "DEFAULT": "Alte activități",
+          "alias": "Notițe",
+          "provider": "Furnizor",
+          "locatorId": "Cod rezervă",
+          "date": "Data",
+          "amount": "Suma",
+          "save": "Salvează",
+          "update": "Actualizează",
+          "cancel": "Renunță",
+          "add_msg": "Activitate creată!",
+          "update_msg": "Activitate actualizată!",
+          "remove_msg": "Activitate ștearsă!",
+          "validate_msg": "Acum poți salva!",
+          "option_empty": "Tipul activității"
+        },
+        "list": {
+          "no_auth": "Intră cu contul tău de Google pentru a crea și vedea activitățile tale înregistrate!",
+          "no_reminder": "Crează prima ta activitate de reținut!"
+        }
+      },
+      "footer": {
+        "app_name": "Task Reminder App"
+      }
     }
   }
 }
