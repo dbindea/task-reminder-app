@@ -24,13 +24,14 @@
     },
     PAYMENT: {},
     SEARCH: {
-      locatorId: true,
       amount: true,
+      locatorId: true,
+      provider: true,
     },
     DEFAULT: {
-      provider: true,
-      locatorId: true,
       amount: true,
+      locatorId: true,
+      provider: true,
     },
   };
 </script>

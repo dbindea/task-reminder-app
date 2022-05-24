@@ -33,7 +33,7 @@
 
   function updateStore() {
     filterEarnings = filterByValue($filterValue);
-    
+
     totalEarnings.update(() =>
       filterEarnings.reduce((prev, cur) => {
         return prev + cur.amount;
@@ -60,7 +60,11 @@
 
     filterValue.subscribe((filterValue) => {
       filterEarnings = filterByValue(filterValue);
-      totalEarnings.update(() => filterEarnings.length);
+      totalEarnings.update(() =>
+        filterEarnings.reduce((prev, cur) => {
+          return prev + cur.amount;
+        }, 0),
+      );
     });
   });
 
@@ -82,7 +86,7 @@
   {#if !$isLoggedIn}
     <div class="panel">{$_(`app.${collectionName}.main.list.no_auth`)}</div>
   {:else if !items.length}
-    <div class="panel">{$_(`app.${collectionName}.main.list.no_reminder`)}</div>
+    <div class="panel">{$_(`app.${collectionName}.main.list.no_items`)}</div>
   {/if}
   {#each filterEarnings as earning}
     <EarningCard {collectionName} {earning} on:remove on:update />

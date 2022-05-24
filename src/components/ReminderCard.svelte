@@ -4,8 +4,8 @@
   import { createEventDispatcher } from 'svelte';
   import { ActionType } from '../model/ActionType.svelte';
   import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
-import type { AppType } from '../model/AppType.svelte';
-import { langStore } from '../services/store.service';
+  import type { AppType } from '../model/AppType.svelte';
+  import { langStore } from '../services/store.service';
 
   export let collectionName: AppType;
   export let reminder: Reminder;
@@ -40,7 +40,9 @@ import { langStore } from '../services/store.service';
   <div class="reminder-card">
     <div class="first-item">
       <div class="field">
-        <span class="field-title">{$_(`app.${collectionName}.main.card.tipology`)}</span><span class="field-text capitalize">{$_(`app.${collectionName}.main.form.${reminder.tipology}`)}</span>
+        <span class="field-title">{$_(`app.${collectionName}.main.card.tipology`)}</span><span class="field-text capitalize"
+          >{$_(`app.${collectionName}.main.form.${reminder.tipology}`)}</span
+        >
       </div>
       <!-- DROPDOWN -->
       <span class="icon-actions rotate dropdown">

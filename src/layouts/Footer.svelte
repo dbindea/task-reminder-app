@@ -31,7 +31,7 @@
 </script>
 
 <div class="footer">
-  <p>{$_(`app.${$appType}.footer.app_name`)}</p>
+  <p>{$_(`app.${$appType}.footer.app_name`)} &copy;</p>
   <div class="lang">
     <img class="flag" src="assets/img/ro.svg" alt="ro" on:click={() => changeLang('ro')} />
     <img class="flag" src="assets/img/es.svg" alt="es" on:click={() => changeLang('es')} />

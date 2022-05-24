@@ -4,9 +4,9 @@
   import { ActionType } from '../model/ActionType.svelte';
   import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
   import type { Earning } from '../model/Earning.svelte';
-import type { AppType } from '../model/AppType.svelte';
-import { setupI18n } from '../services/i18n.service';
-import { langStore } from '../services/store.service';
+  import type { AppType } from '../model/AppType.svelte';
+  import { setupI18n } from '../services/i18n.service';
+  import { langStore } from '../services/store.service';
 
   export let collectionName: AppType;
   export let earning: Earning;
@@ -21,14 +21,14 @@ import { langStore } from '../services/store.service';
   const remove = (id: string) => {
     dispatch(ActionType.REMOVE, id);
   };
-
 </script>
 
 <div class="card">
   <div class="reminder-card">
     <div class="first-item">
       <div class="field">
-        <span class="field-title">{$_(`app.${collectionName}.main.card.product`)}</span><span class="field-text capitalize">{$_(`app.${collectionName}.main.form.${earning.product}`)}</span
+        <span class="field-title">{$_(`app.${collectionName}.main.card.product`)}</span><span class="field-text capitalize"
+          >{$_(`app.${collectionName}.main.form.${earning.product}`)}</span
         >
       </div>
       <!-- DROPDOWN -->

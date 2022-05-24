@@ -1,104 +1,108 @@
 {
   "app": {
     "Earnings": {
-    "header": {
-      "login": "Login",
-      "logout": "Logout",
-      "login_hello": "Hello {name}!",
-      "logout_bye": "See you later!",
-      "today_count": "Today reminders"
-    },
-    "subheader": {
-      "total": "Totals {number}",
-      "filter": "Filter",
-      "search": "Found {number}"
-    },
-    "main": {
-      "card": {
-        "tipology": "Reminder",
-        "update": "Update",
-        "remove": "Remove",
-        "count_days_today": "Today",
-        "count_days_sg": "One day left!",
-        "count_days_pl": "{number} days left!"
+      "header": {
+        "login": "Login",
+        "logout": "Logout",
+        "login_hello": "Hello {name}!",
+        "logout_bye": "See you later!",
+        "today_count": "Today earnings"
       },
-      "form": {
-        "CHECKIN": "Check-in",
-        "PAYMENT": "Payments",
-        "SEARCH": "Travel search",
-        "DEFAULT": "Other tasks",
-        "alias": "Notes",
-        "provider": "Provider",
-        "locatorId": "Reference",
-        "date": "Date",
-        "amount": "Amount",
-        "save": "Save",
-        "update": "Update",
-        "cancel": "Cancel",
-        "add_msg": "Reminder created!",
-        "update_msg": "Reminder updated!",
-        "remove_msg": "Reminder removed!",
-        "validate_msg": "Now you can save!",
-        "option_empty": "Reminder type"
+      "subheader": {
+        "total": "Total {number}",
+        "filter": "Filter",
+        "search": "Subtotal {number}"
       },
-      "list": {
-        "no_auth": "You need to login with a Google account to view or save reminders!",
-        "no_reminder": "Create your first reminder!"
+      "main": {
+        "card": {
+          "product": "Service",
+          "update": "Update",
+          "remove": "Remove"
+        },
+        "form": {
+          "FLIGHT": "Flights",
+          "HOTEL": "Hotel",
+          "INSURANCE": "Insurances",
+          "PACK": "All Inclusive Pack",
+          "RENTAL_CAR": "Rental Cars",
+          "alias": "Client",
+          "provider": "Provider",
+          "locatorId": "Reference",
+          "date": "Date",
+          "amount": "Amount",
+          "save": "Save",
+          "update": "Update",
+          "cancel": "Cancel",
+          "add_msg": "Earning registred!",
+          "update_msg": "Earning updated!",
+          "remove_msg": "Earning removed!",
+          "validate_msg": "Now you can save!",
+          "option_empty": "Service Type"
+        },
+        "list": {
+          "no_auth": "You need to login with a Google account to view or save your earnings!",
+          "no_items": "Register your first earning!"
+        }
+      },
+      "menu": {
+        "app_type": "Application"
+      },
+      "footer": {
+        "app_name": "Financial Earnings App"
       }
     },
-    "footer": {
-      "app_name": "Task Reminder App"
-    }
-  },
-  "Reminders": {
-    "header": {
-      "login": "Login",
-      "logout": "Logout",
-      "login_hello": "Hello {name}!",
-      "logout_bye": "See you later!",
-      "today_count": "Today reminders"
-    },
-    "subheader": {
-      "total": "Totals {number}",
-      "filter": "Filter",
-      "search": "Found {number}"
-    },
-    "main": {
-      "card": {
-        "tipology": "Reminder",
-        "update": "Update",
-        "remove": "Remove",
-        "count_days_today": "Today",
-        "count_days_sg": "One day left!",
-        "count_days_pl": "{number} days left!"
+    "Reminders": {
+      "header": {
+        "login": "Login",
+        "logout": "Logout",
+        "login_hello": "Hello {name}!",
+        "logout_bye": "See you later!",
+        "today_count": "Today reminders"
       },
-      "form": {
-        "CHECKIN": "Check-in",
-        "PAYMENT": "Payments",
-        "SEARCH": "Travel search",
-        "DEFAULT": "Other tasks",
-        "alias": "Notes",
-        "provider": "Provider",
-        "locatorId": "Reference",
-        "date": "Date",
-        "amount": "Amount",
-        "save": "Save",
-        "update": "Update",
-        "cancel": "Cancel",
-        "add_msg": "Reminder created!",
-        "update_msg": "Reminder updated!",
-        "remove_msg": "Reminder removed!",
-        "validate_msg": "Now you can save!",
-        "option_empty": "Reminder type"
+      "subheader": {
+        "total": "Totals {number}",
+        "filter": "Filter",
+        "search": "Found {number}"
       },
-      "list": {
-        "no_auth": "You need to login with a Google account to view or save reminders!",
-        "no_reminder": "Create your first reminder!"
+      "main": {
+        "card": {
+          "tipology": "Reminder",
+          "update": "Update",
+          "remove": "Remove",
+          "count_days_today": "Today",
+          "count_days_sg": "One day left!",
+          "count_days_pl": "{number} days left!"
+        },
+        "form": {
+          "CHECKIN": "Check-in",
+          "PAYMENT": "Payments",
+          "SEARCH": "Travel Search",
+          "DEFAULT": "Other Tasks",
+          "alias": "Notes",
+          "provider": "Provider",
+          "locatorId": "Reference",
+          "date": "Date",
+          "amount": "Amount",
+          "save": "Save",
+          "update": "Update",
+          "cancel": "Cancel",
+          "add_msg": "Reminder created!",
+          "update_msg": "Reminder updated!",
+          "remove_msg": "Reminder removed!",
+          "validate_msg": "Now you can save!",
+          "option_empty": "Reminder type"
+        },
+        "list": {
+          "no_auth": "You need to login with a Google account to view or save reminders!",
+          "no_items": "Create your first reminder!"
+        }
+      },
+      "menu": {
+        "app_type": "Aplication"
+      },
+      "footer": {
+        "app_name": "Task Reminder App"
       }
-    },
-    "footer": {
-      "app_name": "Task Reminder App"
     }
   }
-}
 }

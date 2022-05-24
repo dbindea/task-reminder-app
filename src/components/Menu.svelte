@@ -9,7 +9,7 @@
     $appType = type;
   };
 
-/*   const settings = () => {
+  /*   const settings = () => {
     // TODO
   }; */
 </script>
@@ -23,8 +23,12 @@
 
     <div class="item-block">
       <span class="item item--header uppercase">{$_(`app.${$appType}.menu.app_type`)}</span>
-      <span class="item item--option" on:click={() => changeApp(AppType.Reminders)}><span class="icon-checklist item--icon" />{$_(`app.Reminders.footer.app_name`)}</span>
-      <span class="item item--option" on:click={() => changeApp(AppType.Earnings)}><span class="icon-dollar item--icon" />{$_(`app.Earnings.footer.app_name`)}</span>
+      <span class="item item--option" on:click={() => changeApp(AppType.Reminders)}
+        ><span class="icon-checklist item--icon" />{$_(`app.Reminders.footer.app_name`)}</span
+      >
+      <span class="item item--option" on:click={() => changeApp(AppType.Earnings)}
+        ><span class="icon-dollar item--icon" />{$_(`app.Earnings.footer.app_name`)}</span
+      >
     </div>
     <!--     <div class="item-block">
       <span class="item item--header uppercase">Settings</span>
