@@ -22,17 +22,17 @@
     </div>
 
     <div class="item-block">
-      <span class="item item--header uppercase">{$_(`app.${$appType}.menu.app_type`)}</span>
-      <span class="item item--option" on:click={() => changeApp(AppType.Reminders)}
-        ><span class="icon-checklist item--icon" />{$_(`app.Reminders.footer.app_name`)}</span
+      <span class="item item-header uppercase">{$_(`app.${$appType}.menu.app_type`)}</span>
+      <span class="item item-option" on:click={() => changeApp(AppType.Reminders)}
+        ><span class="icon-checklist item-icon" /><span class="item-text">{$_(`app.Reminders.footer.app_name`)}</span></span
       >
-      <span class="item item--option" on:click={() => changeApp(AppType.Earnings)}
-        ><span class="icon-dollar item--icon" />{$_(`app.Earnings.footer.app_name`)}</span
+      <span class="item item-option" on:click={() => changeApp(AppType.Earnings)}
+        ><span class="icon-euro item-icon" /><span class="item-text">{$_(`app.Earnings.footer.app_name`)}</span></span
       >
     </div>
-    <!--     <div class="item-block">
-      <span class="item item--header uppercase">Settings</span>
-      <span class="item item--option" on:click={settings}><span class="icon-checklist item--icon" />Manage Tipologies</span>
+    <!-- <div class="item-block">
+      <span class="item item-header uppercase">Settings</span>
+      <span class="item item-option" on:click={settings}><span class="icon-checklist item-icon" />Manage Tipologies</span>
     </div> -->
   {/if}
 </div>
@@ -49,7 +49,7 @@
     border-bottom-right-radius: 8px;
     z-index: 2;
     visibility: visible;
-    transition: width 0.4s, visibility 0.4s;
+    transition: width 200ms, visibility 200ms;
     border-left-color: var(--color-placeholder);
     border-left-style: solid;
     border-left-width: 2px;
@@ -87,26 +87,34 @@
 
   .item-block {
     padding: 32px 16px;
-    display: grid;
+    position: fixed;
+    display: flex;
+    flex-flow: column;
   }
 
   .item {
-    &--header {
+    &-header {
       opacity: 0.4;
-      padding-bottom: 8px;
+      padding-bottom: 16px;
     }
-    &--option {
-      padding: 16px 16px 16px 0;
-      cursor: pointer;
-      transition: all 0.2s;
+    &-option {
+      visibility: visible;
+      padding: 8px 16px 16px 0;
+      transition: all 1s ease-in;
       user-select: none;
+      cursor: pointer;
       &:hover {
         background-color: var(--color-placeholder);
         border-radius: 8px;
       }
     }
-    &--icon {
+    &-icon {
       margin-right: 12px;
+      font-size: 18px;
+      vertical-align: bottom;
+    }
+    &-text {
+      vertical-align: middle;
     }
   }
 </style>
