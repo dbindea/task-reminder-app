@@ -49,6 +49,9 @@
       },
       "footer": {
         "app_name": "Financial Earnings App"
+      },
+      "seo": {
+        "description": "Gestiona tus ganancias diarias"
       }
     },
     "Reminders": {
@@ -102,6 +105,9 @@
       },
       "footer": {
         "app_name": "Task Reminder App"
+      },
+      "seo": {
+        "description": "Gestiona tus recordatorios diarios"
       }
     }
   }

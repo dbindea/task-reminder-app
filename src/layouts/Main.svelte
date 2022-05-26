@@ -6,6 +6,8 @@
   import type { ActionType } from '../model/ActionType.svelte';
   import { AppType } from '../model/AppType.svelte';
   import { appType } from '../services/store.service';
+  import SvelteSeo from 'svelte-seo';
+  import { _ } from 'svelte-i18n';
 
   let idToRemove: string;
   let objectToUpdate: any;
@@ -32,6 +34,8 @@
     <EarningList collectionName={$appType} on:remove={handleRemove} on:update={handleUpdate} />
   {/if}
 </div>
+
+<SvelteSeo title="{$_(`app.${$appType}.footer.app_name`)} &copy;" description="{$_(`app.${$appType}.seo.description`)}" />
 
 <style type="scss">
   .main {
