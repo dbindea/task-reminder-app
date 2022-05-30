@@ -74,7 +74,8 @@
           "remove": "Șterge",
           "count_days_today": "Azi!",
           "count_days_sg": "Peste o zi!",
-          "count_days_pl": "{number} zile rămase!"
+          "count_days_pl": "{number} zile rămase!",
+          "count_negative": "{number} zile trecute!"
         },
         "form": {
           "CHECKIN": "Check-in",

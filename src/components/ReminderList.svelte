@@ -18,7 +18,7 @@
   const today = format_YYYYMMDD(new Date(), '-');
 
   const watchFirestore = (uid: string): Unsubscribe => {
-    const q = query(collection(db, AppType.Reminders), where('uid', '==', uid), where('date', '>=', today), orderBy('date', 'asc'));
+    const q = query(collection(db, AppType.Reminders), where('uid', '==', uid), orderBy('date', 'asc'));
     return onSnapshot(q, (querySnapshot) => {
       items = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
