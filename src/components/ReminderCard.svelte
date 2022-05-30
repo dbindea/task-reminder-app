@@ -30,9 +30,9 @@
     const mapDays = {
       0: `app.${collectionName}.main.card.count_days_today`,
       1: `app.${collectionName}.main.card.count_days_sg`,
-      default: `app.${collectionName}.main.card.count_days_pl`,
+      default: (numberDays) => (numberDays < 0 ? `app.${collectionName}.main.card.count_negative` : `app.${collectionName}.main.card.count_days_pl`),
     };
-    return mapDays[numberDays] ? mapDays[numberDays] : mapDays['default'];
+    return mapDays[numberDays] ? mapDays[numberDays] : mapDays['default'](numberDays);
   };
 </script>
 
@@ -68,7 +68,7 @@
     </div>
     <div class="field">
       <span class="field-title">{$_(`app.${collectionName}.main.form.date`)}</span><span class="field-text field-title">{formatDate(reminder.date, '/')}</span>
-      <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: getDiffDays(reminder.date) } })}</span>
+      <span class="colours">{$_(getTranslation(getDiffDays(reminder.date)), { values: { number: Math.abs(getDiffDays(reminder.date)) } })}</span>
     </div>
     <div class={!hiddenOptionsByTipology[reminder.tipology]?.amount ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_(`app.${collectionName}.main.form.amount`)}</span><span class="field-text">{formatNumber(reminder.amount, $langStore)}</span>

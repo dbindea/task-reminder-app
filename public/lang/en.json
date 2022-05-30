@@ -71,7 +71,8 @@
           "remove": "Remove",
           "count_days_today": "Today",
           "count_days_sg": "One day left!",
-          "count_days_pl": "{number} days left!"
+          "count_days_pl": "{number} days left!",
+          "count_negative": "{number} days past!"
         },
         "form": {
           "CHECKIN": "Check-in",
