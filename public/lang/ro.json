@@ -33,8 +33,8 @@
           "save": "Salvează",
           "update": "Actualizează",
           "cancel": "Renunță",
-          "add_msg": "Câstig înregistrat!",
-          "update_msg": "Câstig actualizat!",
+          "add_msg": "Câștig înregistrat!",
+          "update_msg": "Câștig actualizat!",
           "remove_msg": "Înregistrare ștearsă!",
           "validate_msg": "Acum poți salva!",
           "option_empty": "Tipul Serviciului"
@@ -49,6 +49,9 @@
       },
       "footer": {
         "app_name": "Financial Earnings App"
+      },
+      "seo": {
+        "description": "Înregistrează câștigurile tale zilnice"
       }
     },
     "Reminders": {
@@ -103,6 +106,9 @@
       },
       "footer": {
         "app_name": "Task Reminder App"
+      },
+      "seo": {
+        "description": "Gestionează activitățile tale zilnice"
       }
     }
   }
