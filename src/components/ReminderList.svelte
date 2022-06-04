@@ -9,7 +9,7 @@
   import type { Reminder } from '../model/Reminder.svelte';
   import type { User } from '../model/user.model';
   import type { Unsubscribe } from 'firebase/auth';
-  import { AppType } from '../model/AppType.svelte';
+  import type { AppType } from '../model/AppType.svelte';
 
   export let collectionName: AppType;
 
@@ -18,12 +18,14 @@
   const today = format_YYYYMMDD(new Date(), '-');
 
   const watchFirestore = (uid: string): Unsubscribe => {
-    const q = query(collection(db, AppType.Reminders), where('uid', '==', uid), orderBy('date', 'asc'));
+    const q = query(collection(db, collectionName), where('uid', '==', uid), orderBy('date', 'asc'));
     return onSnapshot(q, (querySnapshot) => {
-      items = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Reminder[];
+      items = (
+        querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as Reminder[]
+      ).filter((elem) => !elem?.isDeleted);
     });
   };
 

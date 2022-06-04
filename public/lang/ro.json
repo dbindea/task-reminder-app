@@ -11,7 +11,7 @@
       "subheader": {
         "total": "Total {number}",
         "filter": "Filtrează",
-        "search": "Găsite {number}"
+        "search": "Subtotal {number}"
       },
       "main": {
         "card": {

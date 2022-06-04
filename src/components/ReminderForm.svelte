@@ -13,7 +13,6 @@
   let reminder: Reminder = getEmptyCollection();
   export let collectionName: AppType;
   export let operation: { action: ActionType };
-  export let idToRemove: string;
   export let objectToUpdate: Reminder;
 
   let inputAlias;
@@ -50,7 +49,7 @@
   function onAction() {
     switch (operation?.action) {
       case ActionType.REMOVE:
-        remove(idToRemove);
+        remove(objectToUpdate);
         break;
 
       case ActionType.UPDATE:
@@ -111,9 +110,9 @@
     }
   };
 
-  const remove = async (id) => {
+  const remove = async (reminder) => {
     try {
-      await deleteDoc(doc(db, collectionName, id));
+      await updateDoc(doc(db, collectionName, reminder.id), { ...reminder, isDeleted: true });
       toast(ToastSeverity.ERROR, $_(`app.${collectionName}.main.form.remove_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
@@ -152,11 +151,6 @@
     currentId = '';
     reminder = getEmptyCollection();
   };
-
-  function textAreaAdjust(element) {
-    element.style.height = '1px';
-    element.style.height = 25 + element.scrollHeight + 'px';
-  }
 </script>
 
 <div class="form-collection">

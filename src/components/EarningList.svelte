@@ -20,10 +20,12 @@
   const watchFirestore = (uid: string): Unsubscribe => {
     const q = query(collection(db, collectionName), where('uid', '==', uid), where('date', '<=', today), orderBy('date', 'desc'));
     return onSnapshot(q, (querySnapshot) => {
-      items = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as Earning[];
+      items = (
+        querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })) as Earning[]
+      ).filter((elem) => !elem?.isDeleted);
     });
   };
 

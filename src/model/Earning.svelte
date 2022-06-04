@@ -5,6 +5,7 @@
     date: Date;
     email?: string;
     id?: string;
+    isDeleted?: boolean;
     locatorId: string;
     product: Product;
     provider: string;

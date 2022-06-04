@@ -5,7 +5,6 @@
   import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
   import type { Earning } from '../model/Earning.svelte';
   import type { AppType } from '../model/AppType.svelte';
-  import { setupI18n } from '../services/i18n.service';
   import { langStore } from '../services/store.service';
 
   export let collectionName: AppType;
@@ -14,12 +13,8 @@
 
   const dispatch = createEventDispatcher();
 
-  const update = (reminder: Earning) => {
-    dispatch(ActionType.UPDATE, reminder);
-  };
-
-  const remove = (id: string) => {
-    dispatch(ActionType.REMOVE, id);
+  const handleEvent = (actionType: ActionType) => {
+    dispatch(actionType, earning);
   };
 </script>
 
@@ -36,8 +31,8 @@
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => update(earning)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
-              <li class="action-item" on:click={() => remove(earning.id)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
             </ul>
           </div>
         </div>

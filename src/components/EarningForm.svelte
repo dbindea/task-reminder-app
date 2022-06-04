@@ -13,7 +13,6 @@
   let earning: Earning = getEmptyCollection();
   export let collectionName: AppType;
   export let operation: { action: ActionType };
-  export let idToRemove: string;
   export let objectToUpdate: Earning;
 
   let inputAlias;
@@ -50,7 +49,7 @@
   function onAction() {
     switch (operation?.action) {
       case ActionType.REMOVE:
-        remove(idToRemove);
+        remove(objectToUpdate);
         break;
 
       case ActionType.UPDATE:
@@ -111,9 +110,9 @@
     }
   };
 
-  const remove = async (id) => {
+  const remove = async (earning) => {
     try {
-      await deleteDoc(doc(db, collectionName, id));
+      await updateDoc(doc(db, collectionName, earning.id), {...earning, isDeleted: true});
       toast(ToastSeverity.ERROR, $_(`app.${collectionName}.main.form.remove_msg`));
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
