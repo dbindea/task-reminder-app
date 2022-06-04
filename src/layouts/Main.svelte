@@ -9,16 +9,10 @@
   import SvelteSeo from 'svelte-seo';
   import { _ } from 'svelte-i18n';
 
-  let idToRemove: string;
   let objectToUpdate: any;
   let operation: { action: ActionType };
 
-  function handleRemove(event) {
-    idToRemove = event.detail;
-    operation = { ...{ action: event.type } };
-  }
-
-  function handleUpdate(event) {
+  function handleEvent(event) {
     objectToUpdate = event.detail;
     operation = { ...{ action: event.type } };
   }
@@ -26,12 +20,12 @@
 
 <div class="main">
   {#if $appType === AppType.Reminders}
-    <ReminderForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
-    <ReminderList collectionName={$appType} on:remove={handleRemove} on:update={handleUpdate} />
+    <ReminderForm collectionName={$appType} {objectToUpdate} {operation} />
+    <ReminderList collectionName={$appType} on:remove={handleEvent} on:update={handleEvent} />
   {/if}
   {#if $appType === AppType.Earnings}
-    <EarningForm collectionName={$appType} {idToRemove} {objectToUpdate} {operation} />
-    <EarningList collectionName={$appType} on:remove={handleRemove} on:update={handleUpdate} />
+    <EarningForm collectionName={$appType} {objectToUpdate} {operation} />
+    <EarningList collectionName={$appType} on:remove={handleEvent} on:update={handleEvent} />
   {/if}
 </div>
 

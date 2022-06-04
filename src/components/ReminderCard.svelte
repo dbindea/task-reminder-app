@@ -13,12 +13,8 @@
 
   const dispatch = createEventDispatcher();
 
-  const update = (reminder: Reminder) => {
-    dispatch(ActionType.UPDATE, reminder);
-  };
-
-  const remove = (id: string) => {
-    dispatch(ActionType.REMOVE, id);
+  const handleEvent = (actionType: ActionType) => {
+    dispatch(actionType, reminder);
   };
 
   const getDiffDays = (date: Date): number => {
@@ -49,8 +45,8 @@
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => update(reminder)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
-              <li class="action-item" on:click={() => remove(reminder.id)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
             </ul>
           </div>
         </div>

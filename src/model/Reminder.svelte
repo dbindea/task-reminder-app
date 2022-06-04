@@ -5,6 +5,7 @@
     date: Date;
     email?: string;
     id?: string;
+    isDeleted?: boolean;
     locatorId: string;
     provider: string;
     tipology: Tipology;
