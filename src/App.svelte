@@ -1,11 +1,11 @@
 <script lang="ts">
   import 'toastify-js/src/toastify.css';
-  import Header from './layouts/Header.svelte';
-  import Main from './layouts/Main.svelte';
+  import Body from './layouts/Body.svelte';
   import Footer from './layouts/Footer.svelte';
+  import Header from './layouts/Header.svelte';
+  import Menu from './layouts/Menu.svelte';
   import SubHeader from './layouts/SubHeader.svelte';
-  import { setupI18n, isLocaleLoaded } from './services/i18n.service';
-  import Menu from './components/Menu.svelte';
+  import { isLocaleLoaded, setupI18n } from './services/i18n.service';
 
   $: if (!$isLocaleLoaded) {
     const lang = localStorage.getItem('lang') || 'es';
@@ -18,7 +18,7 @@
     <Header />
     <Menu />
     <SubHeader />
-    <Main />
+    <Body />
     <Footer />
   {:else}
     <p class="loading">Loading...</p>

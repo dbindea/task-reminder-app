@@ -12,3 +12,4 @@ export const isVisibleMenu = writable(false);
 export const filterValue = writable(null);
 export const langStore = writable(localStorage.getItem('lang') || 'es');
 export const appType = writable(localStorage.getItem('AppType') || AppType.Reminders);
+export const resetOperation = writable(false);

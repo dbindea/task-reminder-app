@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { db } from '../firebase';
-  import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-  import { onMount } from 'svelte';
+  import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
+  import { db } from '../firebase';
   import { ActionType } from '../model/ActionType.svelte';
-  import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
-  import { isLoggedIn, user } from '../services/store.service';
-  import type { User } from '../model/user.model';
   import type { AppType } from '../model/AppType.svelte';
   import { Earning, Product } from '../model/Earning.svelte';
+  import type { User } from '../model/user.model';
+  import { isLoggedIn, resetOperation, user } from '../services/store.service';
+  import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
 
   let earning: Earning = getEmptyCollection();
   export let collectionName: AppType;
@@ -21,6 +21,11 @@
   let hasShownMsg = false;
   let currentId = '';
   const today: string = format_YYYYMMDD(new Date(), '-');
+
+  const dispatch = createEventDispatcher();
+  const clearEvent = () => {
+    dispatch('clear');
+  };
 
   onMount(() => {
     inputAlias.focus();
@@ -110,10 +115,14 @@
     }
   };
 
-  const remove = async (earning) => {
+  const remove = async (object) => {
     try {
-      await updateDoc(doc(db, collectionName, earning.id), {...earning, isDeleted: true});
+      await updateDoc(doc(db, collectionName, object.id), { ...object, isDeleted: true });
       toast(ToastSeverity.ERROR, $_(`app.${collectionName}.main.form.remove_msg`));
+      $resetOperation = true;
+      document.body.scrollIntoView({
+        behavior: 'smooth',
+      });
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
@@ -254,11 +263,15 @@
       </div>
     </div>
 
-    <button class={!validForm || !$isLoggedIn ? 'button-cancel button-cancel--disabled' : 'button'} type="submit" disabled={!validForm || !$isLoggedIn}>
+    <button
+      class={!validForm || !$isLoggedIn ? 'button-cancel button-cancel--disabled' : 'button'}
+      disabled={!validForm || !$isLoggedIn}
+      on:click={() => clearEvent()}
+    >
       {#if !editStatus}{$_(`app.${collectionName}.main.form.save`)}{:else}{$_(`app.${collectionName}.main.form.update`)}{/if}
     </button>
     {#if editStatus}
-      <button on:click={cancelAction} class="button-cancel" type="reset">{$_(`app.${collectionName}.main.form.cancel`)}</button>
+      <button on:click={cancelAction} class="button-cancel" type="reset" on:click={() => clearEvent()}>{$_(`app.${collectionName}.main.form.cancel`)}</button>
     {/if}
   </form>
 </div>

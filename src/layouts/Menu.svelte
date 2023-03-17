@@ -1,17 +1,14 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import { AppType } from '../model/AppType.svelte';
-  import { appType, isVisibleMenu } from '../services/store.service';
+  import { appType, isVisibleMenu, resetOperation } from '../services/store.service';
 
   const changeApp = (type: AppType) => {
     localStorage.setItem('AppType', type);
     $isVisibleMenu = false;
     $appType = type;
+    $resetOperation = true;
   };
-
-  /*   const settings = () => {
-    // TODO
-  }; */
 </script>
 
 <div class={$isVisibleMenu ? 'menu' : 'menu menu--toggle'}>
@@ -90,6 +87,7 @@
     position: fixed;
     display: flex;
     flex-flow: column;
+    gap: 8px;
   }
 
   .item {
@@ -100,7 +98,7 @@
     &-option {
       visibility: visible;
       padding: 8px 16px 16px 0;
-      transition: all 1s ease-in;
+      transition: all 0.2s ease-in;
       user-select: none;
       cursor: pointer;
       &:hover {
