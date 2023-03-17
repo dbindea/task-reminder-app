@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.svelte';
-  import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
-  import type { Earning } from '../model/Earning.svelte';
   import type { AppType } from '../model/AppType.svelte';
+  import type { Earning } from '../model/Earning.svelte';
   import { langStore } from '../services/store.service';
+  import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
 
   export let collectionName: AppType;
   export let earning: Earning;
@@ -31,8 +31,12 @@
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
-              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}>
+                <span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}
+              </li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}>
+                <span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}
+              </li>
             </ul>
           </div>
         </div>

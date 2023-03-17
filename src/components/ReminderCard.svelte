@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.svelte';
-  import { _ } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
+  import { _ } from 'svelte-i18n';
   import { ActionType } from '../model/ActionType.svelte';
-  import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
   import type { AppType } from '../model/AppType.svelte';
+  import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.svelte';
   import { langStore } from '../services/store.service';
+  import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
 
   export let collectionName: AppType;
   export let reminder: Reminder;
@@ -45,8 +45,12 @@
         <div class="dropdown-content">
           <div class="dropdown-actions">
             <ul>
-              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}><span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}</li>
-              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}><span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}</li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.UPDATE)}>
+                <span class="icon-edit" />{$_(`app.${collectionName}.main.card.update`)}
+              </li>
+              <li class="action-item" on:click={() => handleEvent(ActionType.REMOVE)}>
+                <span class="icon-delete" />{$_(`app.${collectionName}.main.card.remove`)}
+              </li>
             </ul>
           </div>
         </div>
@@ -84,7 +88,7 @@
     display: block;
   }
   .dropdown-content {
-    transform: translateY(12px) rotate(-90deg);
+    transform: translateY(8px) rotate(-90deg);
     display: none;
     position: absolute;
     box-shadow: var(--bg-shadow);
