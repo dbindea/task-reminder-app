@@ -8,7 +8,7 @@
   import { Earning, Product } from '../model/Earning.svelte';
   import type { User } from '../model/user.model';
   import { isLoggedIn, resetOperation, user } from '../services/store.service';
-  import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
+  import { ToastSeverity, format_YYYYMMDD, toast, trim } from '../services/utils.service.svelte';
 
   let earning: Earning = getEmptyCollection();
   export let collectionName: AppType;
@@ -35,7 +35,7 @@
     return {
       alias: '',
       amount: null,
-      date: null,
+      date: today,
       id: '',
       locatorId: '',
       product: null,
@@ -67,7 +67,7 @@
     const validation = {
       alias: (data: string) => !!data && data.length >= 3,
       amount: (data: number) => !!data && data > 0,
-      date: (data: Date) => !!data,
+      date: (data: string) => !!data,
       locatorId: (data: string) => !!data && data.length >= 5,
       product: (data: string) => !!data,
       provider: (data: string) => !!data && data.length >= 2,
@@ -120,9 +120,6 @@
       await updateDoc(doc(db, collectionName, object.id), { ...object, isDeleted: true });
       toast(ToastSeverity.ERROR, $_(`app.${collectionName}.main.form.remove_msg`));
       $resetOperation = true;
-      document.body.scrollIntoView({
-        behavior: 'smooth',
-      });
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);
