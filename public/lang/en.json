@@ -25,6 +25,8 @@
           "INSURANCE": "Insurances",
           "PACK": "All Inclusive Pack",
           "RENTAL_CAR": "Rental Cars",
+          "TRAIN": "Train",
+          "DEFAULT": "Others",
           "alias": "Client",
           "provider": "Provider",
           "locatorId": "Reference",

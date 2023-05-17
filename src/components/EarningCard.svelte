@@ -73,7 +73,7 @@
     display: block;
   }
   .dropdown-content {
-    transform: translateY(12px) rotate(-90deg);
+    transform: translateY(8px) rotate(-90deg);
     display: none;
     position: absolute;
     box-shadow: var(--bg-shadow);

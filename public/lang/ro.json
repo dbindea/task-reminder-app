@@ -25,6 +25,8 @@
           "INSURANCE": "Asigurări",
           "PACK": "Pachet Vacanță",
           "RENTAL_CAR": "Închirieri Mașini",
+          "TRAIN": "Tren",
+          "DEFAULT": "Altele",
           "alias": "Client",
           "provider": "Furnizor",
           "locatorId": "Cod rezervă",

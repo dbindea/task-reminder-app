@@ -25,6 +25,8 @@
           "INSURANCE": "Seguros",
           "PACK": "Paquete Vacacional",
           "RENTAL_CAR": "Alquiler Coches",
+          "TRAIN": "Tren",
+          "DEFAULT": "Otros",
           "alias": "Cliente",
           "provider": "Proveedor",
           "locatorId": "Localizador",

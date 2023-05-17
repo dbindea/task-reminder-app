@@ -5,10 +5,10 @@
   import { db } from '../firebase';
   import { ActionType } from '../model/ActionType.svelte';
   import type { AppType } from '../model/AppType.svelte';
-  import { hiddenOptionsByTipology, Reminder, Tipology } from '../model/Reminder.svelte';
+  import { Reminder, Tipology, hiddenOptionsByTipology } from '../model/Reminder.svelte';
   import type { User } from '../model/user.model';
   import { isLoggedIn, resetOperation, user } from '../services/store.service';
-  import { format_YYYYMMDD, toast, ToastSeverity, trim } from '../services/utils.service.svelte';
+  import { ToastSeverity, format_YYYYMMDD, toast, trim } from '../services/utils.service.svelte';
 
   let reminder: Reminder = getEmptyCollection();
   export let collectionName: AppType;
@@ -120,9 +120,6 @@
       await updateDoc(doc(db, collectionName, object.id), { ...object, isDeleted: true });
       toast(ToastSeverity.ERROR, $_(`app.${collectionName}.main.form.remove_msg`));
       $resetOperation = true;
-      document.body.scrollIntoView({
-        behavior: 'smooth',
-      });
     } catch (error) {
       toast(ToastSeverity.ERROR, error);
       console.error(error);

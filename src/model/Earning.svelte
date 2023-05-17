@@ -2,7 +2,7 @@
   export type Earning = {
     amount: number;
     alias: string;
-    date: Date;
+    date: string;
     email?: string;
     id?: string;
     isDeleted?: boolean;
@@ -18,5 +18,7 @@
     INSURANCE = 'INSURANCE',
     PACK = 'PACK',
     RENTAL_CAR = 'RENTAL_CAR',
+    TRAIN = 'TRAIN',
+    DEFAULT = 'DEFAULT'
   }
 </script>
