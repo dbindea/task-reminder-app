@@ -35,7 +35,7 @@
     return {
       alias: '',
       amount: null,
-      date: today,
+      date: format_YYYYMMDD(new Date(), '-'),
       id: '',
       locatorId: '',
       product: null,
