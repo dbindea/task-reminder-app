@@ -5,7 +5,7 @@
   import type { AppType } from '../model/AppType.svelte';
   import { hiddenOptionsByTipology, Reminder } from '../model/Reminder.svelte';
   import { langStore } from '../services/store.service';
-  import { formatNumber, format_DDMMYYYY } from '../services/utils.service.svelte';
+  import { format_DDMMYYYY, formatNumber } from '../services/utils.service.svelte';
 
   export let collectionName: AppType;
   export let reminder: Reminder;
@@ -61,7 +61,7 @@
     </div>
     <div class={!hiddenOptionsByTipology[reminder.tipology]?.provider ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_(`app.${collectionName}.main.form.provider`)}</span>
-      <span class="field-text capitalize">{reminder.provider}</span>
+      <span class="field-text uppercase">{reminder.provider}</span>
     </div>
     <div class={!hiddenOptionsByTipology[reminder.tipology]?.locatorId ? 'field' : 'field--disabled'}>
       <span class="field-title">{$_(`app.${collectionName}.main.form.locatorId`)}</span><span class="field-text uppercase">{reminder.locatorId}</span>

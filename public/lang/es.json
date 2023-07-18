@@ -84,7 +84,7 @@
           "PAYMENT": "Pagos",
           "SEARCH": "Búsqueda Viajes",
           "DEFAULT": "Otras Actividades",
-          "alias": "Notas",
+          "alias": "Descripción",
           "provider": "Proveedor",
           "locatorId": "Localizador",
           "date": "Fecha",
@@ -112,6 +112,11 @@
       "seo": {
         "description": "Gestiona tus recordatorios diarios"
       }
+    },
+    "menu": {
+      "reminder": "Recordatorios",
+      "earning": "Ganancia",
+      "back_office": "Back Office"
     }
   }
 }

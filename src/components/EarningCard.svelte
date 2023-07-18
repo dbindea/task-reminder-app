@@ -47,7 +47,7 @@
     </div>
     <div class="field">
       <span class="field-title">{$_(`app.${collectionName}.main.form.provider`)}</span>
-      <span class="field-text capitalize">{earning.provider}</span>
+      <span class="field-text uppercase">{earning.provider}</span>
     </div>
     <div class="field">
       <span class="field-title">{$_(`app.${collectionName}.main.form.locatorId`)}</span><span class="field-text uppercase">{earning.locatorId}</span>

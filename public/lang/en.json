@@ -84,7 +84,7 @@
           "PAYMENT": "Payments",
           "SEARCH": "Travel Search",
           "DEFAULT": "Other Tasks",
-          "alias": "Notes",
+          "alias": "Description",
           "provider": "Provider",
           "locatorId": "Reference",
           "date": "Date",
@@ -112,6 +112,11 @@
       "seo": {
         "description": "Manage your daily reminders"
       }
+    },
+    "menu": {
+      "reminder": "Reminders",
+      "earning": "Earning",
+      "back_office": "Back Office"
     }
   }
 }

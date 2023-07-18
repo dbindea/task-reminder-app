@@ -9,6 +9,10 @@
     $appType = type;
     $resetOperation = true;
   };
+
+  const goBackOffice = () => {
+    window.location.replace('https://secure.gate2fly.com');
+  };
 </script>
 
 <div class={$isVisibleMenu ? 'menu' : 'menu menu--toggle'}>
@@ -21,10 +25,13 @@
     <div class="item-block">
       <span class="item item-header uppercase">{$_(`app.${$appType}.menu.app_type`)}</span>
       <span class="item item-option" on:click={() => changeApp(AppType.Reminders)}
-        ><span class="icon-checklist item-icon" /><span class="item-text">{$_(`app.Reminders.footer.app_name`)}</span></span
+        ><span class="icon-checklist item-icon" /><span class="item-text">{$_(`app.menu.reminder`)}</span></span
       >
       <span class="item item-option" on:click={() => changeApp(AppType.Earnings)}
-        ><span class="icon-euro item-icon" /><span class="item-text">{$_(`app.Earnings.footer.app_name`)}</span></span
+        ><span class="icon-euro item-icon" /><span class="item-text">{$_(`app.menu.earning`)}</span></span
+      >
+      <span class="item item-option" on:click={() => goBackOffice()}
+        ><span class="icon-new-tab item-icon" /><span class="item-text">{$_(`app.menu.back_office`)}</span></span
       >
     </div>
     <!-- <div class="item-block">
@@ -49,7 +56,7 @@
     transition: width 200ms, visibility 200ms;
     border-left-color: var(--color-placeholder);
     border-left-style: solid;
-    border-left-width: 2px;
+    border-left-width: 1px;
     &--toggle {
       width: 0;
       padding: 0;
