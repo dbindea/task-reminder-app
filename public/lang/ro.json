@@ -84,7 +84,7 @@
           "PAYMENT": "Efectuează Plăți",
           "SEARCH": "Caută Călătorii",
           "DEFAULT": "Alte Activități",
-          "alias": "Notițe",
+          "alias": "Descriere",
           "provider": "Furnizor",
           "locatorId": "Cod rezervă",
           "date": "Data",
@@ -112,6 +112,11 @@
       "seo": {
         "description": "Gestionează activitățile tale zilnice"
       }
+    },
+    "menu": {
+      "reminder": "Memorează",
+      "earning": "Câștig",
+      "back_office": "Back Office"
     }
   }
 }

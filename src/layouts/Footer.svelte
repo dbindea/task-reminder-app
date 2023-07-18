@@ -62,7 +62,7 @@
   .flag {
     cursor: pointer;
     object-fit: fill;
-    border-radius: 4px;
+    border-radius: 2px;
   }
 
   .up {

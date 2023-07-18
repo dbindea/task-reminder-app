@@ -197,7 +197,7 @@
       <div class="field-subcontainer">
         <span class="icon-favorite-on field-icon" />
         <input
-          class="capitalize field-input"
+          class="uppercase field-input"
           type="text"
           name="provider"
           bind:value={reminder.provider}
